@@ -18,6 +18,23 @@
 linkml generate shacl --include-annotations --non-closed workflow-ro-crate.yaml > workflow-ro-crate.ttl
 ```
 
+`--include-annotations` passes through anything included under `annotations` property in LinkML.
+`--non-closed` tells LinkML to generate open SHACL shapes (i.e. entities will be permitted to have properties that aren't explicitly listed)
+
+## Running the validator
+
+Use `--profile-identifier` to select the desired profile.
+
+The crates in `tests/data/crates` can be used as examples for running the validator. For example:
+
+```
+rocrate-validator validate -v --profile-identifier workflow-ro-crate-linkml tests/data/crates/invalid/1_wroc_crate/no_mainentity/
+```
+
+## Running the tests
+
+Run `pytest` as usual after setup - the new tests should be picked up automatically.
+
 ## Error message "The requirement check cannot be None"
 
 Occurred intermittently when running the validator on test cases - the first run would be fine, but later runs would then have this error. It's something to do with how the SHACL checks are instantiated in Python. Maybe a caching issue? 
