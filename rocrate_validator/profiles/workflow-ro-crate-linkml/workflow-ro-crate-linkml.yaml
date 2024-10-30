@@ -1,4 +1,4 @@
-id: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/linkml
+id: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate-linkml
 name: workflow_ro_crate
 prefixes:
   linkml: https://w3id.org/linkml/
@@ -10,6 +10,7 @@ prefixes:
   sh: http://www.w3.org/ns/shacl#
   ro-crate: https://github.com/crs4/rocrate-validator/profiles/ro-crate/
   workflow-ro-crate: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/
+  workflow-ro-crate-linkml: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate-linkml/
 imports:
   - linkml:types
 default_range: string
@@ -31,30 +32,30 @@ classes:
     class_uri: ro-crate:RootDataEntity
     mixins:
       - MainEntityPropertyMustExist
-      - ForceFailure
+      #- ForceFailure
 
   # validation classes
   MainEntityPropertyMustExist:
     mixin: true
-    title: Main Workflow entity existence
+    title: Main Workflow entity existence eyey
     description: >-
-      The Main Workflow must be specified through a `mainEntity` property in the root data entity
+      The Main Workflow must be specified through a `mainEntity` property in the root data entity ayay
     slots:
       - main_entity #pattern: "^\.\/$"
     #   - conforms_to
     slot_usage:
       - main_entity:
-          description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
+          description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity byby
           annotations:
-            sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
+            sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity cycy
     #       range: schema:SoftwareSourceCode # update this
     #   - conforms_to:
 
-  ForceFailure:
-    mixin: true
-    title: forces failure
-    slots:
-      - fail
+  # ForceFailure:
+  #   mixin: true
+  #   title: forces failure dydy
+  #   slots:
+  #     - fail
 
   # MainWorkflow:
   #   slots:

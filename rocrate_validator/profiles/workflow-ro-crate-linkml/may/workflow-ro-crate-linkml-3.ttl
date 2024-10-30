@@ -1,0 +1,35 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/> .
+@prefix schema1: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ro-crate:RootDataEntity a sh:NodeShape ;
+    sh:closed false ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Check if the Main Workflow is specified through a `mainEntity` property in the root data entity byby" ;
+            sh:maxCount 1 ;
+            sh:message "The Main Workflow must be specified through a `mainEntity` property in the root data entity cycy"^^xsd:string ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path schema1:mainEntity ] ;
+    sh:targetClass ro-crate:RootDataEntity .
+
+<https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate-linkml/:MainEntityPropertyMustExist> a sh:NodeShape ;
+    sh:closed false ;
+    sh:description "The Main Workflow must be specified through a `mainEntity` property in the root data entity ayay" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:name "Main Workflow entity existence eyey" ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Check if the Main Workflow is specified through a `mainEntity` property in the root data entity byby" ;
+            sh:maxCount 1 ;
+            sh:message "The Main Workflow must be specified through a `mainEntity` property in the root data entity cycy"^^xsd:string ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path schema1:mainEntity ] ;
+    sh:targetClass <https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate-linkml/:MainEntityPropertyMustExist> .
+
+
