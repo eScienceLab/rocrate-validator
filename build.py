@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 
-def convert_to_shacl(input_file, output_file):
+def convert_to_shacl(input_file: str, output_file: str):
     # Construct the command
     command = [
         "linkml", "generate", "shacl",
@@ -26,7 +26,7 @@ def convert_to_shacl(input_file, output_file):
         subprocess.run(command, stdout=outfile)
 
 
-def convert_folder_recursively(path, force=False):
+def convert_folder_recursively(path:str, force:bool=False):
     # recursively iterate through subfolders searching for yaml files
     for root, _, files, in os.walk(path):
         for file in files:
