@@ -51,8 +51,12 @@ pytest-xdist = "^3.6.1"
 max-line-length = 120
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core", "linkml"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "build.py"
 
 [tool.poetry.scripts]
 rocrate-validator = "rocrate_validator.cli:cli"
