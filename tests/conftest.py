@@ -37,10 +37,12 @@ TEST_DATA_PATH = os.path.abspath(os.path.join(CURRENT_PATH, "data"))
 # profiles paths
 PROFILES_PATH = os.path.abspath(f"{CURRENT_PATH}/../rocrate_validator/profiles")
 
+
 @hookimpl(tryfirst=True)
 def pytest_configure():
     # make sure all linkml files are converted so shacl
     subprocess.run(["python", "build.py"], check=True)
+
 
 @fixture
 def random_path():

@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 
+
 def convert_to_shacl(input_file: str, output_file: str):
     # Construct the command
     command = [
@@ -11,7 +12,7 @@ def convert_to_shacl(input_file: str, output_file: str):
         "--include-annotations", "--non-closed",
         input_file
     ]
-    
+
     result = subprocess.run(command, capture_output=True, check=True)
 
     comment = (
@@ -22,12 +23,11 @@ def convert_to_shacl(input_file: str, output_file: str):
 
     # Run the command and redirect output to the output file
     with open(output_file, "w") as outfile:
-       outfile.write(comment)
-       outfile.write(str(result.stdout.decode("utf-8")))
-    
+        outfile.write(comment)
+        outfile.write(str(result.stdout.decode("utf-8")))
 
 
-def convert_folder_recursively(path:str, force:bool=False):
+def convert_folder_recursively(path: str, force: bool = False):
     # recursively iterate through subfolders searching for yaml files
     for root, _, files, in os.walk(path):
         for file in files:
