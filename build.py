@@ -11,19 +11,20 @@ def convert_to_shacl(input_file: str, output_file: str):
         "--include-annotations", "--non-closed",
         input_file
     ]
-        
+    
+    result = subprocess.run(command, capture_output=True, check=True)
+
+    comment = (
+        f"# This SHACL file was generated using the LinkML\n"
+        f"# Source file: {input_file}\n"
+        f"# Command: {' '.join(command)}\n\n"
+    )
+
     # Run the command and redirect output to the output file
     with open(output_file, "w") as outfile:
-        comment = (
-            f"# This SHACL file was generated using the LinkML\n"
-            f"# Source file: {input_file}\n"
-            f"# Command: {' '.join(command)}\n\n"
-        )
-        outfile.write(comment)
+       outfile.write(comment)
+       outfile.write(str(result.stdout.decode("utf-8")))
     
-    with open(output_file, "a") as outfile:
-        # TODO error handling!
-        subprocess.run(command, stdout=outfile)
 
 
 def convert_folder_recursively(path:str, force:bool=False):
