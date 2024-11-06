@@ -3,28 +3,25 @@
 import os
 import subprocess
 import sys
+from linkml.generators.shaclgen import ShaclGenerator
+import linkml._version as linkml_version
 
 
 def convert_to_shacl(input_file: str, output_file: str):
-    # Construct the command
-    command = [
-        "linkml", "generate", "shacl",
-        "--include-annotations", "--non-closed",
-        input_file
-    ]
-
-    result = subprocess.run(command, capture_output=True, check=True)
+    # Generate shacl
+    shacl_shapes = ShaclGenerator(input_file).serialize()
 
     comment = (
-        f"# This SHACL file was generated using the LinkML\n"
+        f"# This SHACL file was auto-generated with LinkML {linkml_version.__version__}.\n"
+        f"#Changes will be overwritten on install.\n"
         f"# Source file: {input_file}\n"
-        f"# Command: {' '.join(command)}\n\n"
+        "\n"
     )
 
     # Run the command and redirect output to the output file
     with open(output_file, "w") as outfile:
         outfile.write(comment)
-        outfile.write(str(result.stdout.decode("utf-8")))
+        outfile.write(shacl_shapes)
 
 
 def convert_folder_recursively(path: str, force: bool = False):
