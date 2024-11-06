@@ -26,7 +26,7 @@ def convert_to_shacl(input_file, output_file):
         subprocess.run(command, stdout=outfile)
 
 
-def convert_folder_recursively(path):
+def convert_folder_recursively(path, force=False):
     # recursively iterate through subfolders searching for yaml files
     for root, _, files, in os.walk(path):
         for file in files:
@@ -37,9 +37,10 @@ def convert_folder_recursively(path):
 
             input_file = os.path.join(root, file)
             output_file = input_file.replace(".yaml", ".ttl")
-            print("Converting", input_file)
-            convert_to_shacl(input_file, output_file)
+            if force or not os.path.exists(output_file) or os.path.getmtime(input_file) > os.path.getmtime(output_file):
+                print("Converting", input_file)
+                convert_to_shacl(input_file, output_file)
 
 
 if __name__ == "__main__":
-    convert_folder_recursively("rocrate_validator/profiles")
+    convert_folder_recursively("rocrate_validator/profiles", force="--force" in sys.argv)
