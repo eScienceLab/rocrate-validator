@@ -15,23 +15,11 @@ imports:
 default_range: string
 
 classes:
-  ## --
-  ## New parent class
-  ## --
-  # Entity:
-  #   abstract: true     ## should not be instantiated directly
-  #   slots:
-  #    - id
-  #    - type
-  #   close_mappings:
-  #    - schema:Thing
-
-  # basic classes, no validation performed
+  # basic classes, no validation performed?
   WorkflowROCrateRootDataEntity:
     class_uri: ro-crate:RootDataEntity
     mixins:
       - MainEntityPropertyMustExist
-      - ForceFailure
 
   # validation classes
   MainEntityPropertyMustExist:
@@ -41,59 +29,17 @@ classes:
       The Main Workflow must be specified through a `mainEntity` property in the root data entity
     slots:
       - main_entity #pattern: "^\.\/$"
-    #   - conforms_to
     slot_usage:
       - main_entity:
           description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
           annotations:
             sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
-    #       range: schema:SoftwareSourceCode # update this
-    #   - conforms_to:
 
-  ForceFailure:
-    mixin: true
-    title: forces failure
-    slots:
-      - fail
-
-  # MainWorkflow:
-  #   slots:
-  #     - type_workflow
-  #     - programming_language
-
-  # Person:
-  #   is_a: NamedThing
-  #   description: >-
-  #     A person....
-  #   class_uri: schema:Person
-  #   slots:
-  #     - primary_email
-  #   slot_usage:
-  #     primary_email:
-  #       pattern: "^\\S+@[\\S+\\.]+\\S+"
-  #       recommended: true
-  #       annotations:
-  #         sh:severity: sh:Warning
-  #         sh:name: "Primary Email Validation"
-  #         sh:description: "This requirement checks the validity of the primary email address."
-  #         sh:message: "The primary email address is not valid."
-
+  Workflow:
+    class_uri: schema:CreativeWork
+  
 slots:
-  id:
-    identifier: true
-    required: true
-    range: uriorcurie
-  type:
-    designates_type: true
-    required: true
-    range: uriorcurie
-  name:
-    required: true
-    slot_uri: schema:name
-    range: string
   main_entity:
     required: true
     slot_uri: schema:mainEntity
-  fail:
-    required: true
-    slot_uri: schema:lyrics
+    range: Workflow
