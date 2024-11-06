@@ -40,7 +40,7 @@ PROFILES_PATH = os.path.abspath(f"{CURRENT_PATH}/../rocrate_validator/profiles")
 
 @hookimpl(tryfirst=True)
 def pytest_configure():
-    # make sure all linkml files are converted so shacl
+    # make sure all linkml files are converted to shacl
     subprocess.run(["python", "build.py"], check=True)
 
 
