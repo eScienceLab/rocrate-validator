@@ -1,5 +1,5 @@
 id: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/linkml
-name: workflow_ro_crate
+name: workflow_ro_crate_linkml
 prefixes:
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
@@ -15,31 +15,37 @@ imports:
 default_range: string
 
 classes:
-  # basic classes, no validation performed?
+  # # basic classes, no validation performed?
   WorkflowROCrateRootDataEntity:
+    title: WROC Root Data Entity Required Properties
+    description: Root Data Entity properties defined as MUST
     class_uri: ro-crate:RootDataEntity
-    mixins:
-      - MainEntityPropertyMustExist
-
-  # validation classes
-  MainEntityPropertyMustExist:
-    mixin: true
-    title: Main Workflow entity existence
-    description: >-
-      The Main Workflow must be specified through a `mainEntity` property in the root data entity
     slots:
-      - main_entity #pattern: "^\.\/$"
-    slot_usage:
-      - main_entity:
-          description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
-          annotations:
-            sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
+      - main_entity
+      - license
 
   Workflow:
     class_uri: schema:CreativeWork
-  
+  CreativeWork:
+    class_uri: schema:CreativeWork
+
+# individual property requirements
 slots:
   main_entity:
     required: true
     slot_uri: schema:mainEntity
     range: Workflow
+    title: Main Workflow entity existence
+    description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
+    annotations:
+      sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
+  license:
+    required: true
+    slot_uri: schema:license
+    title: Crate license
+    description: The Crate must specify a license
+    annotations:
+      sh:message: The Crate (Root Data Entity) must specify a license, which should be a URL but can also be a string
+    any_of:
+      - range: CreativeWork # TODO: make this map to just sh:IRI, via objectidentifier or similar?
+      - range: string

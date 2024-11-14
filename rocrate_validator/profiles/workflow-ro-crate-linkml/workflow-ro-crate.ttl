@@ -6,35 +6,33 @@
 
 ro-crate:RootDataEntity a sh:NodeShape ;
     sh:closed false ;
+    sh:description "Root Data Entity properties defined as MUST" ;
     sh:ignoredProperties ( rdf:type ) ;
-    sh:property [ sh:class schema1:CreativeWork ;
+    sh:name "WROC Root Data Entity Required Properties" ;
+    sh:property [ sh:description "The Crate must specify a license" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:name "Crate license" ;
+            sh:or ( [ sh:datatype xsd:anyURI ;
+                        sh:nodeKind sh:Literal ] [ sh:datatype xsd:string ;
+                        sh:nodeKind sh:Literal ] ) ;
+            sh:order 1 ;
+            sh:path schema1:license ],
+        [ sh:class schema1:CreativeWork ;
             sh:description "Check if the Main Workflow is specified through a `mainEntity` property in the root data entity" ;
             sh:maxCount 1 ;
             sh:message "The Main Workflow must be specified through a `mainEntity` property in the root data entity"^^xsd:string ;
             sh:minCount 1 ;
+            sh:name "Main Workflow entity existence" ;
             sh:nodeKind sh:BlankNodeOrIRI ;
             sh:order 0 ;
             sh:path schema1:mainEntity ] ;
     sh:targetClass ro-crate:RootDataEntity .
 
-<https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/linkml/:MainEntityPropertyMustExist> a sh:NodeShape ;
-    sh:closed false ;
-    sh:description "The Main Workflow must be specified through a `mainEntity` property in the root data entity" ;
-    sh:ignoredProperties ( rdf:type ) ;
-    sh:name "Main Workflow entity existence" ;
-    sh:property [ sh:class schema1:CreativeWork ;
-            sh:description "Check if the Main Workflow is specified through a `mainEntity` property in the root data entity" ;
-            sh:maxCount 1 ;
-            sh:message "The Main Workflow must be specified through a `mainEntity` property in the root data entity"^^xsd:string ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:BlankNodeOrIRI ;
-            sh:order 0 ;
-            sh:path schema1:mainEntity ] ;
-    sh:targetClass <https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/linkml/:MainEntityPropertyMustExist> .
-
 schema1:CreativeWork a sh:NodeShape ;
     sh:closed false ;
-    sh:ignoredProperties ( rdf:type ) ;
+    sh:ignoredProperties ( rdf:type ),
+        ( rdf:type ) ;
     sh:targetClass schema1:CreativeWork .
 
 
