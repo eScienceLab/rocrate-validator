@@ -19,7 +19,7 @@
 
 
 
-<https://w3id.org/workflowhub/workflow-ro-crate/1.0>
+<https://w3id.org/workflowhub/workflow-ro-crate/1.0-linkml>
     a prof:Profile ;
 
     # the Profile's label

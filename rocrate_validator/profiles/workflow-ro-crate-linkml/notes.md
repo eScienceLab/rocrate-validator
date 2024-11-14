@@ -3,9 +3,10 @@
 ## Setup
 1. Create a folder for the profile under `rocrate_validator/profiles`
 1. Copy across `profile.ttl` from another profile & update that metadata for the new profile.
-    In particular, change the token for the profile to a new and unique name, e.g.
+    1. In particular, change the token for the profile to a new and unique name, e.g.
     `prof:hasToken "workflow-ro-crate-linkml"`. This is the name which can be used to 
     select the profile using `--profile-identifier` argument
+    1. The ID of the profile must also be unique (the first line after the `@prefix` statements), to prevent conflation between this profile and any other profile in the package.
 1. Create a `profile-name.yaml` file - this is where you will write the LinkML.
 1. Create a test folder for the profile under `tests/integration/profiles`
 1. Copy the style of other profiles' tests to build up a test suite for the profile.
