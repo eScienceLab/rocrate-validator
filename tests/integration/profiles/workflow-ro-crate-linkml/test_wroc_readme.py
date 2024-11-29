@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import pytest
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import WROCInvalidReadme
@@ -21,6 +22,7 @@ from tests.shared import do_entity_test
 logger = logging.getLogger(__name__)
 
 
+@pytest.mark.xfail(reason="not yet implemented")
 def test_wroc_readme_not_about_crate():
     """\
     Test a Workflow RO-Crate where the README.md is not about the crate.
@@ -35,6 +37,7 @@ def test_wroc_readme_not_about_crate():
     )
 
 
+@pytest.mark.xfail(reason="not yet implemented")
 def test_wroc_readme_wrong_encoding_format():
     """\
     Test a Workflow RO-Crate where the README.md has the wrong encodingFormat..

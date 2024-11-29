@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import pytest
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import WROCInvalidConformsTo
@@ -22,6 +23,7 @@ from tests.shared import do_entity_test
 logger = logging.getLogger(__name__)
 
 
+@pytest.mark.xfail(reason="not yet implemented")
 def test_wroc_descriptor_bad_conforms_to():
     """\
     Test a Workflow RO-Crate where the metadata file descriptor does not

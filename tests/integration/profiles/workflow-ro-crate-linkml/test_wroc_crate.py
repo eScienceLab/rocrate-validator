@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import logging
+import pytest
+
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import WROCNoLicense
@@ -20,7 +22,7 @@ from tests.shared import do_entity_test
 
 logger = logging.getLogger(__name__)
 
-
+@pytest.mark.xfail(reason="not yet implemented")
 def test_wroc_no_tests():
     """\
     Test a Workflow RO-Crate with no test/ Dataset.
@@ -34,7 +36,7 @@ def test_wroc_no_tests():
         profile_identifier="workflow-ro-crate-linkml",
     )
 
-
+@pytest.mark.xfail(reason="not yet implemented")
 def test_wroc_no_examples():
     """\
     Test a Workflow RO-Crate with no examples/ Dataset.

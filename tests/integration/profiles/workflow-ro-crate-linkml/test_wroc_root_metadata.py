@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import re
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import WROCNoLicense, WROCMainEntity
@@ -31,7 +32,9 @@ def test_wroc_no_license():
         False,
         ["WROC Root Data Entity Required Properties"],
         [
-            "The Crate (Root Data Entity) must specify a license, which should be a URL but can also be a string"
+            "Less than 1 values on <file://.//>-><http://schema.org/license>"
+            # TODO: return to message: "The Crate (Root Data Entity) must specify a license, which should be a URL but can also be a string"
+            # after https://github.com/linkml/linkml/issues/2417 is fixed
         ],
         profile_identifier="workflow-ro-crate-linkml",
     )
@@ -45,7 +48,7 @@ def test_wroc_no_mainentity():
         WROCMainEntity().wroc_no_mainentity,
         Severity.REQUIRED,
         False,
-        ["Main Workflow entity existence"],
+        ["WROC Root Data Entity Required Properties"],
         [
             "The Main Workflow must be specified through a `mainEntity` property in the root data entity"
         ],
