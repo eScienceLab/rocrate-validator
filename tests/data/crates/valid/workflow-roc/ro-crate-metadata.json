@@ -4,6 +4,8 @@
         {
             "@id": "./",
             "@type": "Dataset",
+            "name": "sort-and-change-case Workflow RO-Crate",
+            "description": "sort-and-change-case Workflow RO-Crate",
             "datePublished": "2024-04-17T13:39:44+00:00",
             "hasPart": [
                 {

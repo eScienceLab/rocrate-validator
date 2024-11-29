@@ -84,8 +84,14 @@ class PyRequirement(Requirement):
                 severity = None
                 try:
                     severity = member.severity
+                    logger.debug("Severity set for check '%r' from decorator: %r", check_name, severity)
                 except Exception:
+                    pass
+                if not severity:
+                    logger.debug(f"No explicit severity set for check '{check_name}' from decorator."
+                                 f"Getting severity from path: {self.severity_from_path}")
                     severity = self.severity_from_path or Severity.REQUIRED
+                logger.debug("Severity log: %r", severity)
                 check = self.requirement_check_class(self,
                                                      check_name,
                                                      member,
@@ -101,7 +107,7 @@ class PyRequirement(Requirement):
         return getattr(self.requirement_check_class, "hidden", False)
 
 
-def requirement(name: str, description: Optional[str] = None):
+def requirement(name: str, description: Optional[str] = None, hidden: bool = False):
     """
     A decorator to mark functions as "requirements" (by setting an attribute
     `requirement=True`) and annotating them with a human-legible name.
@@ -111,6 +117,7 @@ def requirement(name: str, description: Optional[str] = None):
             cls.__rq_name__ = name
         if description:
             cls.__rq_description__ = description
+        cls.hidden = hidden
         return cls
 
     return decorator

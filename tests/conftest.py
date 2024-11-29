@@ -53,8 +53,18 @@ def fake_profiles_path():
 
 
 @fixture
+def check_overriding_profiles_path():
+    return f"{TEST_DATA_PATH}/profiles/check_overriding"
+
+
+@fixture
 def profiles_requirement_loading():
     return f"{TEST_DATA_PATH}/profiles/requirement_loading"
+
+
+@fixture
+def profiles_loading_hidden_requirements():
+    return f"{TEST_DATA_PATH}/profiles/hidden_requirements"
 
 
 @fixture
@@ -105,3 +115,39 @@ def ro_crate_profile_should_path(ro_crate_profile_path):
 @fixture
 def ro_crate_profile_may_path(ro_crate_profile_path):
     return os.path.join(ro_crate_profile_path, "may")
+
+
+@fixture(params=[
+    "2024 01 01",
+    "2024 Jan 01",
+    "2021-13-01",
+    "2021-00-10",
+    "2021-01-32",
+    "2021-01-01T25:00",
+    "2021-01-01T23:60",
+    "2021-01-01T23:59:60",
+    "T23:59:59",
+])
+def invalid_datetime(request):
+    return request.param
+
+
+@fixture(params=[
+    "2024",
+    "2024-01",
+    "202401",
+    "2024-01-01",
+    "20240101",
+    "2024-001",
+    "2024-W01",
+    "2024-W01-1",
+    "2024-01-01T00:00",
+    "2024-01-01T00:00:00",
+    "2024-01-01T00:00:00Z",
+    "2024-01-01T00:00:00+00:00",
+    "2024-01-01T00:00:00.000",
+    "2024-01-01T00:00:00.000Z",
+    "2024-01-01T00:00:00.000+00:00",
+])
+def valid_datetime(request):
+    return request.param

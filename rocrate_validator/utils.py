@@ -142,6 +142,29 @@ def get_version() -> str:
     return f"{version}-dirty" if dirty else version
 
 
+def get_min_python_version() -> tuple[int, int, Optional[int]]:
+    """
+    Get the minimum Python version required by the package
+
+    :return: The minimum Python version
+    """
+    min_version_str = config["tool"]["poetry"]["dependencies"]["python"]
+    assert min_version_str, "The minimum Python version is required"
+    # remove any non-digit characters
+    min_version_str = re.sub(r'[^\d.]+', '', min_version_str)
+    # convert the version string to a tuple
+    min_version = tuple(map(int, min_version_str.split(".")))
+    logger.debug(f"Minimum Python version: {min_version}")
+    return min_version
+
+
+def check_python_version() -> bool:
+    """
+    Check if the current Python version meets the minimum requirements
+    """
+    return sys.version_info >= get_min_python_version()
+
+
 def get_config(property: Optional[str] = None) -> dict:
     """
     Get the configuration for the package or a specific property
@@ -352,7 +375,7 @@ class URI:
         except Exception as e:
             if logger.isEnabledFor(logging.DEBUG):
                 logger.debug(e)
-            raise ValueError("Invalid URI: %s", uri)
+            raise ValueError("Invalid URI: %s" % uri)
 
     @property
     def uri(self) -> str:
@@ -433,6 +456,41 @@ class URI:
 
     def __hash__(self):
         return hash(self._uri)
+
+
+def validate_rocrate_uri(uri: Union[str, URI], silent: bool = False) -> bool:
+    """
+    Validate the RO-Crate URI
+
+    :param uri: The RO-Crate URI
+    :param silent: If True, do not raise an exception
+    :return: True if the URI is valid, False otherwise
+    """
+    try:
+        assert uri, "The RO-Crate URI is required"
+        assert isinstance(uri, (str, URI)), "The RO-Crate URI must be a string or URI object"
+        try:
+            # parse the value to extract the scheme
+            uri = URI(uri) if isinstance(uri, str) else uri
+            # check if the URI is a remote resource or local directory or local file
+            if not uri.is_remote_resource() and not uri.is_local_directory() and not uri.is_local_file():
+                raise errors.ROCrateInvalidURIError(uri)
+            # check if the local file is a ZIP file
+            if uri.is_local_file() and uri.as_path().suffix != ".zip":
+                raise errors.ROCrateInvalidURIError(uri)
+            # check if the resource is available
+            if not uri.is_available():
+                raise errors.ROCrateInvalidURIError(uri, message=f"The RO-crate at the URI \"{uri}\" is not available")
+            return True
+        except ValueError as e:
+            logger.error(e)
+            if logger.isEnabledFor(logging.DEBUG):
+                logger.exception(e)
+            raise errors.ROCrateInvalidURIError(uri)
+    except Exception as e:
+        if not silent:
+            raise e
+        return False
 
 
 class MapIndex:

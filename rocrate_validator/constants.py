@@ -82,3 +82,9 @@ VALID_REQUIREMENT_LEVELS_TYPES = typing.Literal[
     'MAY', 'OPTIONAL', 'SHOULD', 'SHOULD_NOT',
     'REQUIRED', 'MUST', 'MUST_NOT', 'SHALL', 'SHALL_NOT', 'RECOMMENDED'
 ]
+
+# Current JSON output format
+JSON_OUTPUT_FORMAT_VERSION = "0.1"
+
+# Default value for the HTTP cache timeout
+DEFAULT_HTTP_CACHE_TIMEOUT = 60

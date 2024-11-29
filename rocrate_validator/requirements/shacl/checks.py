@@ -43,16 +43,23 @@ class SHACLCheck(RequirementCheck):
 
     def __init__(self,
                  requirement: Requirement,
-                 shape: Shape) -> None:
+                 shape: Shape,
+                 name: Optional[str] = None,
+                 root: bool = False,
+                 hidden: Optional[bool] = None,
+                 level: Optional[bool] = None) -> None:
         self._shape = shape
+        self._root = root
         # init the check
         super().__init__(requirement,
-                         shape.name if shape and shape.name
+                         name or shape.name if shape and shape.name
                          else shape.parent.name if shape.parent
                          else None,
-                         shape.description if shape and shape.description
+                         description=shape.description if shape and shape.description
                          else shape.parent.description if shape.parent
-                         else None)
+                         else None,
+                         level=level,
+                         hidden=hidden)
         # store the instance
         SHACLCheck.__add_instance__(shape, self)
 
@@ -66,11 +73,15 @@ class SHACLCheck(RequirementCheck):
                                    "shape level %s does not match the level from the containing folder %s. "
                                    "Consider moving the shape property or removing the severity property.",
                                    self.name, shape.level, requirement_level_from_path)
-        self._level = None
+        self._level = level
 
     @property
     def shape(self) -> Shape:
         return self._shape
+
+    @property
+    def root(self) -> bool:
+        return self._root
 
     @property
     def description(self) -> str:
@@ -163,7 +174,8 @@ class SHACLCheck(RequirementCheck):
         start_time = timer()
         shacl_validator = SHACLValidator(shapes_graph=shapes_graph, ont_graph=ontology_graph)
         shacl_result = shacl_validator.validate(
-            data_graph=data_graph, ontology_graph=ontology_graph, **shacl_context.settings)
+            data_graph=data_graph, ontology_graph=ontology_graph, **shacl_context.settings.to_dict())
+        # shacl_result.results_graph.serialize("logs/validation_results.ttl", format="turtle")
         # parse the validation result
         end_time = timer()
         logger.debug("Validation '%s' conforms: %s", self.name, shacl_result.conforms)
@@ -192,22 +204,30 @@ class SHACLCheck(RequirementCheck):
         # to ensure a consistent order of the issues
         # and to make the fail fast mode deterministic
         for requirementCheck in sorted(failed_requirements_checks, key=lambda x: (x.identifier, x.severity)):
-            # add only the issues for the current profile when the `target_profile_only` mode is disabled
-            # (issues related to other profiles will be added by the corresponding profile validation)
-            if requirementCheck.requirement.profile == shacl_context.current_validation_profile or \
-                    shacl_context.settings.get("target_only_validation", False):
-                for violation in failed_requirements_checks_violations[requirementCheck.identifier]:
+            # if the check is not in the current profile
+            # and the disable_inherited_profiles_reporting is enabled, skip it
+            if requirementCheck.requirement.profile != shacl_context.current_validation_profile and \
+                    shacl_context.settings.disable_inherited_profiles_reporting:
+                continue
+            for violation in failed_requirements_checks_violations[requirementCheck.identifier]:
+                violation_message = violation.get_result_message(shacl_context.rocrate_uri)
+                registered_check_issues = shacl_context.result.get_issues_by_check(requirementCheck)
+                skip_requirement_check = False
+                for check_issue in registered_check_issues:
+                    if check_issue.message == violation_message:
+                        skip_requirement_check = True
+                        break
+                if not skip_requirement_check:
                     c = shacl_context.result.add_check_issue(
-                        message=violation.get_result_message(shacl_context.rocrate_path),
+                        message=violation.get_result_message(shacl_context.rocrate_uri),
                         check=requirementCheck,
-                        severity=violation.get_result_severity(),
                         resultPath=violation.resultPath.toPython() if violation.resultPath else None,
                         focusNode=make_uris_relative(
                             violation.focusNode.toPython(), shacl_context.publicID),
                         value=violation.value)
-                    # if the fail fast mode is enabled, stop the validation after the first issue
-                    if shacl_context.fail_fast:
-                        break
+                # if the fail fast mode is enabled, stop the validation after the first issue
+                if shacl_context.fail_fast:
+                    break
 
             # If the fail fast mode is disabled, notify all the validation issues
             # related to profiles other than the current one.
@@ -218,7 +238,7 @@ class SHACLCheck(RequirementCheck):
                 #
                 if requirementCheck.requirement.profile != shacl_context.current_validation_profile:
                     failed_requirement_checks_notified.append(requirementCheck.identifier)
-                    shacl_context.result.add_executed_check(requirementCheck, False)
+                    shacl_context.result._add_executed_check(requirementCheck, False)
                     shacl_context.validator.notify(RequirementCheckValidationEvent(
                         EventType.REQUIREMENT_CHECK_VALIDATION_END, requirementCheck, validation_result=False))
                     logger.debug("Added validation issue to the context: %s", c)
@@ -238,7 +258,7 @@ class SHACLCheck(RequirementCheck):
                     requirementCheck not in failed_requirements_checks and \
                     requirementCheck.identifier not in failed_requirement_checks_notified:
                 failed_requirement_checks_notified.append(requirementCheck.identifier)
-                shacl_context.result.add_executed_check(requirementCheck, True)
+                shacl_context.result._add_executed_check(requirementCheck, True)
                 shacl_context.validator.notify(RequirementCheckValidationEvent(
                     EventType.REQUIREMENT_CHECK_VALIDATION_END, requirementCheck, validation_result=True))
                 logger.debug("Added skipped check to the context: %s", requirementCheck.identifier)
@@ -250,20 +270,6 @@ class SHACLCheck(RequirementCheck):
         logger.debug(f"Execution time for parsing the validation result: {end_time - start_time} seconds")
 
         return failed_requirements_checks
-
-    def __str__(self) -> str:
-        return super().__str__() + (f" - {self._shape}" if self._shape else "")
-
-    def __repr__(self) -> str:
-        return super().__repr__() + (f" - {self._shape}" if self._shape else "")
-
-    def __eq__(self, __value: object) -> bool:
-        if not isinstance(__value, type(self)):
-            return NotImplemented
-        return super().__eq__(__value) and self._shape == getattr(__value, '_shape', None)
-
-    def __hash__(self) -> int:
-        return super().__hash__() + (hash(self._shape) if self._shape else 0)
 
     @classmethod
     def get_instance(cls, shape: Shape) -> Optional["SHACLCheck"]:

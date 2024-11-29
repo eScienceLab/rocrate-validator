@@ -16,8 +16,6 @@ from __future__ import annotations
 
 import os
 import sys
-import termios
-import tty
 from pathlib import Path
 from typing import Optional
 
@@ -39,10 +37,12 @@ from rocrate_validator.cli.commands.errors import handle_error
 from rocrate_validator.cli.main import cli, click
 from rocrate_validator.cli.utils import Console, get_app_header_rule
 from rocrate_validator.colors import get_severity_color
+from rocrate_validator.errors import ROCrateInvalidURIError
 from rocrate_validator.events import Event, EventType, Subscriber
 from rocrate_validator.models import (LevelCollection, Profile, Severity,
                                       ValidationResult)
-from rocrate_validator.utils import URI, get_profiles_path
+from rocrate_validator.utils import (URI, get_profiles_path,
+                                     validate_rocrate_uri)
 
 # from rich.markdown import Markdown
 # from rich.table import Table
@@ -60,29 +60,48 @@ def validate_uri(ctx, param, value):
     """
     if value:
         try:
-            # parse the value to extract the scheme
-            uri = URI(value)
-            if not uri.is_remote_resource() and not uri.is_local_directory() and not uri.is_local_file():
-                raise click.BadParameter(f"Invalid RO-Crate URI \"{value}\": "
-                                         "it MUST be a local directory or a ZIP file (local or remote).", param=param)
-            if not uri.is_available():
-                raise click.BadParameter("RO-crate URI not available", param=param)
-        except ValueError as e:
-            logger.debug(e)
-            raise click.BadParameter("Invalid RO-crate path or URI", param=param)
-
+            validate_rocrate_uri(value)
+        except ROCrateInvalidURIError as e:
+            if logger.isEnabledFor(logging.DEBUG):
+                logger.exception(e)
+            raise click.BadParameter(e.message, param=param)
     return value
 
 
-def get_single_char(console: Optional[Console] = None, end: str = "\n",
-                    message: Optional[str] = None,
-                    choices: Optional[list[str]] = None) -> str:
+def __get_single_char_win32__(console: Optional[Console] = None, end: str = "\n",
+                              message: Optional[str] = None,
+                              choices: Optional[list[str]] = None) -> str:
     """
     Get a single character from the console
     """
+    import msvcrt
+
+    char = None
+    while char is None or (choices and char not in choices):
+        if console and message:
+            console.print(f"\n{message}", end="")
+        try:
+            char = msvcrt.getch().decode()
+        finally:
+            if console:
+                console.print(char, end=end if choices and char in choices else "")
+        if choices and char not in choices:
+            if console:
+                console.print(" [bold red]INVALID CHOICE[/bold red]", end=end)
+    return char
+
+
+def __get_single_char_unix__(console: Optional[Console] = None, end: str = "\n",
+                             message: Optional[str] = None,
+                             choices: Optional[list[str]] = None) -> str:
+    """
+    Get a single character from the console
+    """
+    import termios
+    import tty
+
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
-
     char = None
     while char is None or (choices and char not in choices):
         if console and message:
@@ -90,6 +109,8 @@ def get_single_char(console: Optional[Console] = None, end: str = "\n",
         try:
             tty.setraw(sys.stdin.fileno())
             char = sys.stdin.read(1)
+            if char == "\x03":
+                raise KeyboardInterrupt
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             if console:
@@ -98,6 +119,17 @@ def get_single_char(console: Optional[Console] = None, end: str = "\n",
             if console:
                 console.print(" [bold red]INVALID CHOICE[/bold red]", end=end)
     return char
+
+
+def get_single_char(console: Optional[Console] = None, end: str = "\n",
+                    message: Optional[str] = None,
+                    choices: Optional[list[str]] = None) -> str:
+    """
+    Get a single character from the console
+    """
+    if sys.platform == "win32":
+        return __get_single_char_win32__(console, end, message, choices)
+    return __get_single_char_unix__(console, end, message, choices)
 
 
 @cli.command("validate")
@@ -171,7 +203,8 @@ def get_single_char(console: Optional[Console] = None, end: str = "\n",
     is_flag=True,
     help="Disable pagination of the validation details",
     default=False,
-    show_default=True
+    show_default=True,
+    hidden=True if sys.platform == "win32" else False
 )
 @click.option(
     '-f',
@@ -207,7 +240,6 @@ def validate(ctx,
              requirement_severity_only: bool = False,
              rocrate_uri: Path = ".",
              no_fail_fast: bool = False,
-             ontologies_path: Optional[Path] = None,
              no_paging: bool = False,
              verbose: bool = False,
              output_format: str = "text",
@@ -222,7 +254,7 @@ def validate(ctx,
     # Get the no_paging flag
     enable_pager = not no_paging
     # override the enable_pager flag if the interactive flag is False
-    if not interactive:
+    if not interactive or sys.platform == "win32":
         enable_pager = False
     # Log the input parameters for debugging
     logger.debug("profiles_path: %s", os.path.abspath(profiles_path))
@@ -235,8 +267,6 @@ def validate(ctx,
     logger.debug("no_fail_fast: %s", no_fail_fast)
     logger.debug("fail fast: %s", not no_fail_fast)
 
-    if ontologies_path:
-        logger.debug("ontologies_path: %s", os.path.abspath(ontologies_path))
     if rocrate_uri:
         logger.debug("rocrate_path: %s", os.path.abspath(rocrate_uri))
 
@@ -247,10 +277,9 @@ def validate(ctx,
             "profile_identifier": profile_identifier,
             "requirement_severity": requirement_severity,
             "requirement_severity_only": requirement_severity_only,
-            "inherit_profiles": not disable_profile_inheritance,
+            "enable_profile_inheritance": not disable_profile_inheritance,
             "verbose": verbose,
-            "data_path": rocrate_uri,
-            "ontology_path": Path(ontologies_path).absolute() if ontologies_path else None,
+            "rocrate_uri": rocrate_uri,
             "abort_on_first": not no_fail_fast
         }
 
@@ -351,7 +380,7 @@ def validate(ctx,
             if output_format == "text" and not output_file:
                 if not result.passed():
                     verbose_choice = "n"
-                    if interactive and not verbose and enable_pager:
+                    if interactive and not verbose:
                         verbose_choice = get_single_char(console, choices=['y', 'n'],
                                                          message=(
                             "[bold] > Do you want to see the validation details? "
@@ -534,10 +563,10 @@ class ValidationReportLayout(Layout):
         severity_color = get_severity_color(Severity.get(settings["requirement_severity"]))
         base_info_layout = Layout(
             Align(
-                f"\n[bold cyan]RO-Crate:[/bold cyan] [bold]{URI(settings['data_path']).uri}[/bold]"
+                f"\n[bold cyan]RO-Crate:[/bold cyan] [bold]{URI(settings['rocrate_uri']).uri}[/bold]"
                 "\n[bold cyan]Target Profile:[/bold cyan][bold magenta] "
                 f"{settings['profile_identifier']}[/bold magenta] "
-                f"{ '[italic](autodetected)[/italic]' if settings['profile_autodetected'] else ''}"
+                f"{'[italic](autodetected)[/italic]' if settings['profile_autodetected'] else ''}"
                 f"\n[bold cyan]Validation Severity:[/bold cyan] "
                 f"[bold {severity_color}]{settings['requirement_severity']}[/bold {severity_color}]",
                 style="white", align="left"),
@@ -723,14 +752,14 @@ class ValidationReportLayout(Layout):
                     for issue in sorted(result.get_issues_by_check(check),
                                         key=lambda x: (-x.severity.value, x)):
                         path = ""
-                        if issue.resultPath and issue.value:
-                            path = f" of [yellow]{issue.resultPath}[/yellow]"
-                        if issue.value:
-                            if issue.resultPath:
+                        if issue.violatingProperty and issue.violatingPropertyValue:
+                            path = f" of [yellow]{issue.violatingProperty}[/yellow]"
+                        if issue.violatingPropertyValue:
+                            if issue.violatingProperty:
                                 path += "="
-                            path += f"\"[green]{issue.value}[/green]\" "  # keep the ending space
-                        if issue.focusNode:
-                            path = f"{path} on [cyan]<{issue.focusNode}>[/cyan]"
+                            path += f"\"[green]{issue.violatingPropertyValue}[/green]\" "  # keep the ending space
+                        if issue.violatingEntity:
+                            path = f"{path} on [cyan]<{issue.violatingEntity}>[/cyan]"
                         console.print(
                             Padding(f"- [[red]Violation[/red]{path}]: "
                                     f"{Markdown(issue.message).markup}", (0, 9)), style="white")
@@ -744,14 +773,14 @@ def __compute_profile_stats__(validation_settings: dict):
     # extract the validation settings
     severity_validation = Severity.get(validation_settings.get("requirement_severity"))
     profiles = services.get_profiles(validation_settings.get("profiles_path"), severity=severity_validation)
-    profile = services.get_profile(validation_settings.get("profiles_path"),
-                                   validation_settings.get("profile_identifier"),
+    profile = services.get_profile(validation_settings.get("profile_identifier"),
+                                   validation_settings.get("profiles_path"),
                                    severity=severity_validation)
     # initialize the profiles list
     profiles = [profile]
 
     # add inherited profiles if enabled
-    if validation_settings.get("inherit_profiles"):
+    if validation_settings.get("enable_profile_inheritance"):
         profiles.extend(profile.inherited_profiles)
     logger.debug("Inherited profiles: %r", profile.inherited_profiles)
 
