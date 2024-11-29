@@ -1,10 +1,48 @@
+@prefix bioschemas: <https://bioschemas.org/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/> .
 @prefix schema1: <http://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ro-crate:RootDataEntity a sh:NodeShape ;
+schema1:ComputerLanguageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass schema1:ComputerLanguage .
+
+schema1:CreativeWorkShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass schema1:CreativeWork .
+
+schema1:MediaObjectShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass schema1:MediaObject .
+
+schema1:SoftwareSourceCodeShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass schema1:SoftwareSourceCode .
+
+bioschemas:ComputationalWorkflowShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:description "Main Workflow properties defined as MUST" ;
+    sh:ignoredProperties ( rdf:type ),
+        ( rdf:type ) ;
+    sh:name "Main Workflow definition" ;
+    sh:property [ sh:class schema1:ComputerLanguage ;
+            sh:description "The Main Workflow must refer to its language via programmingLanguage" ;
+            sh:maxCount 1 ;
+            sh:message "The Main Workflow must refer to its language via programmingLanguage"^^xsd:string ;
+            sh:minCount 1 ;
+            sh:name "Main Workflow language" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 0 ;
+            sh:path schema1:programmingLanguage ] ;
+    sh:targetClass bioschemas:ComputationalWorkflow .
+
+ro-crate:RootDataEntityShape a sh:NodeShape ;
     sh:closed false ;
     sh:description "Root Data Entity properties defined as MUST" ;
     sh:ignoredProperties ( rdf:type ) ;
@@ -23,15 +61,10 @@ ro-crate:RootDataEntity a sh:NodeShape ;
             sh:minCount 1 ;
             sh:name "Crate license" ;
             sh:or ( [ sh:class schema1:CreativeWork ] [ sh:datatype xsd:string ;
+                        sh:nodeKind sh:Literal ] [ sh:datatype <http://www.w3.org/ns/shex#iri> ;
                         sh:nodeKind sh:Literal ] ) ;
             sh:order 1 ;
             sh:path schema1:license ] ;
     sh:targetClass ro-crate:RootDataEntity .
-
-schema1:CreativeWork a sh:NodeShape ;
-    sh:closed false ;
-    sh:ignoredProperties ( rdf:type ),
-        ( rdf:type ) ;
-    sh:targetClass schema1:CreativeWork .
 
 

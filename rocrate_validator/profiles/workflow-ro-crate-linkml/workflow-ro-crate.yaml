@@ -15,7 +15,7 @@ imports:
 default_range: string
 
 classes:
-  # # basic classes, no validation performed?
+  # validation classes
   WorkflowROCrateRootDataEntity:
     title: WROC Root Data Entity Required Properties
     description: Root Data Entity properties defined as MUST
@@ -24,21 +24,41 @@ classes:
       - main_entity
       - license
 
-  Workflow:
-    class_uri: schema:CreativeWork
+  MainWorkflow:
+    class_uri: bioschemas:ComputationalWorkflow
+    title: Main Workflow definition
+    description: Main Workflow properties defined as MUST
+    # mixins: # this does not work as a way to check if the workflow has multiple classes
+    #   - File
+    #   - SoftwareSourceCode
+    #   - ComputationalWorkflow
+    slots:
+      - programming_language
+      # - main_workflow_types
+
+  # classes representing schema.org types
+  File:
+    class_uri: schema:MediaObject
+  SoftwareSourceCode:
+    class_uri: schema:SoftwareSourceCode
+  ComputationalWorkflow:
+    class_uri: bioschemas:ComputationalWorkflow
+  ComputerLanguage:
+    class_uri: schema:ComputerLanguage
   CreativeWork:
     class_uri: schema:CreativeWork
+
 
 # individual property requirements
 slots:
   main_entity:
     required: true
     slot_uri: schema:mainEntity
-    range: Workflow
+    range: CreativeWork
     title: Main Workflow entity existence
     description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
     annotations:
-      sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
+     sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
   license:
     required: true
     slot_uri: schema:license
@@ -49,3 +69,25 @@ slots:
     any_of:
       - range: CreativeWork # TODO: make this map to just sh:IRI, via objectidentifier or similar?
       - range: string
+      - range: objectidentifier
+  programming_language:
+    required: true
+    slot_uri: schema:programmingLanguage
+    range: ComputerLanguage
+    title: Main Workflow language
+    description: The Main Workflow must refer to its language via programmingLanguage
+    annotations:
+     sh:message: The Main Workflow must refer to its language via programmingLanguage
+  main_workflow_types:
+    # slot doesn't work - awaiting help in Slack
+    # (1) unclear how to test for multiple types
+    # (2) min_cardinality doesn't work https://github.com/linkml/linkml/issues/2429
+    required: true
+    slot_uri: rdf:type
+    range: uriorcurie
+    title: Main Workflow type
+    description: The Main Workflow must have types File, SoftwareSourceCode, ComputationalWorkflow
+    multivalued: true
+    minimum_cardinality: 3
+    annotations:
+     sh:message: The Main Workflow must have types File, SoftwareSourceCode, ComputationalWorkflow
