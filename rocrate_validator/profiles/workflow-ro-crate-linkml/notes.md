@@ -22,6 +22,8 @@ linkml generate shacl --include-annotations --non-closed workflow-ro-crate.yaml 
 `--include-annotations` passes through anything included under `annotations` property in LinkML.
 `--non-closed` tells LinkML to generate open SHACL shapes (i.e. entities will be permitted to have properties that aren't explicitly listed)
 
+Note that as of November 2024, the LinkML SHACL converter has a number of significant bugs that block some checks from being possible. See the bugs on the LinkML GitHub: https://github.com/linkml/linkml/issues?q=is%3Aissue+is%3Aopen+label%3Agenerator-shacl
+
 ## Running the validator
 
 Use `--profile-identifier` to select the desired profile.
