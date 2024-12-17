@@ -8,6 +8,7 @@ prefixes:
   roterms: http://purl.org/ro/roterms#
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
   sh: http://www.w3.org/ns/shacl#
+  ro: ./
   ro-crate: https://github.com/crs4/rocrate-validator/profiles/ro-crate/
   workflow-ro-crate: https://github.com/crs4/rocrate-validator/profiles/workflow-ro-crate/
 imports:
@@ -16,6 +17,25 @@ default_range: string
 
 classes:
   # validation classes
+  WorkflowROCrateMetadataDescriptor:
+    title: WROC Metadata File Descriptor properties
+    description: Properties of the WROC Metadata File Descriptor
+    class_uri: ro:ro-crate-metadata.json
+    slots:
+      - conforms_to
+    slot_usage:
+      conforms_to:
+        title: Metadata File Descriptor conformsTo
+        description: "The Metadata File Descriptor conformsTo SHOULD contain https://w3id.org/ro/crate/1.1 and <https://w3id.org/workflowhub/workflow-ro-crate/1.0>"
+        minimum_cardinality: 2
+        has_member:
+          equals_string: https://w3id.org/workflowhub/workflow-ro-crate/1.0
+        annotations:
+          #sh:message: The Metadata File Descriptor conformsTo SHOULD contain https://w3id.org/ro/crate/1.1 and https://w3id.org/workflowhub/workflow-ro-crate/1.0
+          sh:message: "The Metadata File Descriptor conformsTo SHOULD contain the Workflow RO-Crate profile"
+          sh:severity: sh:Warning
+
+
   WorkflowROCrateRootDataEntity:
     title: WROC Root Data Entity Required Properties
     description: Root Data Entity properties defined as MUST
@@ -34,7 +54,18 @@ classes:
     #   - ComputationalWorkflow
     slots:
       - programming_language
+      - conforms_to
       # - main_workflow_types
+    slot_usage:
+      conforms_to:
+        title: Main Workflow Bioschemas compliance
+        description: The Main Workflow SHOULD comply with Bioschemas ComputationalWorkflow profile version 1.0 or later ;
+        #has_member:
+        pattern: "https://bioschemas.org/profiles/ComputationalWorkflow/[1-9].*"
+        required: true
+        annotations:
+          sh:message: The Main Workflow SHOULD comply with Bioschemas ComputationalWorkflow profile version 1.0 or later
+          sh:severity: sh:Warning
 
   # classes representing schema.org types
   File:
@@ -51,6 +82,7 @@ classes:
 
 # individual property requirements
 slots:
+  # MUST
   main_entity:
     required: true
     slot_uri: schema:mainEntity
@@ -59,6 +91,7 @@ slots:
     description: Check if the Main Workflow is specified through a `mainEntity` property in the root data entity
     annotations:
      sh:message: The Main Workflow must be specified through a `mainEntity` property in the root data entity
+     sh:severity: sh:Violation
   license:
     required: true
     slot_uri: schema:license
@@ -66,6 +99,7 @@ slots:
     description: The Crate must specify a license
     annotations:
       sh:message: The Crate (Root Data Entity) must specify a license, which should be a URL but can also be a string
+      sh:severity: sh:Violation
     any_of:
       - range: CreativeWork # TODO: make this map to just sh:IRI, via objectidentifier or similar?
       - range: string
@@ -78,16 +112,29 @@ slots:
     description: The Main Workflow must refer to its language via programmingLanguage
     annotations:
      sh:message: The Main Workflow must refer to its language via programmingLanguage
+     sh:severity: sh:Violation
   main_workflow_types:
     # slot doesn't work - awaiting help in Slack
     # (1) unclear how to test for multiple types
-    # (2) min_cardinality doesn't work https://github.com/linkml/linkml/issues/2429
-    required: true
-    slot_uri: rdf:type
-    range: uriorcurie
+    # (2) minimum_cardinality doesn't work https://github.com/linkml/linkml/issues/2429
+    # required: true
+    # slot_uri: rdf:type
+    # range: uriorcurie
+    # type_mappings:
+    #   - framework_key: shacl
+    #     mapped_type: bioschemas:ComputationalWorkflow
     title: Main Workflow type
     description: The Main Workflow must have types File, SoftwareSourceCode, ComputationalWorkflow
     multivalued: true
-    minimum_cardinality: 3
     annotations:
      sh:message: The Main Workflow must have types File, SoftwareSourceCode, ComputationalWorkflow
+     sh:severity: sh:Violation
+  # SHOULD
+  # generic conformsTo slot - would be on base profile if we had one in LinkML
+  conforms_to:
+    slot_uri: schema:conformsTo
+    title: conformsTo
+    multivalued: true
+    # any_of:
+    #   - range: uriorcurie
+    range: CreativeWork
