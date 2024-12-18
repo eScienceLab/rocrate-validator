@@ -63,7 +63,7 @@ classes:
   MainWorkflow:
     class_uri: bioschemas:ComputationalWorkflow
     title: Main Workflow definition
-    description: Main Workflow properties defined as MUST
+    description: Main Workflow properties
     # mixins: # this does not work as a way to check if the workflow has multiple classes
     #   - File
     #   - SoftwareSourceCode
@@ -81,6 +81,33 @@ classes:
         required: true
         annotations:
           sh:message: The Main Workflow SHOULD comply with Bioschemas ComputationalWorkflow profile version 1.0 or later
+          sh:severity: sh:Warning
+
+  Readme:
+    class_uri: schema:CreativeWork
+    title: README properties
+    description: README file for the Workflow RO-Crate
+    slots:
+      - about
+      - encoding_format
+    # TODO: add rule to only apply the following slot conditions
+    #       if @id is README.md
+    slot_usage:
+      about:
+        title: README.md about
+        description: The README.md SHOULD be about the crate
+        range: WorkflowROCrateRootDataEntity
+        required: true
+        annotations:
+          sh:message: The README.md SHOULD be about the crate
+          sh:severity: sh:Warning
+      encoding_format:
+        title: README.md encodingFormat
+        description: The README.md SHOULD have text/markdown as its encodingFormat
+        equals_string: "text/markdown"
+        required: true
+        annotations:
+          sh:message: The README.md SHOULD have text/markdown as its encodingFormat
           sh:severity: sh:Warning
 
   # classes representing schema.org types
@@ -149,8 +176,22 @@ slots:
   # generic conformsTo slot - would be on base profile if we had one in LinkML
   conforms_to:
     slot_uri: schema:conformsTo
-    title: conformsTo
+    title: Conforms To
     multivalued: true
     # any_of:
     #   - range: uriorcurie
     range: CreativeWork
+  about:
+    slot_uri: schema:about
+    title: About
+    multivalued: true
+    range: uriorcurie
+  encoding_format:
+    slot_uri: schema:encodingFormat
+    title: Encoding Format
+    description: The encoding format of a document
+    #any_of:
+    range: string
+      # - range: uriorcurie
+      # - range: objectidentifier
+    multivalued: true
