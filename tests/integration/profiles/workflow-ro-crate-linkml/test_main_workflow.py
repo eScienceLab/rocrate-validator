@@ -48,7 +48,7 @@ def test_main_workflow_no_lang():
         InvalidMainWorkflow().main_workflow_no_lang,
         Severity.REQUIRED,
         False,
-        ["Main Workflow definition"],
+        ["Main Workflow properties"],
         ["The Main Workflow must refer to its language via programmingLanguage"],
         profile_identifier="workflow-ro-crate-linkml",
     )
@@ -164,7 +164,6 @@ def test_workflow_description_file_existence():
         profile_identifier="workflow-ro-crate-linkml",
     )
 
-@pytest.mark.xfail(reason="not yet implemented")
 def test_main_workflow_bad_conformsto():
     """\
     Test a Workflow RO-Crate where the main workflow does not conform to the
@@ -174,7 +173,7 @@ def test_main_workflow_bad_conformsto():
         InvalidMainWorkflow().main_workflow_bad_conformsto,
         Severity.RECOMMENDED,
         False,
-        ["Main Workflow recommended properties"],
+        ["Main Workflow properties"],
         [
             "The Main Workflow SHOULD comply with Bioschemas ComputationalWorkflow profile version 1.0 or later"
         ],
