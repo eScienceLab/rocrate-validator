@@ -20,16 +20,32 @@ classes:
   WorkflowROCrateMetadataDescriptor:
     title: WROC Metadata File Descriptor properties
     description: Properties of the WROC Metadata File Descriptor
-    class_uri: ro:ro-crate-metadata.json
+    class_uri: ro:ro-crate-metadata.json # not quite right - it's a target _node_, not a class
     slots:
       - conforms_to
+    attributes:
+      # for now fairly useless as id doesn't map to IRIs
+      id:
+        identifier: true
+        range: string
+    rules:
+      # this doesn't work because the id slot doesn't work like this
+      # but this is the pattern that could be followed
+      - preconditions:
+          slot_conditions:
+            id:
+              equals_string: "ro-crate-metadata.json"
+        postconditions:
+          slot_conditions:
+            conforms_to:
+              has_member:
+                equals_string: https://w3id.org/workflowhub/workflow-ro-crate/1.0
+        description: if the entity is the Metadata Descriptor, it should conform to the WROC spec    
     slot_usage:
       conforms_to:
         title: Metadata File Descriptor conformsTo
         description: "The Metadata File Descriptor conformsTo SHOULD contain https://w3id.org/ro/crate/1.1 and <https://w3id.org/workflowhub/workflow-ro-crate/1.0>"
         minimum_cardinality: 2
-        has_member:
-          equals_string: https://w3id.org/workflowhub/workflow-ro-crate/1.0
         annotations:
           #sh:message: The Metadata File Descriptor conformsTo SHOULD contain https://w3id.org/ro/crate/1.1 and https://w3id.org/workflowhub/workflow-ro-crate/1.0
           sh:message: "The Metadata File Descriptor conformsTo SHOULD contain the Workflow RO-Crate profile"
@@ -60,7 +76,7 @@ classes:
       conforms_to:
         title: Main Workflow Bioschemas compliance
         description: The Main Workflow SHOULD comply with Bioschemas ComputationalWorkflow profile version 1.0 or later ;
-        #has_member:
+        # has_member: # currently not supported in SHACL generator
         pattern: "https://bioschemas.org/profiles/ComputationalWorkflow/[1-9].*"
         required: true
         annotations:
