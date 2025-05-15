@@ -5,7 +5,9 @@ name: 🧪 CI Pipeline 1 -- Testing
 on:
     push:
         branches:
-            - "**"
+        # Edited to avoid testing during rapid dev phase for Five Safes profile.
+          - main
+          - develop
         tags:
             - "*.*.*"
         paths:
