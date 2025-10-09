@@ -37,3 +37,43 @@ five-safes-crate:RootDatasetConformsToFiveSafes
     sh:severity sh:Warning ;
     sh:message "Profile Conformance: Root Dataset SHOULD include schema:conformsTo with @id https://w3id.org/5s-crate/0.4" ;
   ] .
+
+five-safes-crate:RootDatasetDatePublishedWhenPublished
+  a sh:NodeShape ;
+  sh:name "datePublished on published crates" ;
+  sh:description "If the root dataset is published (has schema:publisher), it SHOULD have schema:datePublished." ;
+  sh:targetNode ro: ;
+  sh:or (
+    # datePublished not required if no publisher:
+    [ sh:not [ sh:property [
+        sh:path schema:publisher ;
+        sh:minCount 1 ;
+    ]]]
+    # datePublished required if publisher present:
+    [ sh:property [
+        sh:path schema:datePublished ;
+        sh:minCount 1 ;
+        sh:message "Published crates SHOULD include schema:datePublished." ;
+        sh:severity sh:Warning ;
+    ]]
+  ) .
+
+five-safes-crate:RootDatasetLicenceWhenPublished
+  a sh:NodeShape ;
+  sh:name "licence on published crates" ;
+  sh:description "If the root dataset is published (has schema:publisher), it SHOULD declare a licence." ;
+  sh:targetNode ro: ;
+  sh:severity sh:Warning ;
+  sh:message "Profile Conformance: Published crates SHOULD include a licence (schema:license or schema:licence)." ;
+  sh:or (
+    # license not required if no publisher:
+    [ sh:not [ sh:property [
+        sh:path schema:publisher ;
+        sh:minCount 1 ;
+    ]]]
+    # license/licence required if publisher present:
+    [ sh:property [
+        sh:path [ sh:alternativePath ( schema:license schema:licence ) ] ;
+        sh:minCount 1 ;
+    ]]
+  ) .
