@@ -15,31 +15,24 @@
 import logging
 
 from rocrate_validator.models import Severity
-from tests.conftest import SKIP_LOCAL_DATA_ENTITY_EXISTENCE_CHECK_IDENTIFIER
-from tests.ro_crates import ValidROC
+from tests.ro_crates import Invalid5sROC
 from tests.shared import do_entity_test
 
+# set up logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
-def test_valid_five_safes_crate_request_required():
-    """Test a valid Five Safes Crate representing a request."""
+def test_5src_funding_project_no_name():
+    """\
+    Test a Five Safes Crate where the funding Project does not have a name.
+    """
     do_entity_test(
-        ValidROC().five_safes_crate_request,
-        Severity.REQUIRED,
-        True,
+        rocrate_path=Invalid5sROC().funding_project_no_name,
+        requirement_severity=Severity.REQUIRED,
+        expected_validation_result=False,
+        expected_triggered_requirements=["Funding body Project"],
+        expected_triggered_issues=[
+            "The Project Entity MUST have a `name` property (as specified by schema.org)"
+        ],
         profile_identifier="five-safes-crate",
-        skip_checks=[SKIP_LOCAL_DATA_ENTITY_EXISTENCE_CHECK_IDENTIFIER]
-    )
-
-
-def test_valid_five_safes_crate_result_required():
-    """Test a valid Five Safes Crate representing a result."""
-    do_entity_test(
-        ValidROC().five_safes_crate_result,
-        Severity.REQUIRED,
-        True,
-        profile_identifier="five-safes-crate",
-        skip_checks=[SKIP_LOCAL_DATA_ENTITY_EXISTENCE_CHECK_IDENTIFIER]
     )
