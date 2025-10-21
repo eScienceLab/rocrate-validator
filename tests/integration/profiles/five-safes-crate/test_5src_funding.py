@@ -44,5 +44,5 @@ WHERE {
             "The Project Entity MUST have a `name` property (as specified by schema.org)"
         ],
         profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,     
+        rocrate_entity_mod_sparql=sparql,
     )
