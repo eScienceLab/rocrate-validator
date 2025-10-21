@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import logging
-import rdflib
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
@@ -45,6 +44,5 @@ WHERE {
             "The Project Entity MUST have a `name` property (as specified by schema.org)"
         ],
         profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,
-        
+        rocrate_entity_mod_sparql=sparql,     
     )
