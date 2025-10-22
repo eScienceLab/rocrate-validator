@@ -58,7 +58,6 @@ def test_5src_root_data_entity_source_organization_not_entity():
     WHERE {
         <./> schema:sourceOrganization ?o
     }
-
 """
 
     do_entity_test(
