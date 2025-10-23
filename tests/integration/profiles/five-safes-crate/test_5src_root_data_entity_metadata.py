@@ -15,8 +15,8 @@
 import logging
 
 from rocrate_validator.models import Severity
-from tests.ro_crates import Invalid5sROC
-from tests.shared import do_entity_test
+from tests.ro_crates import ValidROC
+from tests.shared import do_entity_test, SPARQL_PREFIXES
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -26,8 +26,13 @@ def test_5src_root_data_entity_no_source_organization():
     """\
     Test a Five Safes Crate where the Root Data Entity it does not reference a sourceOrganization.
     """
+    sparql = SPARQL_PREFIXES + """DELETE WHERE {
+        <./> schema:sourceOrganization ?object
+    }
+    """
+
     do_entity_test(
-        rocrate_path=Invalid5sROC().root_data_entity_no_source_organization,
+        rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["Five Safes Crate Root Data Entity REQUIRED properties"],
@@ -36,6 +41,7 @@ def test_5src_root_data_entity_no_source_organization():
                    SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name."""
         ],
         profile_identifier="five-safes-crate",
+        rocrate_entity_mod_sparql=sparql,
     )
 
 
@@ -43,8 +49,20 @@ def test_5src_root_data_entity_source_organization_not_entity():
     """\
     Test a Five Safes Crate where the Root Data Entity it does not reference a sourceOrganization.
     """
+    sparql = SPARQL_PREFIXES + """DELETE {
+        <./> schema:sourceOrganization ?o
+    }
+    INSERT {
+        <./> schema:sourceOrganization "Investigation of cancer (TRE72 project 81)"
+    }
+    WHERE {
+        <./> schema:sourceOrganization ?o
+    }
+
+"""
+
     do_entity_test(
-        rocrate_path=Invalid5sROC().root_data_entity_source_organization_not_entity,
+        rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["Five Safes Crate Root Data Entity REQUIRED properties"],
@@ -53,4 +71,5 @@ def test_5src_root_data_entity_source_organization_not_entity():
                    SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name."""
         ],
         profile_identifier="five-safes-crate",
+        rocrate_entity_mod_sparql=sparql,
     )
