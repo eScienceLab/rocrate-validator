@@ -15,8 +15,8 @@
 import logging
 
 from rocrate_validator.models import Severity
-from tests.ro_crates import Invalid5sROC
-from tests.shared import do_entity_test
+from tests.ro_crates import ValidROC
+from tests.shared import do_entity_test, SPARQL_PREFIXES
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -26,8 +26,16 @@ def test_5src_funding_project_no_name():
     """\
     Test a Five Safes Crate where the funding Project does not have a name.
     """
+    sparql = (
+        SPARQL_PREFIXES
+        + """DELETE WHERE {
+    <#project-be6ffb55-4f5a-4c14-b60e-47e0951090c70> schema:name "Investigation of cancer (TRE72 project 81)"
+}
+"""
+    )
+
     do_entity_test(
-        rocrate_path=Invalid5sROC().funding_project_no_name,
+        rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["Funding body Project"],
@@ -35,4 +43,5 @@ def test_5src_funding_project_no_name():
             "The Project Entity MUST have a `name` property (as specified by schema.org)"
         ],
         profile_identifier="five-safes-crate",
+        rocrate_entity_mod_sparql=sparql,
     )
