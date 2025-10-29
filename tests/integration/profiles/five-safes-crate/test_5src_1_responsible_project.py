@@ -63,7 +63,7 @@ def test_5src_responsible_project_funding_not_grant():
     )
 
 
-def test_5src_responsible_project_member_not_organization():
+def test_5src_responsible_project_member_not_organization_or_person():
     """
     Test a Five Safes Crate where a Responsible Project's `member` property
     is NOT of type schema:Organization.
@@ -76,7 +76,7 @@ def test_5src_responsible_project_member_not_organization():
             ?project schema:member ?org .
         }
         INSERT {
-            ?project schema:member "Not an organization (literal replacement)" .
+            ?project schema:member "Not organization or person (literal replacement)" .
         }
         WHERE {
             ?action a schema:CreateAction ;
@@ -94,7 +94,7 @@ def test_5src_responsible_project_member_not_organization():
         expected_validation_result=False,
         expected_triggered_requirements=["Responsible Project"],
         expected_triggered_issues=[
-            "The property 'member' of the Responsible Project MUST be of type schema:Organization."
+            "The property 'member' of the Responsible Project MUST be of type schema:Organization or schema:Person."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
