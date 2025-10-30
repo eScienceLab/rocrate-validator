@@ -23,57 +23,59 @@
 
 # Root Dataset SHOULD declare conformsTo Five Safes profile
 five-safes-crate:RootDatasetConformsToFiveSafes
-  a sh:NodeShape ;
-  sh:name "Root Dataset profile conformance" ;
-  sh:description "The Root Data Entity (./) SHOULD declare conformsTo the Five Safes RO-Crate profile." ;           
-  # targets the RO-Crate Root Data Entity "./"
-  sh:targetNode ro: ;
-  sh:property [
-    a sh:PropertyShape ;
-    sh:name "conformsTo Five Safes profile" ;
-    sh:description "Root Dataset SHOULD include schema:conformsTo https://w3id.org/5s-crate/0.4" ;
-    sh:path schema:conformsTo ;
-    sh:hasValue <https://w3id.org/5s-crate/0.4> ;
-    sh:severity sh:Warning ;
-    sh:message "Profile Conformance: Root Dataset SHOULD include schema:conformsTo with @id https://w3id.org/5s-crate/0.4" ;
-  ] .
+    a sh:NodeShape ;
+    sh:name "Root Dataset Five Safes RO-Crate profile conformance" ;
+    sh:description "The Root Data Entity (./) SHOULD declare conformsTo the Five Safes RO-Crate profile." ; 
+    sh:targetNode ro: ;
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "conformsTo Five Safes profile" ;
+        sh:description "Root Dataset SHOULD include schema:conformsTo https://w3id.org/5s-crate/0.4" ;
+        sh:path schema:conformsTo ;
+        sh:qualifiedValueShape [
+            sh:hasValue <https://w3id.org/5s-crate/0.4>
+        ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Profile Conformance: Root Dataset SHOULD include schema:conformsTo with @id https://w3id.org/5s-crate/0.4" ;
+    ] .
 
 five-safes-crate:RootDatasetDatePublishedWhenPublished
-  a sh:NodeShape ;
-  sh:name "datePublished on published crates" ;
-  sh:description "If the root dataset is published (has schema:publisher), it SHOULD have schema:datePublished." ;
-  sh:targetNode ro: ;
-  sh:or (
-    # datePublished not required if no publisher:
-    [ sh:not [ sh:property [
-        sh:path schema:publisher ;
-        sh:minCount 1 ;
-    ]]]
-    # datePublished required if publisher present:
-    [ sh:property [
-        sh:path schema:datePublished ;
-        sh:minCount 1 ;
-        sh:message "Published crates SHOULD include schema:datePublished." ;
-        sh:severity sh:Warning ;
-    ]]
-  ) .
+    a sh:NodeShape ;
+    sh:name "datePublished present on published crates" ;
+    sh:description "If the root dataset is published (has schema:publisher), it SHOULD have schema:datePublished." ;
+    sh:targetNode ro: ;
+    sh:severity sh:Warning ;
+    sh:message "Published crates SHOULD include schema:datePublished." ;
+    sh:or (
+        # datePublished not required if no publisher:
+        [ sh:not [ sh:property [
+            sh:path schema:publisher ;
+            sh:minCount 1 ;
+        ]]]
+        # datePublished required if publisher present:
+        [ sh:property [
+            sh:path schema:datePublished ;
+            sh:minCount 1 ;
+        ]]
+    ) .
 
-five-safes-crate:RootDatasetLicenceWhenPublished
-  a sh:NodeShape ;
-  sh:name "licence on published crates" ;
-  sh:description "If the root dataset is published (has schema:publisher), it SHOULD declare a licence." ;
-  sh:targetNode ro: ;
-  sh:severity sh:Warning ;
-  sh:message "Profile Conformance: Published crates SHOULD include a licence (schema:license or schema:licence)." ;
-  sh:or (
-    # license not required if no publisher:
-    [ sh:not [ sh:property [
-        sh:path schema:publisher ;
-        sh:minCount 1 ;
-    ]]]
-    # license/licence required if publisher present:
-    [ sh:property [
-        sh:path [ sh:alternativePath ( schema:license schema:licence ) ] ;
-        sh:minCount 1 ;
-    ]]
-  ) .
+five-safes-crate:RootDatasetLicenseWhenPublished
+    a sh:NodeShape ;
+    sh:name "License present on published crates" ;
+    sh:description "If the root dataset is published (has schema:publisher), it SHOULD declare a license." ;
+    sh:targetNode ro: ;
+    sh:severity sh:Warning ;
+    sh:message "Profile Conformance: Published crates SHOULD include a license." ;
+    sh:or (
+        # license not required if no publisher:
+        [ sh:not [ sh:property [
+            sh:path schema:publisher ;
+            sh:minCount 1 ;
+        ]]]
+        # license required if publisher present:
+        [ sh:property [
+            sh:path schema:license ;
+            sh:minCount 1 ;
+        ]]
+    ) .
