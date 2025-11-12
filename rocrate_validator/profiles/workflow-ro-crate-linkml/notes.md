@@ -1,5 +1,9 @@
 # Development notes for LinkML Workflow RO-Crate profile
 
+## Worked Example / Tutorial
+
+See [worked_example.md](worked_example.md) which is development notes written up in a tutorial-like format (but not thoroughly tested).
+
 ## Setup
 1. Create a folder for the profile under `rocrate_validator/profiles`
 1. Copy across `profile.ttl` from another profile & update that metadata for the new profile.
