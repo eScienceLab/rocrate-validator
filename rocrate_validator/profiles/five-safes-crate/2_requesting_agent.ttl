@@ -28,7 +28,7 @@ five-safes-crate:CreateActionHasAgent
   a sh:NodeShape ;
   sh:name "CreateAction" ;
   sh:targetClass schema:CreateAction ;
-  sh:description "Checks that a CreateAction has an agent and that each agent is a schema:Person." ;
+  sh:description "Checks that a CreateAction has an agent and that each agent is a Person." ;
 
   # CreateAction entity MUST have an agent (IRI)
   sh:property [
@@ -38,7 +38,7 @@ five-safes-crate:CreateActionHasAgent
     sh:minCount 1 ;
     sh:nodeKind sh:IRI ;
     sh:severity sh:Violation ;
-    sh:message "CreateAction MUST have at least one schema:agent that is a contextual entity." ;
+    sh:message "CreateAction MUST have at least one agent that is a contextual entity." ;
   ] ;
 
   # The agent of a CreateAction entity MUST be a Person
@@ -49,7 +49,7 @@ five-safes-crate:CreateActionHasAgent
     sh:nodeKind sh:IRI ;
     sh:class schema:Person ;
     sh:severity sh:Violation ;
-    sh:message "Each CreateAction agent MUST be typed as schema:Person." ;
+    sh:message "Each CreateAction agent MUST be typed as Person." ;
   ] ;
 
   # If any agent affiliation exists, it MUST be an Organization (IRI)

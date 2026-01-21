@@ -28,13 +28,19 @@ five-safes-crate:RootDataEntityRequiredProperties
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
 
     sh:property [
         a sh:PropertyShape ;
         sh:name "sourceOrganization" ;
         sh:path schema:sourceOrganization;
         sh:minCount 1 ;
+        sh:name "sourceOrganization" ;
+        sh:path schema:sourceOrganization;
+        sh:minCount 1 ;
         sh:severity sh:Violation ;
+        sh:message """The Root Data Entity MUST have a `sourceOrganization` property.""" ;
         sh:message """The Root Data Entity MUST have a `sourceOrganization` property.""" ;
     ] ;
 
@@ -43,7 +49,11 @@ five-safes-crate:RootDataEntityRequiredProperties
         sh:name "sourceOrganization" ;
         sh:path schema:sourceOrganization ;
         sh:class schema:Project ;
+        sh:name "sourceOrganization" ;
+        sh:path schema:sourceOrganization ;
+        sh:class schema:Project ;
         sh:severity sh:Violation ;
+        sh:message """The `sourceOrganization` property of the RootDataEntity MUST point to a Project entity.""" ;
         sh:message """The `sourceOrganization` property of the RootDataEntity MUST point to a Project entity.""" ;
     ] .
 
