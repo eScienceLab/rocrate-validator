@@ -61,7 +61,7 @@ five-safes-crate:ResponsibleProject
     ] .
 
 
-#=== SHOUD shapes ===#
+#=== SHOULD shapes ===#
 
 five-safes-crate:ResponsibleProjectMemberAndSourceOrganizationIntersection
     a sh:NodeShape ;
