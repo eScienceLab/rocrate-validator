@@ -23,6 +23,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
+
 five-safes-crate:ValidationCheckObjectHasDescriptiveNameAndIsAssessAction
     a sh:NodeShape ;
     sh:name "ValidationCheck" ;
@@ -123,4 +125,184 @@ five-safes-crate:ValidationCheckActionStatusMustHaveAllowedValue
         ) ;
         sh:severity sh:Violation ;
         sh:message "actionStatus MUST be either PotentialActionStatus, ActiveActionStatus, CompletedActionStatus, or FailedActionStatus." ;
+    ] .
+
+
+#=== SHOULD shapes ===#
+
+five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
+    a sh:NodeShape ;
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
+    sh:description "" ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:name "mentions" ;
+        sh:description "RootDataEntity SHOULD mention a ValidationCheck object." ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp: <https://w3id.org/shp#>
+            SELECT $this
+            WHERE {
+                FILTER NOT EXISTS{
+                    $this schema:mentions ?action .
+                    ?action schema:additionalType shp:ValidationCheck .
+                }
+            }
+        """ ;
+        sh:severity sh:Warning ;
+        sh:message "RootDataEntity SHOULD mention a ValidationCheck object." ;
+    ] .
+
+
+five-safes-crate:ValidationCheckObjectShouldPointToRootDataEntity
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:description "" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck .
+            }
+        """  ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "object" ;
+        sh:path schema:object ;
+        sh:minCount 1 ;
+        sh:class ro-crate:RootDataEntity ;
+        sh:severity sh:Warning ;
+        sh:message "`ValidationCheck` --> `object` SHOULD point to the root of the RO-Crate" ;
+    ] .
+
+five-safes-crate:ValidationCheckInstrumentShouldPointToEntityWithSpecificId
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:description "" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck .
+            }
+        """  ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "instrument" ;
+        sh:description "" ;
+        sh:path schema:instrument ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:hasValue <https://w3id.org/5s-crate/0.4> ;
+        sh:severity sh:Warning ;
+        sh:message "`ValidationCheck` --> `instrument` SHOULD point to an entity with @id https://w3id.org/5s-crate/0.4" ;
+    ] .
+
+
+five-safes-crate:ValidationCheckShouldHaveActionStatus
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:description "" ;
+
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck .
+            }
+        """ ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "ActionStatus" ;
+        sh:path schema:actionStatus ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "ValidationCheck SHOULD have actionStatus property." ;
+    ] .
+
+
+five-safes-crate:DownloadActionShouldHaveEndTimeIfBegun
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:description "" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck ;
+                      schema:actionStatus ?status .
+                FILTER(?status IN (
+                    "http://schema.org/CompletedActionStatus",
+                    "http://schema.org/FailedActionStatus"
+                ))
+            }
+        """  ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "EndTime" ;
+        sh:path schema:endTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:description "ValidationCheck SHOULD have the `endTime` property if `actionStatus` is either CompletedActionStatus or FailedActionStatus." ;
+        sh:message "ValidationCheck SHOULD have the `endTime` property if `actionStatus` is either CompletedActionStatus or FailedActionStatus." ;
+    ] .
+
+
+#=== MAY shapes ===#
+
+five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:description "" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck ;
+                      schema:actionStatus ?status .
+                FILTER(?status IN (
+                    "http://schema.org/CompletedActionStatus",
+                    "http://schema.org/FailedActionStatus",
+                    "http://schema.org/ActiveActionStatus"
+                ))
+            }
+        """  ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "StartTime" ;
+        sh:path schema:startTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:severity sh:Info ;
+        sh:description "ValidationCheck MAY have the `startTime` property if `actionStatus` is either ActiveActionStatus, CompletedActionStatus or FailedActionStatus." ;
+        sh:message "ValidationCheck MAY have the `startTime` property if `actionStatus` is either ActiveActionStatus, CompletedActionStatus or FailedActionStatus." ;
     ] .
