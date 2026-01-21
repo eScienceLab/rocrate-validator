@@ -23,6 +23,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
+
 # to ensure the entity id will be included in any error message,
 # target all entities which have startTime and/or endTime properties using sh:targetSubjectsOf,
 # then we use sh:property to validate the values of those properties.
@@ -52,3 +54,11 @@ five-safes-crate:TimeStampFormat
         sh:message "All `startTime` and `endTime` values MUST follow the RFC 3339 standard (YYYY-MM-DD'T'hh:mm:ss[.fraction](Z | ±hh:mm))." ;
         sh:description "Start timestamps MUST follow the RFC 3339 standard." ;
     ] .
+
+
+#=== SHOULD shapes ===#
+# (none)
+
+
+#=== MAY shapes ===#
+# (none)
