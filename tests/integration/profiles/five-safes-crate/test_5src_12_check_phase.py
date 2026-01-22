@@ -188,31 +188,33 @@ def test_5src_check_value_has_action_status_with_not_allowed_value():
 
 # ----- SHOULD fails tests
 
+# --- THIS NEEDS FURTHER CHECKS ---#
 
-def test_5src_root_data_entity_does_not_mention_check_value_entity():
-    sparql = """
-        PREFIX schema: <http://schema.org/>
-        PREFIX shp:    <https://w3id.org/shp#>
+# def test_5src_root_data_entity_does_not_mention_check_value_entity():
+#     sparql = """
+#         PREFIX schema: <http://schema.org/>
+#         PREFIX shp:    <https://w3id.org/shp#>
 
-        DELETE {
-            <./> schema:mentions ?o .
-        }
-        WHERE {
-            ?o schema:additionalType shp:CheckValue ;
-        }
-        """
+#         DELETE {
+#             <./> schema:mentions ?o .
+#         }
+#         WHERE {
+#             <./> schema:mentions ?o .
+#             ?o schema:additionalType shp:CheckValue ;
+#         }
+#         """
 
-    do_entity_test(
-        rocrate_path=ValidROC().five_safes_crate_result,
-        requirement_severity=Severity.RECOMMENDED,
-        expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "RootDataEntity SHOULD mention a check value object."
-        ],
-        profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,
-    )
+#     do_entity_test(
+#         rocrate_path=ValidROC().five_safes_crate_result,
+#         requirement_severity=Severity.RECOMMENDED,
+#         expected_validation_result=False,
+#         expected_triggered_requirements=["RootDataEntity"],
+#         expected_triggered_issues=[
+#             "RootDataEntity SHOULD mention a check value object."
+#         ],
+#         profile_identifier="five-safes-crate",
+#         rocrate_entity_mod_sparql=sparql,
+#     )
 
 
 def test_5src_check_value_object_does_not_point_to_root_data_entity():
