@@ -26,9 +26,9 @@
 
 #=== MUST shapes ===#
 
-five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
+five-safes-crate:ValidationCheckObjectHasDescriptiveNameAndIsAssessAction
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
 
     sh:target [
@@ -39,7 +39,7 @@ five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
 
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue .
+                ?this schema:additionalType shp:ValidationCheck .
             }
         """ ;
     ] ;
@@ -49,24 +49,23 @@ five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
         sh:minCount 1 ;
         sh:hasValue schema:AssessAction;
         sh:severity sh:Violation ;
-        sh:message "CheckValue MUST be a `AssessAction`." ;
+        sh:message "ValidationCheck MUST be a `AssessAction`." ;
     ] ;
 
     sh:property [
         sh:a sh:PropertyShape ;
         sh:name "name" ;
-        sh:description "CheckValue MUST have a human readable name string." ;
+        sh:description "ValidationCheck MUST have a human readable name string." ;
         sh:path schema:name ;
         sh:datatype xsd:string ;
         sh:severity sh:Violation ;
-        sh:message "CheckValue MUST have a human readable name string." ;
+        sh:message "ValidationCheck MUST have a human readable name string." ;
     ] .
 
-five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
-    a sh:NodeShape ;
-    sh:name "CheckValue" ;
-    sh:description "" ;
 
+five-safes-crate:ValidationCheckActionStatusMustHaveAllowedValue
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
     sh:target [
         a sh:SPARQLTarget ;
         sh:select """
@@ -75,15 +74,16 @@ five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
 
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue ;
-                        schema:actionStatus ?status .
+                ?this schema:additionalType shp:ValidationCheck ;
+                      schema:actionStatus ?status .
             }
         """ ;
     ] ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "actionStatus" ;
+        sh:description "The `actionStatus` of ValidationCheck MUST have an allowed value (see https://schema.org/ActionStatusType)." ;
         sh:path schema:actionStatus ;
         sh:in (
             "http://schema.org/PotentialActionStatus"
@@ -92,13 +92,46 @@ five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
             "http://schema.org/FailedActionStatus"
         ) ;
         sh:severity sh:Violation ;
-        sh:message "`CheckValue` --> `actionStatus` MUST have one of the allowed values." ;
+        sh:message "The `actionStatus` of ValidationCheck MUST have an allowed value (see https://schema.org/ActionStatusType)." ;
+    ] .
+
+
+five-safes-crate:ValidationCheckActionStatusMustHaveAllowedValue
+    a sh:NodeShape ;
+    sh:name "ValidationCheck" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX schema: <http://schema.org/>
+            PREFIX shp:    <https://w3id.org/shp#>
+
+            SELECT ?this
+            WHERE {
+                ?this schema:additionalType shp:ValidationCheck .
+            }
+        """ ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:minCount 1 ;
+        sh:name "actionStatus" ;
+        sh:description "actionStatus MUST be either PotentialActionStatus, ActiveActionStatus, CompletedActionStatus, or FailedActionStatus." ;
+        sh:path schema:actionStatus ;
+        sh:in (
+            "http://schema.org/PotentialActionStatus"
+            "http://schema.org/ActiveActionStatus"
+            "http://schema.org/CompletedActionStatus"
+            "http://schema.org/FailedActionStatus"
+        ) ;
+        sh:severity sh:Violation ;
+        sh:message "actionStatus MUST be either PotentialActionStatus, ActiveActionStatus, CompletedActionStatus, or FailedActionStatus." ;
     ] .
 
 
 #=== SHOULD shapes ===#
 
-five-safes-crate:RootDataEntityShouldMentionCheckValueObject
+five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
@@ -107,23 +140,23 @@ five-safes-crate:RootDataEntityShouldMentionCheckValueObject
     sh:property [
         sh:path schema:mentions ;
 
-        # Among the mentioned nodes, require at least one that matches this shape:
+        # Require at least one mentioned node that is a ValidationCheck (via additionalType)
         sh:qualifiedValueShape [
             sh:property [
                 sh:path schema:additionalType ;
-                sh:hasValue shp:CheckValue ;
+                sh:hasValue shp:ValidationCheck ;
             ] ;
         ] ;
         sh:qualifiedMinCount 1 ;
 
         sh:severity sh:Warning ;
-        sh:message "RootDataEntity SHOULD mention a check value object." ;
+        sh:message "RootDataEntity SHOULD mention a ValidationCheck object." ;
     ] .
 
 
-five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
+five-safes-crate:ValidationCheckObjectShouldPointToRootDataEntity
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -132,7 +165,7 @@ five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
             PREFIX shp:    <https://w3id.org/shp#>
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue .
+                ?this schema:additionalType shp:ValidationCheck .
             }
         """  ;
     ] ;
@@ -144,13 +177,12 @@ five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
         sh:minCount 1 ;
         sh:class ro-crate:RootDataEntity ;
         sh:severity sh:Warning ;
-        sh:message "`CheckValue` --> `object` SHOULD point to the root of the RO-Crate" ;
+        sh:message "`ValidationCheck` --> `object` SHOULD point to the root of the RO-Crate" ;
     ] .
 
-
-five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
+five-safes-crate:ValidationCheckInstrumentShouldPointToEntityWithSpecificId
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -159,7 +191,7 @@ five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
             PREFIX shp:    <https://w3id.org/shp#>
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue .
+                ?this schema:additionalType shp:ValidationCheck .
             }
         """  ;
     ] ;
@@ -167,44 +199,47 @@ five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
     sh:property [
         a sh:PropertyShape ;
         sh:name "instrument" ;
+        sh:description "" ;
         sh:path schema:instrument ;
         sh:minCount 1 ;
-        sh:class schema:DefinedTerm ;
+        sh:nodeKind sh:IRI ;
+        sh:hasValue <https://w3id.org/5s-crate/0.4> ;
         sh:severity sh:Warning ;
-        sh:message "`CheckValue` --> `instrument` SHOULD point to an entity typed `DefinedTerm`" ;
+        sh:message "`ValidationCheck` --> `instrument` SHOULD point to an entity with @id https://w3id.org/5s-crate/0.4" ;
     ] .
 
 
-five-safes-crate:CheckValueAgentShouldIdentifyTheAgentWhoPerformnedTheCheck
+five-safes-crate:ValidationCheckShouldHaveActionStatus
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
+
     sh:target [
         a sh:SPARQLTarget ;
         sh:select """
             PREFIX schema: <http://schema.org/>
             PREFIX shp:    <https://w3id.org/shp#>
+
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue .
+                ?this schema:additionalType shp:ValidationCheck .
             }
-        """  ;
+        """ ;
     ] ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "agent" ;
-        sh:path schema:agent ;
+        sh:name "ActionStatus" ;
+        sh:path schema:actionStatus ;
         sh:minCount 1 ;
-        sh:nodeKind sh:IRI ; 
         sh:severity sh:Warning ;
-        sh:message "`CheckValue` --> `agent` SHOULD reference the agent who initiated the check" ;
+        sh:message "ValidationCheck SHOULD have actionStatus property." ;
     ] .
 
 
-five-safes-crate:CheckValueShouldHaveEndTime
+five-safes-crate:DownloadActionShouldHaveEndTimeIfBegun
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -213,8 +248,8 @@ five-safes-crate:CheckValueShouldHaveEndTime
             PREFIX shp:    <https://w3id.org/shp#>
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue ;
-                    schema:actionStatus ?status .
+                ?this schema:additionalType shp:ValidationCheck ;
+                      schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",
                     "http://schema.org/FailedActionStatus"
@@ -230,43 +265,16 @@ five-safes-crate:CheckValueShouldHaveEndTime
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:severity sh:Warning ;
-        sh:message "`CheckValue` SHOULD have the `endTime` property." ;
-    ] .
-
-
-five-safes-crate:CheckValueShouldHaveActionStatus
-    a sh:NodeShape ;
-    sh:name "CheckValue" ;
-    sh:description "" ;
-
-    sh:target [
-        a sh:SPARQLTarget ;
-        sh:select """
-            PREFIX schema: <http://schema.org/>
-            PREFIX shp:    <https://w3id.org/shp#>
-
-            SELECT ?this
-            WHERE {
-                ?this schema:additionalType shp:CheckValue .
-            }
-        """ ;
-    ] ;
-
-    sh:property [
-        a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
-        sh:path schema:actionStatus ;
-        sh:minCount 1 ;
-        sh:severity sh:Warning ;
-        sh:message "CheckValue SHOULD have actionStatus property." ;
+        sh:description "ValidationCheck SHOULD have the `endTime` property if `actionStatus` is either CompletedActionStatus or FailedActionStatus." ;
+        sh:message "ValidationCheck SHOULD have the `endTime` property if `actionStatus` is either CompletedActionStatus or FailedActionStatus." ;
     ] .
 
 
 #=== MAY shapes ===#
 
-five-safes-crate:CheckValueMayHaveStartTime
+five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "ValidationCheck" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -275,7 +283,7 @@ five-safes-crate:CheckValueMayHaveStartTime
             PREFIX shp:    <https://w3id.org/shp#>
             SELECT ?this
             WHERE {
-                ?this schema:additionalType shp:CheckValue ;
+                ?this schema:additionalType shp:ValidationCheck ;
                       schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",
@@ -293,5 +301,6 @@ five-safes-crate:CheckValueMayHaveStartTime
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:severity sh:Info ;
-        sh:message "`CheckValue` MAY have the `startTime` property." ;
+        sh:description "ValidationCheck MAY have the `startTime` property if `actionStatus` is either ActiveActionStatus, CompletedActionStatus or FailedActionStatus." ;
+        sh:message "ValidationCheck MAY have the `startTime` property if `actionStatus` is either ActiveActionStatus, CompletedActionStatus or FailedActionStatus." ;
     ] .

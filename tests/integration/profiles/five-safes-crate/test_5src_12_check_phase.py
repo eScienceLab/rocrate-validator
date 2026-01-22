@@ -188,8 +188,6 @@ def test_5src_check_value_has_action_status_with_not_allowed_value():
 
 # ----- SHOULD fails tests
 
-# --- THIS NEEDS FURTHER CHECKS ---#
-
 
 def test_5src_root_data_entity_does_not_mention_check_value_entity():
     sparql = """
