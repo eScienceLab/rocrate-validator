@@ -19,6 +19,7 @@
 @prefix schema: <http://schema.org/> .
 @prefix purl: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shp: <https://w3id.org/shp#> .
 @prefix validator: <https://github.com/crs4/rocrate-validator/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -99,30 +100,27 @@ five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
 
 #--- THIS NEEDS FURTHER CHECKS ---#
 
-# five-safes-crate:RootDataEntityShouldMentionCheckValueObject
-#     a sh:NodeShape ;
-#     sh:name "RootDataEntity" ;
-#     sh:targetClass ro-crate:RootDataEntity ;
-#     sh:description "" ;
+five-safes-crate:RootDataEntityShouldMentionCheckValueObject
+    a sh:NodeShape ;
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
+    sh:description "" ;
 
-#     sh:sparql [
-#         a sh:SPARQLConstraint ;
-#         sh:name "mentions" ;
-#         sh:description "RootDataEntity SHOULD mention a check value object." ;
-#         sh:select """
-#             PREFIX schema: <http://schema.org/>
-#             PREFIX shp: <https://w3id.org/shp#>
-#             SELECT $this
-#             WHERE {
-#                 FILTER NOT EXISTS{
-#                     $this schema:mentions ?action .
-#                     ?action schema:additionalType shp:CheckValue .
-#                 }
-#             }
-#         """ ;
-#         sh:severity sh:Warning ;
-#         sh:message "RootDataEntity SHOULD mention a check value object." ;
-#     ] .
+    sh:property [
+        sh:path schema:mentions ;
+
+        # Among the mentioned nodes, require at least one that matches this shape:
+        sh:qualifiedValueShape [
+            sh:property [
+                sh:path schema:additionalType ;
+                sh:hasValue shp:CheckValue ;
+            ] ;
+        ] ;
+        sh:qualifiedMinCount 1 ;
+
+        sh:severity sh:Warning ;
+        sh:message "RootDataEntity SHOULD mention a check value object." ;
+    ] .
 
 
 five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
