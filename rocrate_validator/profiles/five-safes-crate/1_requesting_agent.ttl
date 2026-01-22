@@ -84,7 +84,7 @@ five-safes-crate:AgentProjectIntersection
     ] .
 
 
-#=== SHOOULD shapes ===#
+#=== SHOULD shapes ===#
 
 five-safes-crate:AgentIsMemberOf
     a sh:NodeShape ;
