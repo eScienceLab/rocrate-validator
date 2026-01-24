@@ -23,6 +23,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
 
 five-safes-crate:ReferenceToWorkflowCrate
     a sh:NodeShape ;
@@ -55,6 +56,7 @@ five-safes-crate:mainEntityHasProperConformsTo
     a sh:NodeShape ;
     sh:name "mainEntity" ;
     sh:description "The mainEntity of the RootDataEntity MUST have a conformsTo property with an IRI starting with https://w3id.org/workflowhub/workflow-ro-crate" ;
+    sh:severity sh:Violation ;
     sh:targetObjectsOf schema:mainEntity ;
     sh:property [
         a sh:PropertyShape ;
@@ -74,3 +76,35 @@ five-safes-crate:mainEntityHasProperConformsTo
         sh:severity sh:Violation ;
         sh:message "conformsTo IRI must start with https://w3id.org/workflowhub/workflow-ro-crate" ;
     ] .
+
+
+#=== SHOULD shapes ===#
+
+five-safes-crate:DatasetMustHaveDistributionIfURI
+    a sh:NodeShape ;
+    sh:name "mainEntity" ;
+    sh:targetObjectsOf schema:mainEntity ;
+    sh:description "If mainEntity has an HTTP(S) @id, it SHOULD have a distribution that is an HTTP(S) URL." ;
+    sh:severity sh:Warning ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:name "distribution" ;
+        sh:description "If mainEntity has an HTTP(S) @id, it SHOULD have a distribution that is an HTTP(S) URL." ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              FILTER (STRSTARTS(STR($this), "http://") || STRSTARTS(STR($this), "https://")) .
+              FILTER NOT EXISTS {
+                $this schema:distribution ?dist .
+                FILTER (STRSTARTS(STR(?dist), "http://") || STRSTARTS(STR(?dist), "https://")) .
+              }
+            }
+        """ ;
+        sh:message "If mainEntity has an HTTP(S) @id SHOULD have at least one distribution with an HTTP(S) URL." ;
+    ] .
+
+
+#=== MAY shapes ===#
+# (none)
