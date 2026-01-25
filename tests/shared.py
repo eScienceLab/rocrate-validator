@@ -155,7 +155,8 @@ def do_entity_test(
             rocrate_graph.update(rocrate_entity_mod_sparql)
 
             # save the updated RO-Crate metadata
-            context = "https://w3id.org/ro/crate/1.1/context"
+            # preserve the original context to avoid forcing a downgrade
+            context = rocrate.get("@context", "https://w3id.org/ro/crate/1.2/context")
             rocrate_graph.serialize(
                 Path(temp_rocrate_path, "ro-crate-metadata.json"),
                 format="json-ld",
