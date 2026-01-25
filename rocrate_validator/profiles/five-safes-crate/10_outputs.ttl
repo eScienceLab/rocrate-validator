@@ -22,7 +22,13 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:WorkflowRunActionHasResultIfActionCompleted
+#=== MUST shapes ===#
+# (none)
+
+
+#=== SHOULD shapes ===#
+
+five-safes-crate:CreateActionHasResultIfActionCompleted
   a sh:NodeShape ;
   sh:name "WorkflowRunAction" ;
   sh:description "The `CreateAction` corresponding to the workflow run, with CompletedActionStatus, SHOULD have the `schema:result` property." ;
@@ -85,3 +91,7 @@ five-safes-crate:WorkflowRunActionResultOutputsHaveAllowedTypes
         sh:class schema:PropertyValue;
       ]
     ) .
+
+
+#=== MAY shapes ===#
+# (none)
