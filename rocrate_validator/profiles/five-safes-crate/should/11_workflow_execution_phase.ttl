@@ -23,29 +23,58 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
+    sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
+    sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
+    This is identified by checking that the CreateAction entity has an `instrument` property
+    that references the same entity as the `mainEntity` property of the Root Data Entity.""" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT ?this
+            WHERE {
+                ?this a schema:CreateAction ;
+                      schema:instrument ?instrument .
+                ?root schema:mainEntity ?instrument ;
+                      a schema:Dataset .
+                ?metadatafile schema:about ?root .
+                FILTER(contains(str(?metadatafile), "ro-crate-metadata.json"))
+            }
+        """
+    ] ;
+
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object ro-crate:WorkflowRun ;
+    ] .
+
+
 
 five-safes-crate:RootDataEntityShouldMentionWorkflow 
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
-    sh:description "RootDataEntity SHOULD mention workflow execution object (typed CreateAction)." ;
+    sh:description "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)." ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:sparql [
         a sh:SPARQLConstraint ; 
         sh:name "mentions" ;
         sh:select """
         PREFIX schema: <http://schema.org/>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
         SELECT $this 
         WHERE {
             
             FILTER NOT EXISTS {
                 $this schema:mentions ?workflowExecution .
-                ?workflowExecution rdf:type schema:CreateAction .
+                ?workflowExecution a rocrate:WorkflowRun .
             }
         }
         """ ;
       sh:severity sh:Warning ;
-      sh:message "RootDataEntity SHOULD mention workflow execution object (typed CreateAction)." ;
+      sh:message "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)." ;
    ] .
 
 
@@ -59,11 +88,11 @@ five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
         a sh:SPARQLTarget ;
         sh:select """
             PREFIX schema: <http://schema.org/>
-            PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
 
             SELECT ?this
             WHERE {
-                ?this rdf:type schema:CreateAction ;
+                ?this a rocrate:WorkflowRun ;
                       schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",

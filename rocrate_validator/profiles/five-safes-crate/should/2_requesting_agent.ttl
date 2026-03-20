@@ -22,28 +22,57 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-# Person who is the agent of a CreateAction SHOULD have an affiliation
+ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
+    sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
+    sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
+    This is identified by checking that the CreateAction entity has an `instrument` property
+    that references the same entity as the `mainEntity` property of the Root Data Entity.""" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT ?this
+            WHERE {
+                ?this a schema:CreateAction ;
+                      schema:instrument ?instrument .
+                ?root schema:mainEntity ?instrument ;
+                      a schema:Dataset .
+                ?metadatafile schema:about ?root .
+                FILTER(contains(str(?metadatafile), "ro-crate-metadata.json"))
+            }
+        """
+    ] ;
+
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object ro-crate:WorkflowRun ;
+    ] .
+
+
+# Person who is the agent of a WorkflowRun SHOULD have an affiliation
 five-safes-crate:PersonAgentHasAffiliation
     a sh:NodeShape ;
-    sh:name "Agent of CreateAction" ;
-    sh:description "The agent of a CreateAction entity" ;
+    sh:name "Agent of WorkflowRun" ;
+    sh:description "The agent of a WorkflowRun entity" ;
     sh:target [
         a sh:SPARQLTarget ;
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT DISTINCT ?this WHERE {
-              ?action a schema:CreateAction ;
+              ?action a ro-crate:WorkflowRun ;
                       schema:agent ?this .
             }
         """
     ] ;
 
-    # The agent of a CreateAction entity SHOULD have an affiliation
+    # The agent of a WorkflowRun entity SHOULD have an affiliation
     sh:property [
         a sh:PropertyShape ;
         sh:name "Presence of affiliations" ;
         sh:path schema:affiliation ;
         sh:minCount 1 ;
         sh:severity sh:Warning ;
-        sh:message "The agent of a CreateAction entity SHOULD have an affiliation" ;
+        sh:message "The agent of a WorkflowRun entity SHOULD have an affiliation" ;
     ] .
