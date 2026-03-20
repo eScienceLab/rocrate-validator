@@ -22,7 +22,37 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:RootDataEntityMentionsCreateAction
+ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
+    sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
+    sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
+    This is identified by checking that the CreateAction entity has an `instrument` property
+    that references the same entity as the `mainEntity` property of the Root Data Entity.""" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT ?this
+            WHERE {
+                ?this a schema:CreateAction ;
+                      schema:instrument ?instrument .
+                ?root schema:mainEntity ?instrument ;
+                      a schema:Dataset .
+                ?metadatafile schema:about ?root .
+                FILTER(contains(str(?metadatafile), "ro-crate-metadata.json"))
+            }
+        """
+    ] ;
+
+    # Expand data graph with triples from the file data entity
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object ro-crate:WorkflowRun ;
+    ] .
+
+
+five-safes-crate:RootDataEntityMentionsWorkflowRun
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
@@ -33,42 +63,43 @@ five-safes-crate:RootDataEntityMentionsCreateAction
         sh:name "mentions" ;
         sh:path schema:mentions;
         sh:qualifiedValueShape [
-            sh:class schema:CreateAction ;
+            sh:class ro-crate:WorkflowRun ;
         ] ;
         sh:qualifiedMinCount 1 ;
         sh:severity sh:Violation ;
-        sh:message "`RootDataEntity` MUST reference at least one `CreateAction` through `mentions`" ;
+        sh:message "`RootDataEntity` MUST reference at least one `WorkflowRun` through `mentions`" ;
     ] .
 
 
-five-safes-crate:CreateActionInstrumentAndStatus
+five-safes-crate:WorkflowRunExistence
     a sh:NodeShape ;
-    sh:name "CreateAction" ;
-    sh:targetClass schema:CreateAction ;
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
+    sh:description "" ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:name "WorkflowRun" ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                FILTER NOT EXISTS {
+                    ?workflowRun a ro-crate:WorkflowRun .
+                }
+            }
+        """ ;
+        sh:message "The crate MUST contain at least one `WorkflowRun` entity" ;
+    ] .
+
+
+five-safes-crate:WorkflowRunObject
+    a sh:NodeShape ;
+    sh:name "WorkflowRun" ;
+    sh:targetClass ro-crate:WorkflowRun ;
     sh:description "" ; 
     sh:severity sh:Violation ; # Apply to all property shapes / constraints below
 
-    sh:property [
-        a sh:PropertyShape ;
-        sh:name "instrument" ;
-        sh:path schema:instrument;
-        sh:minCount 1 ;
-        sh:message "`CreateAction` MUST have the `instrument` property" ;
-    ]  ;
-    sh:sparql [
-        a sh:SPARQLConstraint ;
-        sh:name "instrument" ;
-        sh:prefixes ro-crate:sparqlPrefixes ;
-        sh:select """
-        SELECT $this ?main ?instrument
-        WHERE {
-            ?root schema:mainEntity ?main .
-            $this schema:instrument ?instrument .
-            FILTER (?instrument != ?main)
-        }
-        """ ;
-        sh:message "`CreateAction` --> `instrument` MUST reference the same entity as `Root Data Entity` --> `mainEntity`" ;
-    ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes ro-crate:sparqlPrefixes ;
@@ -80,5 +111,5 @@ five-safes-crate:CreateActionInstrumentAndStatus
                 FILTER NOT EXISTS {  ?object a ?type . }
             }
         """ ;
-        sh:message "Each `object` in `CreateAction` MUST reference an existing entity." ;
+        sh:message "Each `object` in `WorkflowRun` MUST reference an existing entity." ;
     ] .

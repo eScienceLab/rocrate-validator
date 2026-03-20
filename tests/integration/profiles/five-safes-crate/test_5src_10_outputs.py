@@ -50,9 +50,9 @@ def test_completed_createaction_does_not_have_result():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CreateAction"],
+        expected_triggered_requirements=["WorkflowRun"],
         expected_triggered_issues=[
-            "`CreateAction` with CompletedActionStatus SHOULD have the `result` property."
+            "`WorkflowRun` with CompletedActionStatus SHOULD have the `result` property."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,

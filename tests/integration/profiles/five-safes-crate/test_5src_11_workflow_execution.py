@@ -47,7 +47,7 @@ def test_5src_workflow_object_with_no_name():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowExecution"],
         expected_triggered_issues=[
-            "Workflow (CreateAction) MUST have a name string of at least 10 characters."
+            "WorkflowRun MUST have a name string of at least 10 characters."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -78,7 +78,7 @@ def test_5src_workflow_object_with_name_not_string():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowExecution"],
         expected_triggered_issues=[
-            "Workflow (CreateAction) MUST have a name string of at least 10 characters."
+            "WorkflowRun MUST have a name string of at least 10 characters."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -109,7 +109,7 @@ def test_5src_workflow_object_with_not_long_enough_name():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowExecution"],
         expected_triggered_issues=[
-            "Workflow (CreateAction) MUST have a name string of at least 10 characters."
+            "WorkflowRun MUST have a name string of at least 10 characters."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -203,7 +203,7 @@ def test_5src_workflow_object_with_no_action_status():
         expected_triggered_requirements=["WorkflowExecution"],
         expected_triggered_issues=[
             (
-                "WorkflowExecution MUST have an actionStatus "
+                "WorkflowRun MUST have an actionStatus "
                 "with an allowed value (see https://schema.org/ActionStatusType)."
             )
         ],
@@ -236,7 +236,7 @@ def test_5src_workflow_object_with_no_properly_valued_action_status():
         expected_triggered_requirements=["WorkflowExecution"],
         expected_triggered_issues=[
             (
-                "WorkflowExecution MUST have an actionStatus "
+                "WorkflowRun MUST have an actionStatus "
                 "with an allowed value (see https://schema.org/ActionStatusType)."
             )
         ],
@@ -267,7 +267,7 @@ def test_5src_workflow_object_not_mentioned_by_root_data_entity():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "RootDataEntity SHOULD mention workflow execution object (typed CreateAction)."
+            "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
