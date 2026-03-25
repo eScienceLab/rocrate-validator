@@ -24,36 +24,6 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
-    sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
-    sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
-    This is identified by checking that the CreateAction entity has an `instrument` property
-    that references the same entity as the `mainEntity` property of the Root Data Entity.""" ;
-    sh:target [
-        a sh:SPARQLTarget ;
-        sh:prefixes ro-crate:sparqlPrefixes ;
-        sh:select """
-            SELECT ?this
-            WHERE {
-                ?this a schema:CreateAction ;
-                      schema:instrument ?instrument .
-                ?root schema:mainEntity ?instrument ;
-                      a schema:Dataset .
-                ?metadatafile schema:about ?root .
-                FILTER(contains(str(?metadatafile), "ro-crate-metadata.json"))
-            }
-        """
-    ] ;
-
-    sh:rule [
-        a sh:TripleRule ;
-        sh:subject sh:this ;
-        sh:predicate rdf:type ;
-        sh:object ro-crate:WorkflowRun ;
-    ] .
-
-
-
 five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
     a sh:NodeShape ;
     sh:name "Input" ;
