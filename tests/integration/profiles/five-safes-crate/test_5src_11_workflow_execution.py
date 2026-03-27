@@ -267,7 +267,7 @@ def test_5src_workflow_object_not_mentioned_by_root_data_entity():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)."
+            "RootDataEntity SHOULD mention a workflow run object (typed CreateAction)."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,

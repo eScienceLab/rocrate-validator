@@ -52,7 +52,8 @@ def test_completed_createaction_does_not_have_result():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowRun"],
         expected_triggered_issues=[
-            "`WorkflowRun` with CompletedActionStatus SHOULD have the `result` property."
+            "The `CreateAction` corresponding to the workflow run,",
+            "with CompletedActionStatus, SHOULD have the `result` property."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
