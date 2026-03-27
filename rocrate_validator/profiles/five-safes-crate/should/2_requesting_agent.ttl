@@ -38,12 +38,12 @@ five-safes-crate:PersonAgentHasAffiliation
         """
     ] ;
 
-    # The agent of a WorkflowRun entity SHOULD have an affiliation
+    # The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation
     sh:property [
         a sh:PropertyShape ;
         sh:name "Presence of affiliations" ;
         sh:path schema:affiliation ;
         sh:minCount 1 ;
         sh:severity sh:Warning ;
-        sh:message "The agent of a WorkflowRun entity SHOULD have an affiliation" ;
+        sh:message "The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation" ;
     ] .

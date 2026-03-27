@@ -37,7 +37,7 @@ five-safes-crate:RootDataEntityMentionsWorkflowRun
         ] ;
         sh:qualifiedMinCount 1 ;
         sh:severity sh:Violation ;
-        sh:message "`RootDataEntity` MUST reference at least one `WorkflowRun` through `mentions`" ;
+        sh:message "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`" ;
     ] .
 
 
@@ -59,7 +59,7 @@ five-safes-crate:WorkflowRunExistence
                 }
             }
         """ ;
-        sh:message "The crate MUST contain at least one `WorkflowRun` entity" ;
+        sh:message "The crate MUST contain at least one `CreateAction` (corresponding to the workflow run)" ;
     ] .
 
 
@@ -81,5 +81,5 @@ five-safes-crate:WorkflowRunObject
                 FILTER NOT EXISTS {  ?object a ?type . }
             }
         """ ;
-        sh:message "Each `object` in `WorkflowRun` MUST reference an existing entity." ;
+        sh:message "Each `object` in the `CreateAction` entity corresponding to the workflow run MUST reference an existing entity." ;
     ] .

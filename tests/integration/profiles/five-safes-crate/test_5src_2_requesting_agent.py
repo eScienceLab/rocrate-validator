@@ -158,7 +158,7 @@ def test_5src_agent_does_not_have_affiliation():
         expected_validation_result=False,
         expected_triggered_requirements=["Agent of WorkflowRun"],
         expected_triggered_issues=[
-            "The agent of a WorkflowRun entity SHOULD have an affiliation"
+            "The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation"
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,

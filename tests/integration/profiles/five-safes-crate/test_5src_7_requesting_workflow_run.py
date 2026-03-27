@@ -52,8 +52,8 @@ def test_rocrate_does_not_have_createaction():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `WorkflowRun` through `mentions`",
-            "The crate MUST contain at least one `WorkflowRun` entity",
+            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`",
+            "The crate MUST contain at least one `CreateAction` (corresponding to the workflow run)",
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -83,7 +83,7 @@ def test_rootdataentity_does_not_have_mentions_property():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `WorkflowRun` through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`"
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -116,7 +116,7 @@ def test_rootdataentity_does_not_mention_create_action():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `WorkflowRun` through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`"
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -151,7 +151,7 @@ def test_createaction_object_does_not_reference_existing_entities():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowRun"],
         expected_triggered_issues=[
-            "Each `object` in `WorkflowRun` MUST reference an existing entity."
+            "Each `object` in the `CreateAction` entity corresponding to the workflow run MUST reference an existing entity."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -185,7 +185,7 @@ def test_createaction_does_not_have_object_property():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowRun"],
         expected_triggered_issues=[
-            "`WorkflowRun` SHOULD have the property `object` with IRI values."
+            "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
