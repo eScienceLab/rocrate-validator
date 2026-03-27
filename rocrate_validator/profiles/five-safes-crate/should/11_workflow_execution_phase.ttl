@@ -26,7 +26,7 @@
 five-safes-crate:RootDataEntityShouldMentionWorkflow 
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
-    sh:description "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)." ;
+    sh:description "RootDataEntity SHOULD mention a workflow run object (typed CreateAction)." ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:sparql [
         a sh:SPARQLConstraint ; 
@@ -44,7 +44,7 @@ five-safes-crate:RootDataEntityShouldMentionWorkflow
         }
         """ ;
       sh:severity sh:Warning ;
-      sh:message "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRun)." ;
+      sh:message "RootDataEntity SHOULD mention a workflow run object (typed CreateAction)." ;
    ] .
 
 
@@ -52,7 +52,7 @@ five-safes-crate:RootDataEntityShouldMentionWorkflow
 five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
     a sh:NodeShape ;
     sh:name "WorkflowExecution" ;
-    sh:description "The workflow execution object SHOULD have an endTime property if it has ended." ;
+    sh:description "The workflow run object SHOULD have an endTime property if it has ended." ;
 
     sh:target [
         a sh:SPARQLTarget ;
