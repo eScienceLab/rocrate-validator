@@ -52,7 +52,8 @@ def test_rocrate_does_not_have_createaction():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`",
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`",
             "The crate MUST contain at least one `CreateAction` (corresponding to the workflow run)",
         ],
         profile_identifier="five-safes-crate",
@@ -83,7 +84,8 @@ def test_rootdataentity_does_not_have_mentions_property():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`"
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -116,7 +118,8 @@ def test_rootdataentity_does_not_mention_create_action():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`"
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -151,7 +154,8 @@ def test_createaction_object_does_not_reference_existing_entities():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowRun"],
         expected_triggered_issues=[
-            "Each `object` in the `CreateAction` entity corresponding to the workflow run MUST reference an existing entity."
+            "Each `object` in the `CreateAction` entity corresponding" +
+            " to the workflow run MUST reference an existing entity."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
