@@ -32,12 +32,12 @@ five-safes-crate:WorkflowMustHaveDescriptiveName
         a sh:PropertyShape ;
         sh:name "name" ;
         sh:minCount 1 ;    
-        sh:description "WorkflowRun MUST have a name string of at least 10 characters." ;
+        sh:description "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters." ;
         sh:path schema:name ;
         sh:datatype xsd:string ;
         sh:minLength 10 ;
         sh:severity sh:Violation ;
-        sh:message "WorkflowRun MUST have a name string of at least 10 characters." ;
+        sh:message "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters." ;
     ] .
 
 
@@ -49,7 +49,7 @@ five-safes-crate:WorkflowMustHaveActionStatusWithAllowedValues
         a sh:PropertyShape ;
         sh:minCount 1 ;
         sh:name "actionStatus" ;
-        sh:description "WorkflowRun MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
+        sh:description "`CreateAction` MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
         sh:path schema:actionStatus ;
         sh:in (
             "http://schema.org/PotentialActionStatus"
@@ -58,5 +58,5 @@ five-safes-crate:WorkflowMustHaveActionStatusWithAllowedValues
             "http://schema.org/FailedActionStatus"
         ) ;
         sh:severity sh:Violation ;
-        sh:message "WorkflowRun MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
+        sh:message "`CreateAction` MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
     ] .

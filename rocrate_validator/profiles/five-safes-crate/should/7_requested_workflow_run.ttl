@@ -32,5 +32,5 @@ five-safes-crate:WorkflowRunShouldHaveObjectProperty
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:severity sh:Warning ;
-        sh:message "`WorkflowRun` SHOULD have the property `object` with IRI values." ;
+        sh:message "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values." ;
     ] .
