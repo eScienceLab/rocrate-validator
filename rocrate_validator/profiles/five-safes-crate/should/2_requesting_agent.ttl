@@ -45,5 +45,5 @@ five-safes-crate:PersonAgentHasAffiliation
         sh:path schema:affiliation ;
         sh:minCount 1 ;
         sh:severity sh:Warning ;
-        sh:message "The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation" ;
+        sh:message "The agent of the `CreateAction` corresponding to the workflow run SHOULD have an affiliation" ;
     ] .
