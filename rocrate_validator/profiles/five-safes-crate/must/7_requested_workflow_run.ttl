@@ -22,7 +22,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:RootDataEntityMentionsWorkflowRun
+five-safes-crate:RootDataEntityMentionsWorkflowRunAction
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
@@ -33,7 +33,7 @@ five-safes-crate:RootDataEntityMentionsWorkflowRun
         sh:name "mentions" ;
         sh:path schema:mentions;
         sh:qualifiedValueShape [
-            sh:class ro-crate:WorkflowRun ;
+            sh:class ro-crate:WorkflowRunAction ;
         ] ;
         sh:qualifiedMinCount 1 ;
         sh:severity sh:Violation ;
@@ -41,7 +41,7 @@ five-safes-crate:RootDataEntityMentionsWorkflowRun
     ] .
 
 
-five-safes-crate:WorkflowRunExistence
+five-safes-crate:WorkflowRunActionExistence
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
@@ -49,13 +49,13 @@ five-safes-crate:WorkflowRunExistence
 
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:name "WorkflowRun" ;
+        sh:name "WorkflowRunAction" ;
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT $this
             WHERE {
                 FILTER NOT EXISTS {
-                    ?workflowRun a ro-crate:WorkflowRun .
+                    ?workflowRunAction a ro-crate:WorkflowRunAction .
                 }
             }
         """ ;
@@ -65,8 +65,8 @@ five-safes-crate:WorkflowRunExistence
 
 five-safes-crate:WorkflowRunObject
     a sh:NodeShape ;
-    sh:name "WorkflowRun" ;
-    sh:targetClass ro-crate:WorkflowRun ;
+    sh:name "WorkflowRunAction" ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
     sh:description "" ; 
     sh:severity sh:Violation ; # Apply to all property shapes / constraints below
 

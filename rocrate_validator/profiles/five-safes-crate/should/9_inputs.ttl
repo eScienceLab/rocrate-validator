@@ -33,7 +33,7 @@ five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT ?this WHERE {
-              ?action a ro-crate:WorkflowRun ;
+              ?action a ro-crate:WorkflowRunAction ;
                       schema:object ?this .
             }
         """

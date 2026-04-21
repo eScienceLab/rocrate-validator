@@ -22,23 +22,23 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-# Person who is the agent of a WorkflowRun SHOULD have an affiliation
+# Person who is the agent of a WorkflowRunAction SHOULD have an affiliation
 five-safes-crate:PersonAgentHasAffiliation
     a sh:NodeShape ;
-    sh:name "Agent of WorkflowRun" ;
-    sh:description "The agent of a WorkflowRun entity" ;
+    sh:name "Agent of WorkflowRunAction" ;
+    sh:description "The agent of a WorkflowRunAction entity" ;
     sh:target [
         a sh:SPARQLTarget ;
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT DISTINCT ?this WHERE {
-              ?action a ro-crate:WorkflowRun ;
+              ?action a ro-crate:WorkflowRunAction ;
                       schema:agent ?this .
             }
         """
     ] ;
 
-    # The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation
+    # The agent of the `CreateAction` corresponding to the workflowrunAction SHOULD have an affiliation
     sh:property [
         a sh:PropertyShape ;
         sh:name "Presence of affiliations" ;

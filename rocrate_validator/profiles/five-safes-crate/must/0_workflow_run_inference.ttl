@@ -43,5 +43,5 @@ ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
         a sh:TripleRule ;
         sh:subject sh:this ;
         sh:predicate rdf:type ;
-        sh:object ro-crate:WorkflowRun ;
+        sh:object ro-crate:WorkflowRunAction ;
     ] .

@@ -30,7 +30,7 @@ five-safes-crate:AgentIsMemberOf
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT DISTINCT ?this WHERE {
-              ?action a rocrate:WorkflowRun ;
+              ?action a rocrate:WorkflowRunAction ;
                       schema:agent ?this .
             }
         """

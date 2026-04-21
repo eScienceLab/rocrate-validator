@@ -26,7 +26,7 @@
 five-safes-crate:WorkflowMustHaveDescriptiveName
     a sh:NodeShape ;
     sh:name "WorkflowExecution" ;
-    sh:targetClass ro-crate:WorkflowRun ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
 
     sh:property [
         a sh:PropertyShape ;
@@ -44,7 +44,7 @@ five-safes-crate:WorkflowMustHaveDescriptiveName
 five-safes-crate:WorkflowMustHaveActionStatusWithAllowedValues
     a sh:NodeShape ;
     sh:name "WorkflowExecution" ;
-    sh:targetClass ro-crate:WorkflowRun ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
     sh:property [
         a sh:PropertyShape ;
         sh:minCount 1 ;

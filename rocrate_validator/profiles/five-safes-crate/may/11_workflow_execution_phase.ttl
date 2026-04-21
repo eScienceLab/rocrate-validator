@@ -38,7 +38,7 @@ five-safes-crate:WorkflowexecutionObjectHasStartTimeIfBegun
 
             SELECT ?this
             WHERE {
-                ?this a rocrate:WorkflowRun ;
+                ?this a rocrate:WorkflowRunAction ;
                       schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",

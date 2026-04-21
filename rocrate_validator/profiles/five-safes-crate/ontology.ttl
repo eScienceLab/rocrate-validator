@@ -31,7 +31,7 @@
 # # #    Classes
 # # #################################################################
 
-# Declare a WorkflowRun class
-ro-crate:WorkflowRun rdf:type owl:Class ;
+# Declare a WorkflowRunAction class
+ro-crate:WorkflowRunAction rdf:type owl:Class ;
   rdfs:subClassOf schema:CreateAction ;
-  rdfs:label "WorkflowRun"@en .
+  rdfs:label "WorkflowRunAction"@en .
