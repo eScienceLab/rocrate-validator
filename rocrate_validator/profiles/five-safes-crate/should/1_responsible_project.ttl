@@ -33,7 +33,7 @@ five-safes-crate:ResponsibleProjectMemberAndSourceOrganizationIntersection
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT DISTINCT ?this WHERE {
-              ?action a ro-crate:WorkflowRun ;
+              ?action a ro-crate:WorkflowRunAction ;
                       schema:agent ?this .
               ?this a schema:Person ;
                     schema:memberOf ?project ;

@@ -156,7 +156,7 @@ def test_5src_agent_does_not_have_affiliation():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["Agent of WorkflowRun"],
+        expected_triggered_requirements=["Agent of WorkflowRunAction"],
         expected_triggered_issues=[
             "The agent of the `CreateAction` corresponding to the workflowrun SHOULD have an affiliation"
         ],

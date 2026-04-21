@@ -39,7 +39,7 @@ five-safes-crate:RootDataEntityShouldMentionWorkflow
             
             FILTER NOT EXISTS {
                 $this schema:mentions ?workflowExecution .
-                ?workflowExecution a rocrate:WorkflowRun .
+                ?workflowExecution a rocrate:WorkflowRunAction .
             }
         }
         """ ;
@@ -62,7 +62,7 @@ five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
 
             SELECT ?this
             WHERE {
-                ?this a rocrate:WorkflowRun ;
+                ?this a rocrate:WorkflowRunAction ;
                       schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",
