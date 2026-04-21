@@ -54,7 +54,11 @@ def test_rocrate_does_not_have_createaction():
         expected_triggered_issues=[
             "`RootDataEntity` MUST reference at least one `CreateAction`",
             " (corresponding to the workflow run) through `mentions`",
-            "The crate MUST contain at least one `CreateAction` (corresponding to the workflow run)",
+            (
+                "The `CreateAction` entity corresponding to the workflow run "
+                "MUST reference through its property `instrument` the same "
+                "entity as `RootData Entity` --> `mainEntity`"
+            ),
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
