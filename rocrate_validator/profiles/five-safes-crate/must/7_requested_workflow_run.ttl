@@ -81,5 +81,5 @@ five-safes-crate:WorkflowRunObject
                 FILTER NOT EXISTS {  ?object a ?type . }
             }
         """ ;
-        sh:message "Each `object` in the `CreateAction` entity corresponding to the workflow run MUST reference an existing entity." ;
+        sh:message "In the `CreateAction` entity corresponding to the workflow run, each `object`  MUST reference an existing entity." ;
     ] .
