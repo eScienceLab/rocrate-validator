@@ -158,8 +158,8 @@ def test_createaction_object_does_not_reference_existing_entities():
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowRunAction"],
         expected_triggered_issues=[
-            "Each `object` in the `CreateAction` entity corresponding"
-            + " to the workflow run MUST reference an existing entity."
+            "In the `CreateAction` entity corresponding to the workflow run,"
+            + " each `object`  MUST reference an existing entity."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
