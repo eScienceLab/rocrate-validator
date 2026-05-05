@@ -55,9 +55,9 @@ def test_rocrate_does_not_have_createaction():
             "`RootDataEntity` MUST reference at least one `CreateAction`",
             " (corresponding to the workflow run) through `mentions`",
             (
-                "The `CreateAction` entity corresponding to the workflow run "
-                "MUST reference through its property `instrument` the same "
-                "entity as `RootData Entity` --> `mainEntity`"
+                "The CreateAction entity corresponding to the workflow MUST "
+                "reference, as an instrument, the entity that is referenced "
+                "as mainEntity by the RO-Crate"
             ),
         ],
         profile_identifier="five-safes-crate",
