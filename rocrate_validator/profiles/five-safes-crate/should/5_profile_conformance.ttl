@@ -45,14 +45,13 @@ five-safes-crate:RootDatasetDatePublishedWhenPublished
     sh:description "If the root dataset is published (has schema:publisher), it SHOULD have schema:datePublished." ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:severity sh:Warning ;
-    sh:message "Published crates SHOULD include schema:datePublished." ;
-    sh:or (
-        # datePublished not required if no publisher:
+    sh:message "A crate SHOULD have a publishedDate if and only if it has a publisher." ;
+    sh:xone (
+        # datePublished SHOULD be present if and only if the publisher is specified:
         [ sh:not [ sh:property [
             sh:path schema:publisher ;
             sh:minCount 1 ;
         ]]]
-        # datePublished required if publisher present:
         [ sh:property [
             sh:path schema:datePublished ;
             sh:minCount 1 ;
@@ -63,7 +62,7 @@ five-safes-crate:RootDatasetLicenseWhenPublished
     a sh:NodeShape ;
     sh:name "License present on published crates" ;
     sh:description "If the root dataset is published (has schema:publisher), it SHOULD declare a license." ;
-    sh:targetNode ro: ;
+    sh:targetClass ro-crate:RootDataEntity ;
     sh:severity sh:Warning ;
     sh:message "Profile Conformance: Published crates SHOULD include a license." ;
     sh:or (
