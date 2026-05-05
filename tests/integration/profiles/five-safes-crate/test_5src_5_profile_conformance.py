@@ -134,7 +134,7 @@ def test_5src_root_data_entity_has_date_published_but_not_publisher():
         SPARQL_PREFIXES
         + """
         DELETE {
-            ?rootdataentity schema:datePublished ?datePublished .
+            ?rootdataentity schema:publisher ?publisher .
         }
         WHERE {
             ?metadatafile a schema:CreativeWork ;
