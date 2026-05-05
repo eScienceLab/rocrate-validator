@@ -59,7 +59,7 @@ five-safes-crate:WorkflowRunActionExistence
                 }
             }
         """ ;
-        sh:message "The `CreateAction` entity corresponding to the workflow run MUST reference through its property `instrument` the same entity as `RootData Entity` --> `mainEntity`" ;
+        sh:message "The CreateAction entity corresponding to the workflow MUST reference, as an instrument, the entity that is referenced as mainEntity by the RO-Crate" ;
     ] .
 
 
