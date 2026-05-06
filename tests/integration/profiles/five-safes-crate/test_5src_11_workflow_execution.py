@@ -248,32 +248,6 @@ def test_5src_workflow_object_with_no_properly_valued_action_status():
 # ----- SHOULD fails tests
 
 
-def test_5src_workflow_object_not_mentioned_by_root_data_entity():
-    sparql = (
-        SPARQL_PREFIXES
-        + """
-        DELETE {
-            <./> schema:mentions ?o .
-        }
-        WHERE {
-            ?o rdf:type schema:CreateAction .
-        }
-        """
-    )
-
-    do_entity_test(
-        rocrate_path=ValidROC().five_safes_crate_result,
-        requirement_severity=Severity.RECOMMENDED,
-        expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "RootDataEntity SHOULD reference a workflow run entity (typed CreateAction) through `mentions`."
-        ],
-        profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,
-    )
-
-
 def test_5src_workflow_object_has_no_end_time_if_ended():
     sparql = (
         SPARQL_PREFIXES

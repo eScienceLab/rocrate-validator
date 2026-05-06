@@ -23,32 +23,6 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:RootDataEntityShouldMentionWorkflow 
-    a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
-    sh:description "RootDataEntity SHOULD reference a workflow run entity (typed CreateAction) through `mentions`." ;
-    sh:targetClass ro-crate:RootDataEntity ;
-    sh:sparql [
-        a sh:SPARQLConstraint ; 
-        sh:name "mentions" ;
-        sh:select """
-        PREFIX schema: <http://schema.org/>
-        PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
-        SELECT $this 
-        WHERE {
-            
-            FILTER NOT EXISTS {
-                $this schema:mentions ?workflowExecution .
-                ?workflowExecution a rocrate:WorkflowRunAction .
-            }
-        }
-        """ ;
-      sh:severity sh:Warning ;
-      sh:message "RootDataEntity SHOULD reference a workflow run entity (typed CreateAction) through `mentions`." ;
-   ] .
-
-
-
 five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
     a sh:NodeShape ;
     sh:name "WorkflowExecution" ;
