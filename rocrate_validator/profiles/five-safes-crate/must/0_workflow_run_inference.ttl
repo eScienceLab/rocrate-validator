@@ -20,7 +20,7 @@
 
 
 ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
-    sh:order 1 ;
+    sh:order 1 ; # load this check after ro-crate:FindRootDataEntity; pySHACL sorts rules by sh:order before execution
     sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
     sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
     This is identified by checking that the CreateAction entity has an `instrument` property
