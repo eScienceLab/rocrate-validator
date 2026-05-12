@@ -22,7 +22,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:RootDataEntityMentionsCreateAction
+five-safes-crate:RootDataEntityMentionsWorkflowRunAction
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
@@ -33,42 +33,43 @@ five-safes-crate:RootDataEntityMentionsCreateAction
         sh:name "mentions" ;
         sh:path schema:mentions;
         sh:qualifiedValueShape [
-            sh:class schema:CreateAction ;
+            sh:class ro-crate:WorkflowRunAction ;
         ] ;
         sh:qualifiedMinCount 1 ;
         sh:severity sh:Violation ;
-        sh:message "`RootDataEntity` MUST reference at least one `CreateAction` through `mentions`" ;
+        sh:message "`RootDataEntity` MUST reference at least one `CreateAction` (corresponding to the workflow run) through `mentions`" ;
     ] .
 
 
-five-safes-crate:CreateActionInstrumentAndStatus
+five-safes-crate:WorkflowRunActionExistence
     a sh:NodeShape ;
-    sh:name "CreateAction" ;
-    sh:targetClass schema:CreateAction ;
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
+    sh:description "" ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:name "WorkflowRunAction" ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                FILTER NOT EXISTS {
+                    ?workflowRunAction a ro-crate:WorkflowRunAction .
+                }
+            }
+        """ ;
+        sh:message "The CreateAction entity corresponding to the workflow MUST reference, as an instrument, the entity that is referenced as mainEntity by the RO-Crate" ;
+    ] .
+
+
+five-safes-crate:WorkflowRunObject
+    a sh:NodeShape ;
+    sh:name "WorkflowRunAction" ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
     sh:description "" ; 
     sh:severity sh:Violation ; # Apply to all property shapes / constraints below
 
-    sh:property [
-        a sh:PropertyShape ;
-        sh:name "instrument" ;
-        sh:path schema:instrument;
-        sh:minCount 1 ;
-        sh:message "`CreateAction` MUST have the `instrument` property" ;
-    ]  ;
-    sh:sparql [
-        a sh:SPARQLConstraint ;
-        sh:name "instrument" ;
-        sh:prefixes ro-crate:sparqlPrefixes ;
-        sh:select """
-        SELECT $this ?main ?instrument
-        WHERE {
-            ?root schema:mainEntity ?main .
-            $this schema:instrument ?instrument .
-            FILTER (?instrument != ?main)
-        }
-        """ ;
-        sh:message "`CreateAction` --> `instrument` MUST reference the same entity as `Root Data Entity` --> `mainEntity`" ;
-    ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes ro-crate:sparqlPrefixes ;
@@ -80,5 +81,5 @@ five-safes-crate:CreateActionInstrumentAndStatus
                 FILTER NOT EXISTS {  ?object a ?type . }
             }
         """ ;
-        sh:message "Each `object` in `CreateAction` MUST reference an existing entity." ;
+        sh:message "In the `CreateAction` entity corresponding to the workflow run, each `object`  MUST reference an existing entity." ;
     ] .

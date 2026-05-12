@@ -22,15 +22,15 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-# CreateAction SHOULD have object property with minimum cardinality 1
-five-safes-crate:CreateActionShouldHaveObjectProperty
+# WorkflowRunAction SHOULD have object property with minimum cardinality 1
+five-safes-crate:WorkflowRunActionShouldHaveObjectProperty
     a sh:NodeShape ;
-    sh:targetClass schema:CreateAction ;
-    sh:name "CreateAction" ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
+    sh:name "WorkflowRunAction" ;
     sh:property [
         sh:path schema:object ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:severity sh:Warning ;
-        sh:message "`CreateAction` SHOULD have the property `object` with IRI values." ;
+        sh:message "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values." ;
     ] .

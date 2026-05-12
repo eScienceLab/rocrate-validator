@@ -12,38 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-@prefix ro: <./> .
 @prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/> .
-@prefix five-safes-crate: <https://github.com/eScienceLab/rocrate-validator/profiles/five-safes-crate/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix schema: <http://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix validator: <https://github.com/crs4/rocrate-validator/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-# Person who is the agent of a WorkflowRunAction SHOULD have an affiliation
-five-safes-crate:PersonAgentHasAffiliation
-    a sh:NodeShape ;
-    sh:name "Agent of WorkflowRunAction" ;
-    sh:description "The agent of a WorkflowRunAction entity" ;
+ro-crate:FindWorkflowRunAction a sh:NodeShape, validator:HiddenShape;
+    sh:order 1 ; # load this check after ro-crate:FindRootDataEntity; pySHACL sorts rules by sh:order before execution
+    sh:name "Identify the CreateAction Entity that corresponds to the Workflow run" ;
+    sh:description """The Workflow Run is the CreateAction entity that refers to Workflow run.
+    This is identified by checking that the CreateAction entity has an `instrument` property
+    that references the same entity as the `mainEntity` property of the Root Data Entity.""" ;
     sh:target [
         a sh:SPARQLTarget ;
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
-            SELECT DISTINCT ?this WHERE {
-              ?action a ro-crate:WorkflowRunAction ;
-                      schema:agent ?this .
+            SELECT ?this
+            WHERE {
+                ?this a schema:CreateAction ;
+                      schema:instrument ?instrument .
+                ?root a ro-crate:RootDataEntity ;
+                      schema:mainEntity ?instrument .
             }
         """
     ] ;
 
-    # The agent of the `CreateAction` corresponding to the workflowrunAction SHOULD have an affiliation
-    sh:property [
-        a sh:PropertyShape ;
-        sh:name "Presence of affiliations" ;
-        sh:path schema:affiliation ;
-        sh:minCount 1 ;
-        sh:severity sh:Warning ;
-        sh:message "The agent of the `CreateAction` corresponding to the workflow run SHOULD have an affiliation" ;
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object ro-crate:WorkflowRunAction ;
     ] .
