@@ -1,0 +1,233 @@
+# Copyright (c) 2026 DataPLANT
+# Copyright (c) 2026 The University of Manchester
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+@prefix ro: <./> .
+@prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/> .
+@prefix isa-ro-crate: <https://github.com/crs4/rocrate-validator/profiles/isa-ro-crate/> .
+@prefix bioschemas: <https://bioschemas.org/> .
+@prefix bioschemas-prop: <https://bioschemas.org/properties/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix validator: <https://github.com/crs4/rocrate-validator/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+isa-ro-crate:FindISAPropertyValue a sh:NodeShape, validator:HiddenShape;
+    sh:name "Identify ISA PropertyValues within the RO-Crate" ;
+    sh:description "An ISA PropertyValue has type PropertyValue and is attached to an Assay, Process, Protocol, Sample, Person, or Article." ;
+    sh:targetClass schema:PropertyValue ;
+    sh:order 4 ;
+    # Expand data graph with triples from the file data entity
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object isa-ro-crate:PropertyValue ;
+        # The condition: need to be attached to a Assay, Process, Protocol, Sample, Person, or Article
+        sh:condition [
+            a sh:NodeShape;
+            sh:name: "PropertyValue is attached to an Assay, Process, Protocol, Sample, Person, or Article" ;
+            sh:or (
+                [
+                    sh:property [
+                        sh:name "PropertyValue is measurementMethod of an Assay" ;
+                        sh:path [ sh:inversePath schema:variableMeasured ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Assay ;
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is parameterValue of a Process" ;
+                        sh:path [ sh:inversePath bioschemas-prop:parameterValue ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Process
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is computationalTool of a Protocol" ;
+                        sh:path [ sh:inversePath schema:computationalTool ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Protocol
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is labEquipment of a Protocol" ;
+                        sh:path [ sh:inversePath schema:labEquipment ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Protocol
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is reagent of a Protocol" ;
+                        sh:path [ sh:inversePath schema:reagent ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Protocol
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is characteristic of a Sample" ;
+                        sh:path [ sh:inversePath bioschemas-prop:additionalProperty ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Sample
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is identifier of a Person" ;
+                        sh:path [ sh:inversePath schema:identifier ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Person
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+                [
+                    sh:property [
+                        sh:name "PropertyValue is identifier of a Publication" ;
+                        sh:path [ sh:inversePath schema:identifier ] ;
+                        sh:qualifiedValueShape [ 
+                            sh:class isa-ro-crate:Publication
+                        ] ;
+                        sh:qualifiedMinCount 1 ;
+                    ]
+                ]
+            ) ;
+        ] ;
+    ] ;
+.
+
+ro-crate:FindPropertyValueSubtypes a sh:NodeShape, validator:HiddenShape;
+    sh:name "Identify PropertyValue subtypes within the RO-Crate" ;
+    sh:description "A PropertyValue has type Parameter, Characteristic, Factor or Component if additionalType is set accordingly." ;
+    sh:targetClass isa-ro-crate:PropertyValue ;
+    # Expand data graph with triples from the file data entity
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object isa-ro-crate:Parameter ;
+        # The condition: additionalType == "Parameter"
+        sh:condition [
+            sh:property [
+                sh:path schema:additionalType ;
+                sh:hasValue "Parameter" ;
+            ] ;
+        ] ;
+    ] ;
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object isa-ro-crate:Characteristic ;
+        # The condition: additionalType == "Characteristic"
+        sh:condition [
+            sh:property [
+                sh:path schema:additionalType ;
+                sh:hasValue "Characteristic" ;
+            ] ;
+        ] ;
+    ] ;
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object isa-ro-crate:Factor ;
+        # The condition: additionalType == "Factor"
+        sh:condition [
+            sh:property [
+                sh:path schema:additionalType ;
+                sh:hasValue "Factor" ;
+            ] ;
+        ] ;
+    ] ;
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate rdf:type ;
+        sh:object isa-ro-crate:Component ;
+        # The condition: additionalType == "Component"
+        sh:condition [
+            sh:property [
+                sh:path schema:additionalType ;
+                sh:hasValue "Component" ;
+            ] ;
+        ] ;
+    ]
+.
+
+isa-ro-crate:PropertyValueMustHaveName a sh:NodeShape ;
+    sh:name "PropertyValue MUST have a name" ;
+    sh:description "A PropertyValue MUST have a name" ;
+    sh:targetClass isa-ro-crate:PropertyValue ;
+    sh:property [
+        a sh:PropertyShape ;
+        sh:path schema:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ; 
+        sh:not [
+            sh:hasValue ""
+        ] ;
+        sh:description "Check that PropertyValue does have non-empty name and it's a string" ;
+        sh:message "PropertyValue entity MUST have a non-empty name of type string" ;
+        sh:severity sh:Violation ;
+    ] 
+.
+
+isa-ro-crate:PropertyValueShouldHaveValueOfCorrectType a sh:NodeShape ;
+    sh:name "PropertyValue SHOULD have value of correct type" ;
+    sh:description "A PropertyValue SHOULD have at least one value of correct type" ;
+    sh:targetClass isa-ro-crate:PropertyValue ;
+    sh:property [
+        a sh:PropertyShape ;
+        sh:path schema:value ;
+        sh:minCount 1 ;
+        sh:not [
+            sh:hasValue ""
+        ] ;
+        sh:description "Check that PropertyValue does have at least one value" ;
+        sh:message "PropertyValue entity SHOULD have at least one value" ;
+        sh:severity sh:Warning ;
+    ] ;
+    sh:property [
+        a sh:PropertyShape ;
+        sh:path schema:value ;
+        sh:or(
+            [ sh:datatype xsd:string ] 
+            [ sh:datatype xsd:float ] 
+            [ sh:datatype xsd:integer ] 
+        ) ;
+        sh:description "The value of a PropertyValue MUST be of type string or a number" ;
+        sh:message "PropertyValue value MUST be of type string, float, or integer" ;
+        sh:severity sh:Violation ;
+    ]
+.

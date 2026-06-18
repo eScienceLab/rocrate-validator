@@ -22,20 +22,19 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-
-five-safes-crate:CreateActionHasResultIfActionCompleted
+five-safes-crate:WorkflowRunActionHasResultIfActionCompleted
   a sh:NodeShape ;
-  sh:name "CreateAction" ;
-  sh:description "`CreateAction` with CompletedActionStatus SHOULD have the `schema:result` property." ;
+  sh:name "WorkflowRunAction" ;
+  sh:description "The `CreateAction` corresponding to the workflow run, with CompletedActionStatus, SHOULD have the `schema:result` property." ;
 
   sh:target [
         a sh:SPARQLTarget ;
-        sh:name "Result" ;
-        sh:description "`CreateAction` with CompletedActionStatus SHOULD have the `schema:result` property." ;
+        sh:name "WorkflowRunAction" ;
+        sh:description "The `CreateAction` corresponding to the workflow run, with CompletedActionStatus, SHOULD have the `result` property." ;
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT ?this WHERE {
-              ?this a schema:CreateAction ;
+              ?this a ro-crate:WorkflowRunAction ;
                       schema:actionStatus "http://schema.org/CompletedActionStatus" .
             }
         """
@@ -48,22 +47,22 @@ five-safes-crate:CreateActionHasResultIfActionCompleted
     sh:path schema:result ;
     sh:minCount 1 ;
     sh:severity sh:Warning ;
-    sh:message "`CreateAction` with CompletedActionStatus SHOULD have the `result` property." ;
+    sh:message "The `CreateAction` corresponding to the workflow run, with CompletedActionStatus, SHOULD have the `result` property." ;
   ] .
 
 
-five-safes-crate:CreateActionResultOutputsHaveAllowedTypes
+five-safes-crate:WorkflowRunActionResultOutputsHaveAllowedTypes
   a sh:NodeShape ;
     sh:name "Output" ;
     sh:description "Result SHOULD have a `@type` among an allowed set of values." ;
     sh:target [
       a sh:SPARQLTarget ;
+      sh:prefixes ro-crate:sparqlPrefixes ;
       sh:select """
-        PREFIX schema: <http://schema.org/>
         SELECT ?this
         WHERE {
-          ?createAction a schema:CreateAction .
-          ?createAction schema:result ?this .
+          ?workflowRunAction a ro-crate:WorkflowRunAction .
+          ?workflowRunAction schema:result ?this .
         }
       """ ;
     ] ;
@@ -86,4 +85,3 @@ five-safes-crate:CreateActionResultOutputsHaveAllowedTypes
         sh:class schema:PropertyValue;
       ]
     ) .
-

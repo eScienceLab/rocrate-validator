@@ -23,47 +23,20 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-
-five-safes-crate:RootDataEntityShouldMentionWorkflow 
-    a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
-    sh:description "RootDataEntity SHOULD mention workflow execution object (typed CreateAction)." ;
-    sh:targetClass ro-crate:RootDataEntity ;
-    sh:sparql [
-        a sh:SPARQLConstraint ; 
-        sh:name "mentions" ;
-        sh:select """
-        PREFIX schema: <http://schema.org/>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        SELECT $this 
-        WHERE {
-            
-            FILTER NOT EXISTS {
-                $this schema:mentions ?workflowExecution .
-                ?workflowExecution rdf:type schema:CreateAction .
-            }
-        }
-        """ ;
-      sh:severity sh:Warning ;
-      sh:message "RootDataEntity SHOULD mention workflow execution object (typed CreateAction)." ;
-   ] .
-
-
-
 five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
     a sh:NodeShape ;
     sh:name "WorkflowExecution" ;
-    sh:description "The workflow execution object SHOULD have an endTime property if it has ended." ;
+    sh:description "The workflow run object SHOULD have an endTime property if it has ended." ;
 
     sh:target [
         a sh:SPARQLTarget ;
         sh:select """
             PREFIX schema: <http://schema.org/>
-            PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
 
             SELECT ?this
             WHERE {
-                ?this rdf:type schema:CreateAction ;
+                ?this a rocrate:WorkflowRunAction ;
                       schema:actionStatus ?status .
                 FILTER(?status IN (
                     "http://schema.org/CompletedActionStatus",

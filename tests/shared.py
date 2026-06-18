@@ -118,9 +118,9 @@ def do_entity_test(
 
     Additional keyword arguments (kwargs) are passed along to initialise ValidationSettings.
     """
-    assert not (
-        rocrate_entity_patch and rocrate_entity_mod_sparql
-    ), "Cannot use rocrate_entity_patch and rocrate_entity_mod_sparql together"
+    assert not (rocrate_entity_patch and rocrate_entity_mod_sparql), (
+        "Cannot use rocrate_entity_patch and rocrate_entity_mod_sparql together"
+    )
 
     # declare variables
     failed_requirements = None
@@ -198,9 +198,9 @@ def do_entity_test(
 
         assert result.context is not None, "Validation context should not be None"
         f"Expected requirement severity to be {requirement_severity}, but got {result.context.requirement_severity}"
-        assert (
-            result.passed() == expected_validation_result
-        ), f"RO-Crate should be {'valid' if expected_validation_result else 'invalid'}"
+        assert result.passed() == expected_validation_result, (
+            f"RO-Crate should be {'valid' if expected_validation_result else 'invalid'}"
+        )
 
         # check requirement
         failed_requirements = [_.name for _ in result.failed_requirements]
@@ -228,9 +228,9 @@ def do_entity_test(
             if not any(
                 expected_issue in issue for issue in detected_issues
             ):  # support partial match
-                assert (
-                    False
-                ), f'The expected issue "{expected_issue}" was not found in the detected issues'
+                assert False, (
+                    f'The expected issue "{expected_issue}" was not found in the detected issues'
+                )
     except Exception as e:
         if logger.isEnabledFor(logging.DEBUG):
             logger.exception(e)

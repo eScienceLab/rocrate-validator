@@ -16,39 +16,41 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from rdflib import RDF, BNode, Graph, Namespace
 from rdflib.term import Node
 
-from rocrate_validator.utils import log as logging
-from rocrate_validator.constants import RDF_SYNTAX_NS, SHACL_NS
+from rocrate_validator.constants import SHACL_NS
 from rocrate_validator.errors import BadSyntaxError
 from rocrate_validator.models import Severity
+from rocrate_validator.utils import log as logging
+
+if TYPE_CHECKING:
+    from rocrate_validator.requirements.shacl.models import Shape
 
 # set up logging
 logger = logging.getLogger(__name__)
 
 
 def build_node_subgraph(graph: Graph, node: Node) -> Graph:
-    shape_graph = Graph()
-    shape_graph += graph.triples((node, None, None))
-
-    # add BNodes
-    for _, _, o in shape_graph:
-        shape_graph += graph.triples((o, None, None))
-
-    # Use the triples method to get all triples that are part of a list
-    RDF = Namespace(RDF_SYNTAX_NS)
-    first_predicate = RDF.first
-    rest_predicate = RDF.rest
-    shape_graph += graph.triples((None, first_predicate, None))
-    shape_graph += graph.triples((None, rest_predicate, None))
-    for _, _, object in shape_graph:
-        shape_graph += graph.triples((object, None, None))
-
-    # return the subgraph
-    return shape_graph
+    """
+    Build a subgraph with every triple reachable from ``node`` by following BNode objects.
+    """
+    subgraph = Graph()
+    visited: set = set()
+    stack: list = [node]
+    while stack:
+        current = stack.pop()
+        if current in visited:
+            continue
+        visited.add(current)
+        for triple in graph.triples((current, None, None)):
+            subgraph.add(triple)
+            _, _, obj = triple
+            if isinstance(obj, BNode) and obj not in visited:
+                stack.append(obj)
+    return subgraph
 
 
 def map_severity(shacl_severity: str) -> Severity:
@@ -187,20 +189,23 @@ class ShapesList:
 
     def get_shape_property_graph(self, shape_node: Node, shape_property: Node) -> Graph:
         """
-        Get the subgraph of the given shape node excluding the given property
+        Get the subgraph of a property shape nested inside a node shape.
+
+        Includes only triples reachable from `shape_property` (its constraints
+        and any RDF lists used by `sh:and`/`sh:or`/`sh:xone`), plus the link
+        triple `(shape_node, sh:property, shape_property)`. Nothing reachable
+        only via sibling properties is included, so subtracting this graph
+        from the merged shapes graph cannot break sibling constructs.
         """
         node_graph = self.get_shape_graph(shape_node)
         assert node_graph is not None, "The shape graph cannot be None"
 
         property_graph = Graph()
-        shacl_ns = Namespace(SHACL_NS)
-        nested_properties_to_exclude = [o for (_, _, o) in node_graph.triples(
-            (shape_node, shacl_ns.property, None)) if o != shape_property]
-        triples_to_exclude = [(s, _, o) for (s, _, o) in node_graph.triples((None, None, None))
-                              if s in nested_properties_to_exclude
-                              or o in nested_properties_to_exclude]
+        for s, p, o in __extract_related_triples__(node_graph, shape_property):
+            property_graph.add((s, p, o))
 
-        property_graph += node_graph - triples_to_exclude
+        shacl_ns = Namespace(SHACL_NS)
+        property_graph.add((shape_node, shacl_ns.property, shape_property))
 
         return property_graph
 
@@ -296,3 +301,39 @@ def load_shapes_from_graph(g: Graph) -> ShapesList:
         subgraphs[shape] = subgraph
 
     return ShapesList(node_shapes, property_shapes, subgraphs, g)
+
+
+def resolve_parent_shape(
+    shapes_graph: Graph, source_shape_node: Node, shapes_registry
+) -> Optional[Shape]:
+    """
+    Try to resolve the parent NodeShape/PropertyShape for a BNode constraint node.
+
+    When a SPARQL constraint (sh:sparql) or inline constraint BNode fires a violation,
+    pyshacl reports the BNode as `sh:sourceShape`. That BNode is not registered
+    in the ShapesRegistry directly; instead the containing NodeShape is.
+    This helper walks up via sh:sparql and sh:property predicates to find it.
+    """
+    from rocrate_validator.requirements.shacl.models import Shape
+
+    if not isinstance(source_shape_node, BNode):
+        return None
+    SHACL = Namespace(SHACL_NS)
+    # Predicates via which a NodeShape/PropertyShape can own a constraint BNode
+    parent_predicates = [SHACL.sparql, SHACL.property]
+    for predicate in parent_predicates:
+        for parent_node in shapes_graph.subjects(predicate, source_shape_node):
+            try:
+                parent_shape = shapes_registry.get_shape(
+                    Shape.compute_key(shapes_graph, parent_node)
+                )
+                if parent_shape is not None:
+                    logger.debug(
+                        "Resolved parent shape %s for SPARQL/inline constraint BNode %s",
+                        parent_shape.key,
+                        source_shape_node,
+                    )
+                    return parent_shape
+            except (ValueError, KeyError):
+                continue
+    return None

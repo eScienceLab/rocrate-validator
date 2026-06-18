@@ -17,7 +17,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional, Union
 
-from rdflib import Graph, Namespace, URIRef
+from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.term import Node
 
 from rocrate_validator.constants import SHACL_NS
@@ -344,6 +344,16 @@ class ShapesRegistry:
         g += self._shapes_graph
         return g
 
+    def is_node_deactivated(self, node: Node) -> bool:
+        """Return True if the underlying shapes graph asserts
+        `<node> sh:deactivated true`. Avoids the copy made by `shapes_graph`
+        so it is safe to call from hot paths."""
+        deactivated = Namespace(SHACL_NS).deactivated
+        for value in self._shapes_graph.objects(subject=node, predicate=deactivated):
+            if isinstance(value, Literal) and bool(value.toPython()):
+                return True
+        return False
+
     def load_shapes(self, shapes_path: Union[str, Path], publicID: Optional[str] = None) -> list[Shape]:
         """
         Load the shapes from the graph
@@ -431,7 +441,6 @@ def __process_property_group__(groups: dict[str, PropertyGroup], property_shape:
     if group_name:
         if group_name not in groups:
             groups[group_name] = PropertyGroup(URIRef(property_shape.group), property_shape.graph)
-        property_shape.graph.serialize("logs/property_shape.ttl", format="turtle")
         groups[group_name].add_property(property_shape)
         property_shape._property_group = groups[group_name]
         return groups[group_name]

@@ -52,7 +52,13 @@ def test_rocrate_does_not_have_createaction():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`",
+            (
+                "The CreateAction entity corresponding to the workflow MUST "
+                "reference, as an instrument, the entity that is referenced "
+                "as mainEntity by the RO-Crate"
+            ),
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -82,7 +88,8 @@ def test_rootdataentity_does_not_have_mentions_property():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` through `mentions`"
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`",
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -115,73 +122,8 @@ def test_rootdataentity_does_not_mention_create_action():
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
         expected_triggered_issues=[
-            "`RootDataEntity` MUST reference at least one `CreateAction` through `mentions`"
-        ],
-        profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,
-    )
-
-
-def test_createaction_does_not_have_instrument_property():
-    """
-    Test a Five Safes Crate where `CreateAction` does not have the property `instrument`.
-    (We remove the property `instrument` from the `CreateAction` entity)
-    """
-    sparql = (
-        SPARQL_PREFIXES
-        + """
-        DELETE {
-            ?action schema:instrument ?o .
-        }
-        WHERE {
-           ?action schema:instrument ?o ;
-                   a schema:CreateAction .
-        }
-        """
-    )
-
-    do_entity_test(
-        rocrate_path=ValidROC().five_safes_crate_request,
-        requirement_severity=Severity.REQUIRED,
-        expected_validation_result=False,
-        expected_triggered_requirements=["CreateAction"],
-        expected_triggered_issues=[
-            "`CreateAction` MUST have the `instrument` property"
-        ],
-        profile_identifier="five-safes-crate",
-        rocrate_entity_mod_sparql=sparql,
-    )
-
-
-def test_createaction_does_not_reference_mainentity_via_instrument():
-    """
-    Test a Five Safes Crate where `CreateAction` --> `instrument` does not
-    reference `mainEntity`.
-    (We replace `mainEntity` with a literal as the object of `CreateAction` --> `instrument`)
-    """
-    sparql = (
-        SPARQL_PREFIXES
-        + """
-        DELETE {
-            ?action schema:instrument ?o .
-        }
-        INSERT {
-            ?action schema:instrument "This is not the mainEntity" .
-        }
-        WHERE {
-           ?action schema:instrument ?o ;
-                   a schema:CreateAction .
-        }
-        """
-    )
-
-    do_entity_test(
-        rocrate_path=ValidROC().five_safes_crate_request,
-        requirement_severity=Severity.REQUIRED,
-        expected_validation_result=False,
-        expected_triggered_requirements=["CreateAction"],
-        expected_triggered_issues=[
-            "`CreateAction` --> `instrument` MUST reference the same entity as `Root Data Entity` --> `mainEntity`"
+            "`RootDataEntity` MUST reference at least one `CreateAction`",
+            " (corresponding to the workflow run) through `mentions`",
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -214,9 +156,10 @@ def test_createaction_object_does_not_reference_existing_entities():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CreateAction"],
+        expected_triggered_requirements=["WorkflowRunAction"],
         expected_triggered_issues=[
-            "Each `object` in `CreateAction` MUST reference an existing entity."
+            "In the `CreateAction` entity corresponding to the workflow run,"
+            + " each `object`  MUST reference an existing entity."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -248,9 +191,9 @@ def test_createaction_does_not_have_object_property():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CreateAction"],
+        expected_triggered_requirements=["WorkflowRunAction"],
         expected_triggered_issues=[
-            "`CreateAction` SHOULD have the property `object` with IRI values."
+            "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,

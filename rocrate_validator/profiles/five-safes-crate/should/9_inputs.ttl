@@ -24,7 +24,6 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-
 five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
     a sh:NodeShape ;
     sh:name "Input" ;
@@ -34,7 +33,7 @@ five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT ?this WHERE {
-              ?action a schema:CreateAction ;
+              ?action a ro-crate:WorkflowRunAction ;
                       schema:object ?this .
             }
         """
