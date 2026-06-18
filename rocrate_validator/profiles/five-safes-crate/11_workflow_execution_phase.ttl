@@ -33,7 +33,7 @@ five-safes-crate:WorkflowMustHaveDescriptiveName
     sh:property [
         a sh:PropertyShape ;
         sh:name "name" ;
-        sh:minCount 1 ;
+        sh:minCount 1 ;    
         sh:description "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters." ;
         sh:path schema:name ;
         sh:datatype xsd:string ;
@@ -65,31 +65,6 @@ five-safes-crate:WorkflowMustHaveActionStatusWithAllowedValues
 
 
 #=== SHOULD shapes ===#
-
-five-safes-crate:RootDataEntityShouldMentionWorkflow
-    a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
-    sh:description "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRunAction)." ;
-    sh:targetClass ro-crate:RootDataEntity ;
-    sh:severity sh:Warning ;
-
-    sh:sparql [
-        a sh:SPARQLConstraint ;
-        sh:name "mentions" ;
-        sh:select """
-        PREFIX schema: <http://schema.org/>
-        PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
-        SELECT $this
-        WHERE {
-            FILTER NOT EXISTS {
-                $this schema:mentions ?workflowExecution .
-                ?workflowExecution a rocrate:WorkflowRunAction .
-            }
-        }
-        """ ;
-        sh:message "RootDataEntity SHOULD mention workflow execution object (typed WorkflowRunAction)." ;
-   ] .
-
 
 five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
     a sh:NodeShape ;
