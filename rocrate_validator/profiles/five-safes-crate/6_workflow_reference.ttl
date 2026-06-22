@@ -56,7 +56,6 @@ five-safes-crate:mainEntityHasProperConformsTo
     a sh:NodeShape ;
     sh:name "mainEntity" ;
     sh:description "The mainEntity of the RootDataEntity MUST have a conformsTo property with an IRI starting with https://w3id.org/workflowhub/workflow-ro-crate" ;
-    sh:severity sh:Violation ;
     sh:targetObjectsOf schema:mainEntity ;
     sh:property [
         a sh:PropertyShape ;
@@ -85,7 +84,6 @@ five-safes-crate:DatasetMustHaveDistributionIfURI
     sh:name "mainEntity" ;
     sh:targetObjectsOf schema:mainEntity ;
     sh:description "If mainEntity has an HTTP(S) @id, it SHOULD have a distribution that is an HTTP(S) URL." ;
-    sh:severity sh:Warning ;
 
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -102,9 +100,10 @@ five-safes-crate:DatasetMustHaveDistributionIfURI
               }
             }
         """ ;
+        sh:severity sh:Warning ;
         sh:message "If mainEntity has an HTTP(S) @id SHOULD have at least one distribution with an HTTP(S) URL." ;
     ] .
-
+    
 
 #=== MAY shapes ===#
 # (none)
