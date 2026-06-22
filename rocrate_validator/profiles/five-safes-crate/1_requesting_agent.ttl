@@ -51,7 +51,6 @@ five-safes-crate:AgentIsMemberOf
 five-safes-crate:AgentProjectIntersection
     a sh:NodeShape ;
     sh:name "Agent Project Intersection" ;
-    sh:severity sh:Violation ;
     sh:description """At least one Project referenced by Agent -> memberOf MUST be included in the set of Projects referenced by RootDataEntity -> sourceOrganization.""" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -80,8 +79,9 @@ five-safes-crate:AgentProjectIntersection
               }
             }
         """ ;
-        sh:message """At least one Project referenced by Agent -> memberOf MUST be included in the set of Projects referenced by RootDataEntity -> sourceOrganization.""" ;
-    ] .
+    ]  ;
+    sh:severity sh:Violation ;
+    sh:message """At least one Project referenced by Agent -> memberOf MUST be included in the set of Projects referenced by RootDataEntity -> sourceOrganization.""" .
 
 
 #=== SHOULD shapes ===#
@@ -94,7 +94,7 @@ five-safes-crate:AgentIsMemberOf
         sh:prefixes ro-crate:sparqlPrefixes ;
         sh:select """
             SELECT DISTINCT ?this WHERE {
-              ?action a schema:CreateAction ;
+              ?action a rocrate:WorkflowRunAction ;
                       schema:agent ?this .
             }
         """
@@ -108,3 +108,7 @@ five-safes-crate:AgentIsMemberOf
         sh:severity sh:Warning ;
         sh:message """The Requesting Agent SHOULD have a `memberOf` property.""" ;
     ] .
+
+
+    #=== MAY shapes ===#
+    # (none)
