@@ -66,28 +66,32 @@ five-safes-crate:CreateActionHasAgent
 
 #=== SHOULD shapes ===#
 
-# Person who is the agent of a CreateAction SHOULD have an affiliation
+# Person who is the agent of a WorkflowRunAction SHOULD have an affiliation
 five-safes-crate:PersonAgentHasAffiliation
-  a sh:NodeShape ;
-  sh:name "Agent of CreateAction" ;
-  sh:description "The agent of a CreateAction entity" ;
-  sh:target [
-    a sh:SPARQLTarget ;
-    sh:prefixes ro-crate:sparqlPrefixes ;
-    sh:select """
-      SELECT DISTINCT ?this WHERE {
-        ?action a schema:CreateAction ;
-                schema:agent ?this .
-      }
-    """
-  ] ;
+    a sh:NodeShape ;
+    sh:name "Agent of WorkflowRunAction" ;
+    sh:description "The agent of a WorkflowRunAction entity" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT DISTINCT ?this WHERE {
+              ?action a ro-crate:WorkflowRunAction ;
+                      schema:agent ?this .
+            }
+        """
+    ] ;
 
-  # The agent of a CreateAction entity SHOULD have an affiliation
-  sh:property [
-    a sh:PropertyShape ;
-    sh:name "Presence of affiliations" ;
-    sh:path schema:affiliation ;
-    sh:minCount 1 ;
-    sh:severity sh:Warning ;
-    sh:message "The agent of a CreateAction entity SHOULD have an affiliation" ;
-  ] .
+    # The agent of the `CreateAction` corresponding to the workflowrunAction SHOULD have an affiliation
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "Presence of affiliations" ;
+        sh:path schema:affiliation ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "The agent of the `CreateAction` corresponding to the workflow run SHOULD have an affiliation" ;
+    ] .
+
+
+# === MAY shapes ===#
+# (none)
