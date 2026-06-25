@@ -135,7 +135,6 @@ five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "" ;
-    sh:severity sh:Warning ;
 
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -152,6 +151,7 @@ five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
                 }
             }
         """ ;
+        sh:severity sh:Warning ;
         sh:message "RootDataEntity SHOULD mention a ValidationCheck object." ;
     ] .
 
