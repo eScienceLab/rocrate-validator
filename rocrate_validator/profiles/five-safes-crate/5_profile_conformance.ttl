@@ -24,6 +24,12 @@
 @prefix shp: <https://w3id.org/shp#> .
 
 
+#=== MUST shapes ===#
+# (none)
+
+
+#=== SHOULD shapes ===#
+
 # Root Dataset SHOULD declare conformsTo Five Safes profile
 five-safes-crate:RootDatasetConformsToFiveSafes
     a sh:NodeShape ;
@@ -77,3 +83,7 @@ five-safes-crate:RootDatasetLicenseWhenPublished
             sh:minCount 1 ;
         ]]
     ) .
+
+
+#=== MAY shapes ===#
+# (none)
