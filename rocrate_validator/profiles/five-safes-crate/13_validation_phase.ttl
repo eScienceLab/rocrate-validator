@@ -135,6 +135,7 @@ five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "" ;
+    sh:severity sh:Warning ;
 
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -151,7 +152,6 @@ five-safes-crate:RootDataEntityShouldMentionValidationCheckObject
                 }
             }
         """ ;
-        sh:severity sh:Warning ;
         sh:message "RootDataEntity SHOULD mention a ValidationCheck object." ;
     ] .
 
@@ -272,9 +272,9 @@ five-safes-crate:DownloadActionShouldHaveEndTimeIfBegun
     ] .
 
 
-#=== MAY shapes ===#
+    #=== MAY shapes ===#
 
-five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
+    five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
     a sh:NodeShape ;
     sh:name "ValidationCheck" ;
     sh:description "" ;
