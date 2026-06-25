@@ -101,7 +101,7 @@ five-safes-crate:SignOffPhase
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "Check the Sign-Off Phase" ;
     sh:severity sh:Warning ;
-    
+
     sh:sparql [
         sh:select """
             PREFIX schema: <http://schema.org/>
@@ -183,25 +183,6 @@ five-safes-crate:SignOffPhaseProperties
         sh:minCount 1 ;
         sh:severity sh:Warning ;
         sh:message "The Sign-Off Phase SHOULD have an TRE policy (instrument) with a human-readable name" ;
-    ] .
-
-
-five-safes-crate:SignOffPhaseProperties2
-    a sh:NodeShape ;
-    sh:description "Check Sign-Off Phase Properties" ;
-    sh:severity sh:Warning ;
-    sh:name "SignOffPhaseProperties" ;
-
-    sh:target [
-        a sh:SPARQLTarget ;
-        sh:select """
-            PREFIX schema: <http://schema.org/>
-            PREFIX shp: <https://w3id.org/shp#>
-            SELECT ?this
-            WHERE {
-                ?this schema:additionalType shp:SignOff .
-            }
-        """
     ] ;
 
     sh:sparql [
@@ -247,7 +228,6 @@ five-safes-crate:SignOffPhaseEndTime
     a sh:NodeShape ;
     sh:name "SignOffPhaseEndTime" ;
     sh:description "Sign Off end time check" ;
-    sh:name "SignOffPhaseEndTime" ;
 
     sh:target [
         a sh:SPARQLTarget ;
