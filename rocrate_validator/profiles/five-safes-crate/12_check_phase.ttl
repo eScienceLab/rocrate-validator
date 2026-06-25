@@ -61,7 +61,6 @@ five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
         sh:message "CheckValue MUST have a human readable name string." ;
     ] .
 
-
 five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
     a sh:NodeShape ;
     sh:name "CheckValue" ;
