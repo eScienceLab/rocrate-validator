@@ -84,6 +84,7 @@ five-safes-crate:DatasetMustHaveDistributionIfURI
     sh:name "mainEntity" ;
     sh:targetObjectsOf schema:mainEntity ;
     sh:description "If mainEntity has an HTTP(S) @id, it SHOULD have a distribution that is an HTTP(S) URL." ;
+    sh:severity sh:Warning ;
 
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -100,7 +101,6 @@ five-safes-crate:DatasetMustHaveDistributionIfURI
               }
             }
         """ ;
-        sh:severity sh:Warning ;
         sh:message "If mainEntity has an HTTP(S) @id SHOULD have at least one distribution with an HTTP(S) URL." ;
     ] .
     
