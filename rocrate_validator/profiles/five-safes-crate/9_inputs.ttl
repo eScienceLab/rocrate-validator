@@ -24,10 +24,17 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
+# (none)
+
+
+#=== SHOULD shapes ===#
+
 five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
     a sh:NodeShape ;
     sh:name "Input" ;
     sh:description "" ;
+    sh:severity sh:Warning ;
     sh:target [
         a sh:SPARQLTarget ;
         sh:prefixes ro-crate:sparqlPrefixes ;
@@ -52,6 +59,9 @@ five-safes-crate:InputEntityReferencesFormalParameterViaExampleOfWork
               }
             }
         """ ;
-        sh:severity sh:Warning ;
         sh:message "Input SHOULD reference a FormalParameter using exampleOfWork" ;
     ] .
+
+
+#=== MAY shapes ===#
+# (none)
