@@ -97,6 +97,16 @@ def load_graph_and_preserve_relative_ids(json_data, base="http://example.org/"):
     return g
 
 
+def _uses_https_schema(graph: rdflib.Graph) -> bool:
+    for s, p, o in graph.triples((None, None, None)):
+        for term in (s, p, o):
+            if isinstance(term, rdflib.URIRef) and str(term).startswith(
+                "https://schema.org/"
+            ):
+                return True
+    return False
+
+
 def do_entity_test(
     rocrate_path: Union[Path, str],
     requirement_severity: models.Severity,
@@ -152,10 +162,17 @@ def do_entity_test(
         if rocrate_entity_mod_sparql is not None:
             rocrate_graph = load_graph_and_preserve_relative_ids(rocrate)
 
+            if _uses_https_schema(rocrate_graph):
+                rocrate_entity_mod_sparql = rocrate_entity_mod_sparql.replace(
+                    "http://schema.org/",
+                    "https://schema.org/",
+                )
+
             rocrate_graph.update(rocrate_entity_mod_sparql)
 
             # save the updated RO-Crate metadata
-            context = "https://w3id.org/ro/crate/1.1/context"
+            # preserve the original context to avoid forcing a downgrade
+            context = rocrate.get("@context", "https://w3id.org/ro/crate/1.2/context")
             rocrate_graph.serialize(
                 Path(temp_rocrate_path, "ro-crate-metadata.json"),
                 format="json-ld",
