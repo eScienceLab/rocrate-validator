@@ -101,3 +101,39 @@ five-safes-crate:ResponsibleProjectMemberAndSourceOrganizationIntersection
         """ ;
         sh:message """At least one of the organisations that are members of the responsible project SHOULD be included in the Requesting Agent's affiliations, if such properties exist.""" ;
     ] .
+
+
+#=== MAY shapes ===#
+
+five-safes-crate:ResponsibleProject
+    a sh:NodeShape ;
+    sh:name "Responsible Project" ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:prefixes ro-crate:sparqlPrefixes ;
+        sh:select """
+            SELECT DISTINCT ?this WHERE {
+              ?action a ro-crate:WorkflowRunAction ;
+                      schema:agent ?agent .
+              ?agent schema:memberOf ?this .
+            }
+        """
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "funding" ;
+        sh:path schema:funding;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message """The Responsible Project does not have the property `funding`.""" ;
+    ] ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "member" ;
+        sh:path schema:member;
+        sh:minCount 1 ;
+        sh:severity sh:Info ;
+        sh:message """The Responsible Project does not have the property `member`.""" ;
+    ] .
