@@ -22,38 +22,35 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:ResponsibleProject
+#=== MUST shapes ===#
+
+five-safes-crate:RootDataEntityRequiredProperties
     a sh:NodeShape ;
-    sh:name "Responsible Project" ;
-    sh:target [
-        a sh:SPARQLTarget ;
-        sh:prefixes ro-crate:sparqlPrefixes ;
-        sh:select """
-            SELECT DISTINCT ?this WHERE {
-              ?action a schema:CreateAction ;
-                      schema:agent ?agent .
-              ?agent schema:memberOf ?this .
-            }
-        """
+    sh:name "RootDataEntity" ;
+    sh:targetClass ro-crate:RootDataEntity ;
+
+    sh:property [
+        a sh:PropertyShape ;
+        sh:name "sourceOrganization" ;
+        sh:path schema:sourceOrganization;
+        sh:minCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message """The Root Data Entity MUST have a `sourceOrganization` property.""" ;
     ] ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "funding" ;
-        sh:path schema:funding;
-        sh:class schema:Grant ;
+        sh:name "sourceOrganization" ;
+        sh:path schema:sourceOrganization ;
+        sh:class schema:Project ;
         sh:severity sh:Violation ;
-        sh:message """The property 'funding' of the Responsible Project MUST be of type Grant.""" ;
-    ] ;
-
-    sh:property [
-        a sh:PropertyShape ;
-        sh:name "member" ;
-        sh:path schema:member;
-        sh:or (
-            [ sh:class schema:Organization ]
-            [ sh:class schema:Person ]
-        ) ;
-        sh:severity sh:Violation ;
-        sh:message """The property 'member' of the Responsible Project MUST be of type schema:Organization or Person.""" ;
+        sh:message """The `sourceOrganization` property of the RootDataEntity MUST point to a Project entity.""" ;
     ] .
+
+
+#=== SHOULD shapes ===#
+# (none)
+
+
+#=== MAY shapes ===#
+# (none)

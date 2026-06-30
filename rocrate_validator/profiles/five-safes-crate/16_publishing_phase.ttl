@@ -23,34 +23,29 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
-five-safes-crate:CheckValueMayHaveStartTime
+#=== MUST shapes ===#
+
+five-safes-crate:AllAssessActionsMentioned
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
-    sh:description "" ;
-    sh:target [
-        a sh:SPARQLTarget ;
-        sh:select """
-            PREFIX schema: <http://schema.org/>
-            PREFIX shp:    <https://w3id.org/shp#>
-            SELECT ?this
-            WHERE {
-                ?this schema:additionalType shp:CheckValue ;
-                      schema:actionStatus ?status .
-                FILTER(?status IN (
-                    "http://schema.org/CompletedActionStatus",
-                    "http://schema.org/FailedActionStatus",
-                    "http://schema.org/ActiveActionStatus"
-                ))
-            }
-        """  ;
-    ] ;
+    sh:name "All AssessActions are mentioned from Root Data Entity" ;
+    sh:description "All AssessAction entities in the crate MUST be referenced from the Root Dataset via `mentions`." ;
+    sh:targetClass schema:AssessAction;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
-        sh:path schema:startTime ;
+        sh:name "AssessAction mentions from RDE" ;
+        sh:description "All AssessAction entities in the crate MUST be referenced from the Root Dataset via `mentions`." ;
+        sh:path [ sh:inversePath schema:mentions ] ;
+        sh:node ro-crate:RootDataEntity ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:severity sh:Info ;
-        sh:message "`CheckValue` MAY have the `startTime` property." ;
+        sh:severity sh:Violation ;
+        sh:message "All AssessAction entities in the crate MUST be referenced from the Root Dataset via `mentions`." ;
     ] .
+
+
+#=== SHOULD shapes ===#
+# (none)
+
+
+#=== MAY shapes ===#
+# (none)

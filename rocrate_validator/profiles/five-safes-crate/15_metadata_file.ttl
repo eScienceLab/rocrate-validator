@@ -22,6 +22,10 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 
+
+
+#=== MUST shapes ===#
+
 five-safes-crate:MetadataFileDescriptorProperties a sh:NodeShape ;
     sh:name "RO-Crate conforms to 1.2 or later minor version" ;
     sh:description """The RO-Crate metadata file descriptor MUST have a `conformsTo` property with RO-Crate specification version 1.2 or later minor version""";
@@ -39,3 +43,11 @@ five-safes-crate:MetadataFileDescriptorProperties a sh:NodeShape ;
     ] .
 
 ro-crate:conformsToROCrateSpec sh:deactivated true .
+
+
+#=== SHOULD shapes ===#
+# (none)
+
+
+#=== MAY shapes ===#
+# (none)
