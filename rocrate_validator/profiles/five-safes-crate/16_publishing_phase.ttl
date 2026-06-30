@@ -23,6 +23,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
+
 five-safes-crate:AllAssessActionsMentioned
     a sh:NodeShape ;
     sh:name "All AssessActions are mentioned from Root Data Entity" ;
@@ -39,3 +41,11 @@ five-safes-crate:AllAssessActionsMentioned
         sh:severity sh:Violation ;
         sh:message "All AssessAction entities in the crate MUST be referenced from the Root Dataset via `mentions`." ;
     ] .
+
+
+#=== SHOULD shapes ===#
+# (none)
+
+
+#=== MAY shapes ===#
+# (none)
