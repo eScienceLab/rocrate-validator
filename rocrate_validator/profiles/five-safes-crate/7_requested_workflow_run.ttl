@@ -22,6 +22,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+#=== MUST shapes ===#
+
 five-safes-crate:RootDataEntityMentionsWorkflowRunAction
     a sh:NodeShape ;
     sh:name "RootDataEntity" ;
@@ -46,6 +48,7 @@ five-safes-crate:WorkflowRunActionExistence
     sh:name "RootDataEntity" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "" ;
+    sh:severity sh:Violation ;
 
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -83,3 +86,23 @@ five-safes-crate:WorkflowRunObject
         """ ;
         sh:message "In the `CreateAction` entity corresponding to the workflow run, each `object`  MUST reference an existing entity." ;
     ] .
+
+
+#=== SHOULD shapes ===#
+
+# WorkflowRunAction SHOULD have object property with minimum cardinality 1
+five-safes-crate:WorkflowRunActionShouldHaveObjectProperty
+    a sh:NodeShape ;
+    sh:targetClass ro-crate:WorkflowRunAction ;
+    sh:name "WorkflowRunAction" ;
+    sh:property [
+        sh:path schema:object ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:severity sh:Warning ;
+        sh:message "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values." ;
+    ] .
+
+
+#=== MAY shapes ===#
+# (none)
