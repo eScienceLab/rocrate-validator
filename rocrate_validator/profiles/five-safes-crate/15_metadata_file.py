@@ -36,20 +36,13 @@ class FileDescriptorContextVersion(PyFunctionCheck):
         try:
             json_dict = context.ro_crate.metadata.as_dict()
             context_value = json_dict["@context"]
-            pattern = re.compile(
-                r"https://w3id\.org/ro/crate/1\.[2-9](-DRAFT)?/context"
-            )
+            pattern = re.compile(r"https://w3id\.org/ro/crate/1\.[2-9](-DRAFT)?/context")
             passed = True
             if isinstance(context_value, list):
-                if not any(
-                    pattern.match(item)
-                    for item in context_value
-                    if isinstance(item, str)
-                ):
+                if not any(pattern.match(item) for item in context_value if isinstance(item, str)):
                     passed = False
-            else:
-                if not pattern.match(context_value):
-                    passed = False
+            elif not pattern.match(context_value):
+                passed = False
             if not passed:
                 context.result.add_issue(
                     "The RO-Crate metadata file MUST include the RO-Crate context "
@@ -58,7 +51,7 @@ class FileDescriptorContextVersion(PyFunctionCheck):
                 )
             return passed
 
-        except Exception as e:
+        except Exception:
             if logger.isEnabledFor(logging.DEBUG):
-                logger.exception(e)
+                logger.exception("Unexpected error during RO-Crate context version check")
         return True
