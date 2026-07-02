@@ -21,7 +21,11 @@
 @prefix schema: <http://schema.org/> .
 @prefix rocrate: <https://w3id.org/ro/crate/1.1/> .
 @prefix bioschemas: <https://bioschemas.org/> .
+<<<<<<< HEAD
 @prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/> .
+=======
+@prefix ro-crate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate-1.2/> .
+>>>>>>> ab465be7 (Add Five Safes Crate profile to upstream RO-Crate 1.2 base)
 @prefix isa-ro-crate: <https://github.com/crs4/rocrate-validator/profiles/isa-ro-crate/> .
 
 <urn:absolute:.> rdf:type owl:Ontology ;

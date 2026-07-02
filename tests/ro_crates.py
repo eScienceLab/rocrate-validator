@@ -1004,8 +1004,12 @@ class InvalidProvRC:
 
 
 class Invalid5sROC:
+<<<<<<< HEAD
 
     base_path = INVALID_CRATES_DATA_PATH / "five_safes_crate/"
+=======
+    base_path = INVALID_CRATES_DATA_PATH / "five_safes_crate"
+>>>>>>> ab465be7 (Add Five Safes Crate profile to upstream RO-Crate 1.2 base)
 
     @property
     def context_multiple_wrong_version(self) -> Path:
