@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -49,9 +49,7 @@ def test_5src_root_data_entity_two_main_entities():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "The RootDataEntity MUST have exactly one mainEntity property that is an IRI."
-        ],
+        expected_triggered_issues=["The RootDataEntity MUST have exactly one mainEntity property that is an IRI."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -78,9 +76,7 @@ def test_5src_root_data_entity_no_main_entity():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "The RootDataEntity MUST have exactly one mainEntity property that is an IRI."
-        ],
+        expected_triggered_issues=["The RootDataEntity MUST have exactly one mainEntity property that is an IRI."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -113,9 +109,7 @@ def test_5src_root_data_entity_main_entity_not_dataset_iri():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "The mainEntity pointed to by the RootDataEntity MUST be of type Dataset"
-        ],
+        expected_triggered_issues=["The mainEntity pointed to by the RootDataEntity MUST be of type Dataset"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -145,9 +139,7 @@ def test_5src_main_entity_conformsTo_absent():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["mainEntity"],
-        expected_triggered_issues=[
-            "mainEntity MUST have one and only one `conformsTo` property."
-        ],
+        expected_triggered_issues=["mainEntity MUST have one and only one `conformsTo` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -178,9 +170,7 @@ def test_5src_main_entity_has_two_conformsto():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["mainEntity"],
-        expected_triggered_issues=[
-            "mainEntity MUST have one and only one `conformsTo` property."
-        ],
+        expected_triggered_issues=["mainEntity MUST have one and only one `conformsTo` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -214,9 +204,7 @@ def test_5src_main_entity_conformsTo_invalid():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["mainEntity"],
-        expected_triggered_issues=[
-            "conformsTo IRI must start with https://w3id.org/workflowhub/workflow-ro-crate"
-        ],
+        expected_triggered_issues=["conformsTo IRI must start with https://w3id.org/workflowhub/workflow-ro-crate"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

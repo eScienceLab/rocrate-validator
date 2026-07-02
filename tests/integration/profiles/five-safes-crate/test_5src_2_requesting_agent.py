@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -50,9 +50,7 @@ def test_createaction_does_not_have_agent():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["CreateAction"],
-        expected_triggered_issues=[
-            "CreateAction MUST have at least one agent that is a contextual entity."
-        ],
+        expected_triggered_issues=["CreateAction MUST have at least one agent that is a contextual entity."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

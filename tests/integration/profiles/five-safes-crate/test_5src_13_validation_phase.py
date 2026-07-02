@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -75,9 +75,7 @@ def test_5src_validation_check_name_not_a_string():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["ValidationCheck"],
-        expected_triggered_issues=[
-            "ValidationCheck MUST have a human readable name string."
-        ],
+        expected_triggered_issues=["ValidationCheck MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -200,9 +198,7 @@ def test_5src_root_data_entity_does_not_mention_validation_check_entity():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "RootDataEntity SHOULD mention a ValidationCheck object."
-        ],
+        expected_triggered_issues=["RootDataEntity SHOULD mention a ValidationCheck object."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -229,9 +225,7 @@ def test_5src_validation_check_object_does_not_point_to_root_data_entity():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["ValidationCheck"],
-        expected_triggered_issues=[
-            "`ValidationCheck` --> `object` SHOULD point to the root of the RO-Crate"
-        ],
+        expected_triggered_issues=["`ValidationCheck` --> `object` SHOULD point to the root of the RO-Crate"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -283,9 +277,7 @@ def test_5src_Validation_check_does_not_have_action_status_property():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["ValidationCheck"],
-        expected_triggered_issues=[
-            "ValidationCheck SHOULD have actionStatus property."
-        ],
+        expected_triggered_issues=["ValidationCheck SHOULD have actionStatus property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

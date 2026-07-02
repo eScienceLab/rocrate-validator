@@ -16,8 +16,8 @@
 import logging
 
 from rocrate_validator.models import Severity
-from tests.ro_crates import ValidROC, Invalid5sROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.ro_crates import Invalid5sROC, ValidROC
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -47,9 +47,7 @@ def test_5src_conforms_to_old_version():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=[
-            "RO-Crate conforms to 1.2 or later minor version"
-        ],
+        expected_triggered_requirements=["RO-Crate conforms to 1.2 or later minor version"],
         expected_triggered_issues=[
             "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with "
             "RO-Crate specification version 1.2 or later minor version"

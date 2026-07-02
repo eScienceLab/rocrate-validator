@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -267,9 +267,7 @@ def test_5src_workflow_object_has_no_end_time_if_ended():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["WorkflowExecution"],
-        expected_triggered_issues=[
-            "The workflow execution object SHOULD have an endTime property if it has ended."
-        ],
+        expected_triggered_issues=["The workflow execution object SHOULD have an endTime property if it has ended."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
