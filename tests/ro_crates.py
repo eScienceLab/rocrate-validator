@@ -121,6 +121,18 @@ class ValidROC:
     def multi_profile_crate(self) -> Path:
         return VALID_CRATES_DATA_PATH / "multi-profile-crate"
 
+    @property
+    def five_safes_crate_request(self) -> Path:
+        return VALID_CRATES_DATA_PATH / "five-safes-crate-request"
+
+    @property
+    def five_safes_crate_result(self) -> Path:
+        return VALID_CRATES_DATA_PATH / "five-safes-crate-result"
+
+    @property
+    def five_safes_crate_multiple_context(self) -> Path:
+        return VALID_CRATES_DATA_PATH / "five-safes-crate-multiple-context"
+
 
 class InvalidFileDescriptor:
     base_path = INVALID_CRATES_DATA_PATH / "0_file_descriptor_format"
@@ -989,6 +1001,19 @@ class InvalidProvRC:
     @property
     def propertyvalue_no_unitcode(self) -> Path:
         return self.base_path / "propertyvalue_no_unitcode"
+
+
+class Invalid5sROC:
+
+    base_path = INVALID_CRATES_DATA_PATH / "five_safes_crate/"
+
+    @property
+    def context_multiple_wrong_version(self) -> Path:
+        return self.base_path / "context_multiple_wrong_version"
+
+    @property
+    def context_single_wrong_version(self) -> Path:
+        return self.base_path / "context_single_wrong_version"
 
 
 class InvalidMultiProfileROC:

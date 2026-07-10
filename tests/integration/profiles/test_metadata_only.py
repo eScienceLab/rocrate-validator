@@ -21,6 +21,7 @@ from pathlib import Path
 import pytest
 
 from rocrate_validator import models
+from rocrate_validator.constants import DEFAULT_PROFILE_IDENTIFIER
 from tests.ro_crates import ValidROC
 from tests.shared import do_entity_test
 
@@ -55,7 +56,20 @@ def test_valid_ro_crates_from_folder(valid_roc_path):
         temp_path = Path(tmpdirname) / valid_roc_path.name
         shutil.copytree(valid_roc_path, temp_path)
         valid_roc_path = temp_path
-        do_entity_test(valid_roc_path, models.Severity.REQUIRED, True, [], [], metadata_only=True)
+        do_entity_test(
+            valid_roc_path,
+            models.Severity.REQUIRED,
+            True,
+            [],
+            [],
+            profile_identifier=(
+                # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
+                "five-safes-crate"
+                if "five-safes-crate" in valid_roc_path.name
+                else DEFAULT_PROFILE_IDENTIFIER
+            ),
+            metadata_only=True
+        )
 
 
 @pytest.mark.parametrize("valid_roc_path", valid_roc_paths())
@@ -69,5 +83,17 @@ def test_valid_ro_crates_from_metadata_dict(valid_roc_path):
         assert metadata_dict is not None, "Failed to load metadata dict"
         assert isinstance(metadata_dict, dict), "Metadata dict is not a dictionary"
         do_entity_test(
-            valid_roc_path, models.Severity.REQUIRED, True, [], [], metadata_dict=metadata_dict, metadata_only=True
+            valid_roc_path,
+            models.Severity.REQUIRED,
+            True,
+            [],
+            [],
+            profile_identifier=(
+                # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
+                "five-safes-crate"
+                if "five-safes-crate" in valid_roc_path.name
+                else DEFAULT_PROFILE_IDENTIFIER
+            ),
+            metadata_dict=metadata_dict,
+            metadata_only=True
         )

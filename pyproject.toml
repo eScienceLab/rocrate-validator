@@ -133,6 +133,9 @@ extend-ignore-re = ["[0-9a-f]{7,40}"] # Ignore long hexadecimal strings, which a
 [tool.typos.files]
 extend-exclude = ["tests/data", "docs/diagrams", "*.json", "*.html", "*__init__.py"]
 
+[tool.typos.default.extend-words]
+TRE = "TRE"
+
 # Pylint configuration.
 # Ruff (see ruff.toml) is the primary linter/formatter; this section keeps
 # pylint consistent with it so the two tools do not disagree on style or on

@@ -1,4 +1,5 @@
 # Copyright (c) 2024-2026 CRS4
+# Copyright (c) 2025-2026 eScience Lab, The University of Manchester
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +36,13 @@ logger = logging.getLogger(__name__)
 
 T = TypeVar("T")
 
-SPARQL_PREFIXES = "PREFIX schema: <http://schema.org/>"
+SPARQL_PREFIXES = """
+PREFIX schema: <http://schema.org/>
+PREFIX shp:    <https://w3id.org/shp#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
+PREFIX dct: <http://purl.org/dc/terms/>
+"""
 
 
 def first(c: Collection[T]) -> T:
@@ -88,6 +95,15 @@ def load_graph_and_preserve_relative_ids(json_data, base="http://example.org/"):
 
     return g
 
+def _uses_https_schema(graph: rdflib.Graph) -> bool:
+    for s, p, o in graph.triples((None, None, None)):
+        for term in (s, p, o):
+            if isinstance(term, rdflib.URIRef) and str(term).startswith(
+                "https://schema.org/"
+            ):
+                return True
+    return False
+
 
 def _prepare_temp_rocrate(
     rocrate_path: Path,
@@ -111,8 +127,14 @@ def _prepare_temp_rocrate(
             json.dump(rocrate, f)
     if rocrate_entity_mod_sparql is not None:
         rocrate_graph = load_graph_and_preserve_relative_ids(rocrate)
+        if _uses_https_schema(rocrate_graph):
+            rocrate_entity_mod_sparql = rocrate_entity_mod_sparql.replace(
+                "http://schema.org/",
+                "https://schema.org/",
+            )
         rocrate_graph.update(rocrate_entity_mod_sparql)
-        context_uri = "https://w3id.org/ro/crate/1.1/context"
+        # preserve the original context to avoid forcing a downgrade/upgrade
+        context_uri = rocrate.get("@context", "https://w3id.org/ro/crate/1.2/context")
         rocrate_graph.serialize(
             Path(temp_rocrate_path, "ro-crate-metadata.json"),
             format="json-ld",
