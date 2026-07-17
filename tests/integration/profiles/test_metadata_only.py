@@ -64,11 +64,9 @@ def test_valid_ro_crates_from_folder(valid_roc_path):
             [],
             profile_identifier=(
                 # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
-                "five-safes-crate"
-                if "five-safes-crate" in valid_roc_path.name
-                else DEFAULT_PROFILE_IDENTIFIER
+                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else DEFAULT_PROFILE_IDENTIFIER
             ),
-            metadata_only=True
+            metadata_only=True,
         )
 
 
@@ -90,10 +88,8 @@ def test_valid_ro_crates_from_metadata_dict(valid_roc_path):
             [],
             profile_identifier=(
                 # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
-                "five-safes-crate"
-                if "five-safes-crate" in valid_roc_path.name
-                else DEFAULT_PROFILE_IDENTIFIER
+                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else DEFAULT_PROFILE_IDENTIFIER
             ),
             metadata_dict=metadata_dict,
-            metadata_only=True
+            metadata_only=True,
         )

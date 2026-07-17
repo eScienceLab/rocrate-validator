@@ -40,7 +40,6 @@ SPARQL_PREFIXES = """
 PREFIX schema: <http://schema.org/>
 PREFIX shp:    <https://w3id.org/shp#>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate-1.2/>
 PREFIX dct: <http://purl.org/dc/terms/>
 """
 
@@ -95,12 +94,11 @@ def load_graph_and_preserve_relative_ids(json_data, base="http://example.org/"):
 
     return g
 
+
 def _uses_https_schema(graph: rdflib.Graph) -> bool:
     for s, p, o in graph.triples((None, None, None)):
         for term in (s, p, o):
-            if isinstance(term, rdflib.URIRef) and str(term).startswith(
-                "https://schema.org/"
-            ):
+            if isinstance(term, rdflib.URIRef) and str(term).startswith("https://schema.org/"):
                 return True
     return False
 
