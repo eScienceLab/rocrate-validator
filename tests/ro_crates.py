@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from pathlib import Path
-from tempfile import TemporaryDirectory
+from tempfile import mkdtemp
 
 from pytest import fixture
 
@@ -30,7 +30,6 @@ def ro_crates_path() -> Path:
 
 
 class ValidROC:
-
     @property
     def rocrate_with_data_entities(self) -> Path:
         return VALID_CRATES_DATA_PATH / "rocrate-with-data-entities"
@@ -83,7 +82,7 @@ class ValidROC:
         return VALID_CRATES_DATA_PATH / "workflow-roc-string-license"
 
     @property
-    def sort_and_change_remote(self) -> Path:
+    def sort_and_change_remote(self) -> str:
         return "https://raw.githubusercontent.com/lifemonitor/validator-test-data/main/sortchangecase.crate.zip"
 
     @property
@@ -136,12 +135,11 @@ class ValidROC:
 
 
 class InvalidFileDescriptor:
-
     base_path = INVALID_CRATES_DATA_PATH / "0_file_descriptor_format"
 
     @property
     def missing_file_descriptor(self) -> Path:
-        return TemporaryDirectory()
+        return Path(mkdtemp())
 
     @property
     def invalid_json_format(self) -> Path:
@@ -165,7 +163,6 @@ class InvalidFileDescriptor:
 
 
 class InvalidRootDataEntity:
-
     base_path = INVALID_CRATES_DATA_PATH / "2_root_data_entity_metadata"
 
     @property
@@ -218,7 +215,6 @@ class InvalidRootDataEntity:
 
 
 class InvalidFileDescriptorEntity:
-
     base_path = INVALID_CRATES_DATA_PATH / "1_file_descriptor_metadata"
 
     @property
@@ -251,7 +247,6 @@ class InvalidFileDescriptorEntity:
 
 
 class InvalidDataEntity:
-
     base_path = INVALID_CRATES_DATA_PATH / "4_data_entity_metadata"
 
     @property
@@ -332,7 +327,6 @@ class InvalidDataEntity:
 
 
 class InvalidMainWorkflow:
-
     base_path = INVALID_CRATES_DATA_PATH / "0_main_workflow"
 
     @property
@@ -369,7 +363,6 @@ class InvalidMainWorkflow:
 
 
 class WROCInvalidConformsTo:
-
     base_path = INVALID_CRATES_DATA_PATH / "2_wroc_descriptor"
 
     @property
@@ -378,7 +371,6 @@ class WROCInvalidConformsTo:
 
 
 class WROCInvalidReadme:
-
     base_path = INVALID_CRATES_DATA_PATH / "1_wroc_crate/"
 
     @property
@@ -391,7 +383,6 @@ class WROCInvalidReadme:
 
 
 class WROCNoLicense:
-
     base_path = INVALID_CRATES_DATA_PATH / "1_wroc_crate/"
 
     @property
@@ -400,7 +391,6 @@ class WROCNoLicense:
 
 
 class WROCMainEntity:
-
     base_path = INVALID_CRATES_DATA_PATH / "1_wroc_crate/"
 
     @property
@@ -409,7 +399,6 @@ class WROCMainEntity:
 
 
 class InvalidProcRC:
-
     base_path = INVALID_CRATES_DATA_PATH / "3_process_run_crate/"
 
     @property
@@ -586,7 +575,6 @@ class InvalidProcRC:
 
 
 class InvalidWTROC:
-
     base_path = INVALID_CRATES_DATA_PATH / "5_workflow_testing_ro_crate/"
 
     @property
@@ -659,7 +647,6 @@ class InvalidWTROC:
 
 
 class InvalidWfRC:
-
     base_path = INVALID_CRATES_DATA_PATH / "4_workflow_run_crate/"
 
     @property
@@ -748,7 +735,6 @@ class InvalidWfRC:
 
 
 class InvalidProvRC:
-
     base_path = INVALID_CRATES_DATA_PATH / "5_provenance_run_crate/"
 
     @property
@@ -1031,7 +1017,46 @@ class Invalid5sROC:
 
 
 class InvalidMultiProfileROC:
-
     @property
     def invalid_multi_profile_crate(self) -> Path:
         return INVALID_CRATES_DATA_PATH / "0_multi_profile_crate"
+
+
+class ValidROCrate12:
+    base_path = VALID_CRATES_DATA_PATH
+
+    @property
+    def attached(self) -> Path:
+        return self.base_path / "ro-crate-1.2-attached"
+
+    @property
+    def attached_absolute_root(self) -> Path:
+        return self.base_path / "ro-crate-1.2-absolute-root"
+
+    @property
+    def detached(self) -> Path:
+        return self.base_path / "detached" / "dataset-ro-crate-metadata.json"
+
+    @property
+    def detached_prefixed(self) -> Path:
+        return self.base_path / "detached" / "test-ro-crate-metadata.json"
+
+
+class InvalidROCrate12:
+    base_path = INVALID_CRATES_DATA_PATH / "ro-crate-1.2"
+
+    @property
+    def invalid_context(self) -> Path:
+        return self.base_path / "invalid-context"
+
+    @property
+    def invalid_date_published(self) -> Path:
+        return self.base_path / "invalid-date-published"
+
+    @property
+    def detached_relative_entity(self) -> Path:
+        return self.base_path / "detached-relative-entity" / "dataset-ro-crate-metadata.json"
+
+    @property
+    def detached_bad_filename(self) -> Path:
+        return self.base_path / "detached-bad-filename" / "ro-crate-metadata.json"
