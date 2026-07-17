@@ -393,11 +393,8 @@
             "@id": "https://tre72.example.com/#crate-validator",
             "@type": "SoftwareApplication",
             "name": "RO-Crate validator at TRE72",
-<<<<<<< HEAD
-=======
             "url": "https://tre72.example.com/#crate-validator",
             "version": "1.0",
->>>>>>> ab465be7 (Add Five Safes Crate profile to upstream RO-Crate 1.2 base)
             "provider": {
                 "@id": "https://tre72.example.com/"
             }

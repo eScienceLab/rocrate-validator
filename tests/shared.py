@@ -40,11 +40,7 @@ SPARQL_PREFIXES = """
 PREFIX schema: <http://schema.org/>
 PREFIX shp:    <https://w3id.org/shp#>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-<<<<<<< HEAD
-PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate/>
-=======
 PREFIX rocrate: <https://github.com/crs4/rocrate-validator/profiles/ro-crate-1.2/>
->>>>>>> ab465be7 (Add Five Safes Crate profile to upstream RO-Crate 1.2 base)
 PREFIX dct: <http://purl.org/dc/terms/>
 """
 
