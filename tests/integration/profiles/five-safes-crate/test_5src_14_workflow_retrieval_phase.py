@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -45,9 +45,7 @@ def test_5src_download_action_does_not_have_name():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["DownloadAction"],
-        expected_triggered_issues=[
-            "DownloadAction MUST have a human readable name string."
-        ],
+        expected_triggered_issues=["DownloadAction MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -74,9 +72,7 @@ def test_5src_download_action_name_not_a_string():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["DownloadAction"],
-        expected_triggered_issues=[
-            "DownloadAction MUST have a human readable name string."
-        ],
+        expected_triggered_issues=["DownloadAction MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -206,10 +202,7 @@ def test_5src_downloaded_workflow_distribution_is_not_the_same_as_download_actio
         expected_validation_result=False,
         expected_triggered_requirements=["Downloaded Workflow"],
         expected_triggered_issues=[
-            (
-                "DownloadedWorkflow --> `distribution` MUST reference "
-                "the same entity as `DownloadAction` --> `object`."
-            )
+            ("DownloadedWorkflow --> `distribution` MUST reference the same entity as `DownloadAction` --> `object`.")
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -295,9 +288,7 @@ def test_5src_root_data_entity_does_not_mention_download_action_entity():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "RootDataEntity SHOULD mention DownloadAction if this exists."
-        ],
+        expected_triggered_issues=["RootDataEntity SHOULD mention DownloadAction if this exists."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -352,9 +343,7 @@ def test_5src_download_action_does_not_have_action_status_property():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["DownloadAction"],
-        expected_triggered_issues=[
-            "`DownloadAction` SHOULD have `actionStatus` property."
-        ],
+        expected_triggered_issues=["`DownloadAction` SHOULD have `actionStatus` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

@@ -34,7 +34,7 @@
     # prof:isProfileOf <https://w3id.org/ro/wfrun/workflow/0.5> ;
 
     # This profile is a transitive profile of the RO-Crate Metadata Specification
-    prof:isTransitiveProfileOf <https://w3id.org/ro/crate/1.1> ;
+    prof:isTransitiveProfileOf <https://w3id.org/ro/crate/1.2> ;
     # TODO: resolve failures when these profiles are applied
     #                            <https://w3id.org/ro/wfrun/process/0.5> ,
     #                            <https://w3id.org/workflowhub/workflow-ro-crate/1.0> ;

@@ -14,11 +14,11 @@
 # limitations under the License.
 
 import logging
+
 import pytest
 
 from rocrate_validator import services
 from rocrate_validator.models import Severity
-from tests.conftest import SKIP_LOCAL_DATA_ENTITY_EXISTENCE_CHECK_IDENTIFIER
 from tests.ro_crates import ValidROC
 from tests.shared import do_entity_test
 
@@ -26,17 +26,18 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # Dynamically fetch the SKIP_WEB_RESOURCE_AVAILABILITY_IDENTIFIER
-# required as disable_inherited_profiles_reporting does not disable Python checks from
-# inherited profiles (https://github.com/crs4/rocrate-validator/issues/135)
-rocrate_profile = services.get_profile("ro-crate")
+rocrate_profile = services.get_profile("ro-crate-1.2")
 if not rocrate_profile:
-    raise RuntimeError("Unable to load the RO-Crate profile")
+    raise RuntimeError("Unable to load the RO-Crate 1.2 profile")
+check_local_data_entity_existence = rocrate_profile.get_requirement_check("Data Entity: REQUIRED resource availability")
+assert check_local_data_entity_existence, "Unable to find the requirement 'Data Entity: REQUIRED resource availability'"
+SKIP_LOCAL_DATA_ENTITY_EXISTENCE_CHECK_IDENTIFIER = check_local_data_entity_existence.identifier
 check_local_data_entity_existence = rocrate_profile.get_requirement_check(
-    "Web-based Data Entity: resource availability"
+    "Web-based Data Entity: REQUIRED resource availability"
 )
-assert (
-    check_local_data_entity_existence
-), "Unable to find the requirement 'Web-based Data Entity: resource availability'"
+assert check_local_data_entity_existence, (
+    "Unable to find the requirement 'Web-based Data Entity: REQUIRED resource availability'"
+)
 SKIP_WEB_RESOURCE_AVAILABILITY_IDENTIFIER = check_local_data_entity_existence.identifier
 
 

@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -48,9 +48,7 @@ def test_5src_no_signoff_phase():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhase"],
-        expected_triggered_issues=[
-            "There SHOULD be a Sign-Off Phase in the Final RO-Crate"
-        ],
+        expected_triggered_issues=["There SHOULD be a Sign-Off Phase in the Final RO-Crate"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -79,9 +77,7 @@ def test_5src_signoff_phase_no_name():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOff"],
-        expected_triggered_issues=[
-            "Sign Off phase MUST have a human-readable name string."
-        ],
+        expected_triggered_issues=["Sign Off phase MUST have a human-readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -147,7 +143,7 @@ def test_5src_signoff_phase_wrong_action_status():
         expected_triggered_requirements=["SignOffStatus"],
         expected_triggered_issues=[
             "The value of actionStatus MUST be one of the allowed values:"
-            + " PotentialActionStatus; ActiveActionStatus; CompletedActionStatus; FailedActionStatus."
+            " PotentialActionStatus; ActiveActionStatus; CompletedActionStatus; FailedActionStatus."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -175,9 +171,7 @@ def test_5src_signoff_phase_not_mentioned():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhase"],
-        expected_triggered_issues=[
-            "The Root Data Entity SHOULD mention a Sign-Off Phase Object"
-        ],
+        expected_triggered_issues=["The Root Data Entity SHOULD mention a Sign-Off Phase Object"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -206,9 +200,7 @@ def test_5src_signoff_phase_no_endtime():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhaseEndTime"],
-        expected_triggered_issues=[
-            "Sign Off object SHOULD have endTime property if action completed or failed."
-        ],
+        expected_triggered_issues=["Sign Off object SHOULD have endTime property if action completed or failed."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -402,9 +394,7 @@ def test_5src_signoff_phase_no_instrument():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhaseProperties"],
-        expected_triggered_issues=[
-            "The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"
-        ],
+        expected_triggered_issues=["The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -436,9 +426,7 @@ def test_5src_signoff_phase_instrument_not_iri():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhaseProperties"],
-        expected_triggered_issues=[
-            "The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"
-        ],
+        expected_triggered_issues=["The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -468,9 +456,7 @@ def test_5src_signoff_phase_instrument_no_type():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhaseProperties"],
-        expected_triggered_issues=[
-            "The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"
-        ],
+        expected_triggered_issues=["The Sign-Off Phase SHOULD have an TRE policy (instrument) with type CreativeWork"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -534,9 +520,7 @@ def test_5src_signoff_phase_object_notworkflow():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["SignOffPhaseProperties"],
-        expected_triggered_issues=[
-            "The Sign-Off Phase SHOULD list the workflow (mainEntity) as an object"
-        ],
+        expected_triggered_issues=["The Sign-Off Phase SHOULD list the workflow (mainEntity) as an object"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

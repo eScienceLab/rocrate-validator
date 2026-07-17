@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -46,9 +46,7 @@ def test_5src_disclosure_object_with_no_name():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["DisclosureCheck"],
-        expected_triggered_issues=[
-            "`DisclosureCheck` MUST have a name string of at least 10 characters."
-        ],
+        expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -77,9 +75,7 @@ def test_5src_disclosure_object_with_name_not_string():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["DisclosureCheck"],
-        expected_triggered_issues=[
-            "`DisclosureCheck` MUST have a name string of at least 10 characters."
-        ],
+        expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -108,9 +104,7 @@ def test_5src_disclosure_object_with_not_long_enough_name():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["DisclosureCheck"],
-        expected_triggered_issues=[
-            "`DisclosureCheck` MUST have a name string of at least 10 characters."
-        ],
+        expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -264,9 +258,7 @@ def test_5src_disclosure_object_not_mentioned_by_root_data_entity():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["RootDataEntity"],
-        expected_triggered_issues=[
-            "`RootDataEntity` SHOULD mention a disclosure object."
-        ],
+        expected_triggered_issues=["`RootDataEntity` SHOULD mention a disclosure object."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -291,9 +283,7 @@ def test_5src_disclosure_object_with_no_action_status():
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
         expected_triggered_requirements=["DisclosureCheck"],
-        expected_triggered_issues=[
-            "The `DisclosureCheck` SHOULD have `actionStatus` property."
-        ],
+        expected_triggered_issues=["The `DisclosureCheck` SHOULD have `actionStatus` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

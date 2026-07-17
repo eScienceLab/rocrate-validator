@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -44,12 +44,9 @@ def test_5src_assess_action_not_referenced_from_rde():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=[
-            "All AssessActions are mentioned from Root Data Entity"
-        ],
+        expected_triggered_requirements=["All AssessActions are mentioned from Root Data Entity"],
         expected_triggered_issues=[
-            "All AssessAction entities in the crate MUST be referenced from "
-            "the Root Dataset via `mentions`."
+            "All AssessAction entities in the crate MUST be referenced from the Root Dataset via `mentions`."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,

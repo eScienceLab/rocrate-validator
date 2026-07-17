@@ -1004,8 +1004,7 @@ class InvalidProvRC:
 
 
 class Invalid5sROC:
-
-    base_path = INVALID_CRATES_DATA_PATH / "five_safes_crate/"
+    base_path = INVALID_CRATES_DATA_PATH / "five_safes_crate"
 
     @property
     def context_multiple_wrong_version(self) -> Path:

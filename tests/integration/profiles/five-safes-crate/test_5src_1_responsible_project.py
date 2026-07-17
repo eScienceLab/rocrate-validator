@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -56,9 +56,7 @@ def test_5src_responsible_project_funding_not_grant():
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
         expected_triggered_requirements=["Responsible Project"],
-        expected_triggered_issues=[
-            "The property 'funding' of the Responsible Project MUST be of type Grant."
-        ],
+        expected_triggered_issues=["The property 'funding' of the Responsible Project MUST be of type Grant."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -136,9 +134,7 @@ def test_5src_responsible_project_member_and_agent_affiliation_no_intersection()
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=[
-            "Organizations (members of Responsible Project)"
-        ],
+        expected_triggered_requirements=["Organizations (members of Responsible Project)"],
         expected_triggered_issues=[
             (
                 "At least one of the organisations that are members of the responsible project SHOULD "
@@ -178,9 +174,7 @@ def test_5src_responsible_project_missing_funding_property():
         requirement_severity=Severity.OPTIONAL,
         expected_validation_result=False,
         expected_triggered_requirements=["Responsible Project"],
-        expected_triggered_issues=[
-            "The Responsible Project does not have the property `funding`."
-        ],
+        expected_triggered_issues=["The Responsible Project does not have the property `funding`."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )
@@ -211,9 +205,7 @@ def test_5src_responsible_project_missing_member_property():
         requirement_severity=Severity.OPTIONAL,
         expected_validation_result=False,
         expected_triggered_requirements=["Responsible Project"],
-        expected_triggered_issues=[
-            "The Responsible Project does not have the property `member`."
-        ],
+        expected_triggered_issues=["The Responsible Project does not have the property `member`."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
     )

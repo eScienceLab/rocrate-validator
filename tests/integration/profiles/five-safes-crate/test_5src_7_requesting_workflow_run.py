@@ -17,7 +17,7 @@ import logging
 
 from rocrate_validator.models import Severity
 from tests.ro_crates import ValidROC
-from tests.shared import do_entity_test, SPARQL_PREFIXES
+from tests.shared import SPARQL_PREFIXES, do_entity_test
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -159,7 +159,7 @@ def test_createaction_object_does_not_reference_existing_entities():
         expected_triggered_requirements=["WorkflowRunAction"],
         expected_triggered_issues=[
             "In the `CreateAction` entity corresponding to the workflow run,"
-            + " each `object`  MUST reference an existing entity."
+            " each `object`  MUST reference an existing entity."
         ],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
