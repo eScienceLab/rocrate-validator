@@ -27,7 +27,7 @@
 
 five-safes-crate:DisclosureObjectHasDescriptiveNameAndIsAssessAction
     a sh:NodeShape ;
-    sh:name "DisclosureCheck" ;
+    sh:name "DisclosureCheck MUST have a name and AssessAction type" ;
     sh:description "DisclosureCheck" ;
 
     sh:target [
@@ -56,7 +56,7 @@ five-safes-crate:DisclosureObjectHasDescriptiveNameAndIsAssessAction
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "name" ;
+        sh:name "DisclosureCheck name" ;
         sh:description "`DisclosureCheck` MUST have a name string of at least 10 characters." ;
         sh:minCount 1 ;
         sh:path schema:name ;
@@ -69,7 +69,7 @@ five-safes-crate:DisclosureObjectHasDescriptiveNameAndIsAssessAction
 
 five-safes-crate:DisclosureObjectHasActionStatusWithAcceptedValue
     a sh:NodeShape ;
-    sh:name "DisclosureCheck" ;
+    sh:name "DisclosureCheck MUST have an allowed action status" ;
     sh:description "`DisclosureCheck` MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
 
     sh:target [
@@ -88,7 +88,7 @@ five-safes-crate:DisclosureObjectHasActionStatusWithAcceptedValue
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "actionStatus" ;
+        sh:name "DisclosureCheck action status" ;
         sh:description "`DisclosureCheck` MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
         sh:path schema:actionStatus ;
         sh:in (
@@ -106,7 +106,7 @@ five-safes-crate:DisclosureObjectHasActionStatusWithAcceptedValue
 
 five-safes-crate:RootDataEntityShouldMentionDisclosureObject
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity SHOULD mention DisclosureCheck" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "RootDataEntity SHOULD mention a disclosure object." ;
     sh:severity sh:Warning ;
@@ -133,7 +133,7 @@ five-safes-crate:RootDataEntityShouldMentionDisclosureObject
 
 five-safes-crate:DisclosureObjectHasActionStatus
     a sh:NodeShape ;
-    sh:name "DisclosureCheck" ;
+    sh:name "DisclosureCheck SHOULD have an action status" ;
     sh:description "The `DisclosureCheck` SHOULD have `actionStatus` property." ;
 
     sh:target [
@@ -151,7 +151,7 @@ five-safes-crate:DisclosureObjectHasActionStatus
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "DisclosureCheck action status" ;
         sh:description "The `DisclosureCheck` SHOULD have `actionStatus` property." ;
         sh:path schema:actionStatus ;
         sh:minCount 1 ;
@@ -162,7 +162,7 @@ five-safes-crate:DisclosureObjectHasActionStatus
 
 five-safes-crate:DisclosureObjectHasEndTimeIfcompletedOrFailed
     a sh:NodeShape ;
-    sh:name "DisclosureCheck" ;
+    sh:name "DisclosureCheck SHOULD have an end time when ended" ;
     sh:description "DisclosureCheck" ;
 
     sh:target [
@@ -185,7 +185,7 @@ five-safes-crate:DisclosureObjectHasEndTimeIfcompletedOrFailed
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "EndTime" ;
+        sh:name "DisclosureCheck end time" ;
         sh:path schema:endTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -223,7 +223,7 @@ five-safes-crate:DisclosureObjectHasStartTimeIfBegun
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
+        sh:name "DisclosureCheck start time" ;
         sh:path schema:startTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;

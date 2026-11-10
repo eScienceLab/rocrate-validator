@@ -45,7 +45,7 @@ def test_5src_workflow_object_with_no_name():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowExecution"],
+        expected_triggered_requirements=["Workflow execution MUST have a descriptive name"],
         expected_triggered_issues=[
             "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters."
         ],
@@ -76,7 +76,7 @@ def test_5src_workflow_object_with_name_not_string():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowExecution"],
+        expected_triggered_requirements=["Workflow execution MUST have a descriptive name"],
         expected_triggered_issues=[
             "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters."
         ],
@@ -107,7 +107,7 @@ def test_5src_workflow_object_with_not_long_enough_name():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowExecution"],
+        expected_triggered_requirements=["Workflow execution MUST have a descriptive name"],
         expected_triggered_issues=[
             "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters."
         ],
@@ -200,7 +200,7 @@ def test_5src_workflow_object_with_no_action_status():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowExecution"],
+        expected_triggered_requirements=["Workflow execution MUST have an allowed action status"],
         expected_triggered_issues=[
             (
                 "`CreateAction` MUST have an actionStatus "
@@ -233,7 +233,7 @@ def test_5src_workflow_object_with_no_properly_valued_action_status():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowExecution"],
+        expected_triggered_requirements=["Workflow execution MUST have an allowed action status"],
         expected_triggered_issues=[
             (
                 "`CreateAction` MUST have an actionStatus "

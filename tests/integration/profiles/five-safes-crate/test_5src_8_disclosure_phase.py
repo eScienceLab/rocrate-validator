@@ -45,7 +45,7 @@ def test_5src_disclosure_object_with_no_name():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -74,7 +74,7 @@ def test_5src_disclosure_object_with_name_not_string():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -103,7 +103,7 @@ def test_5src_disclosure_object_with_not_long_enough_name():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["`DisclosureCheck` MUST have a name string of at least 10 characters."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -131,7 +131,7 @@ def test_5src_disclosure_object_not_an_assess_action():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["`DisclosureCheck` MUST be a `AssessAction`."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -159,7 +159,7 @@ def test_5src_disclosure_object_with_no_proper_action_status():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck MUST have an allowed action status"],
         expected_triggered_issues=[
             (
                 "`DisclosureCheck` MUST have an actionStatus with an allowed value "
@@ -257,7 +257,7 @@ def test_5src_disclosure_object_not_mentioned_by_root_data_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity SHOULD mention DisclosureCheck"],
         expected_triggered_issues=["`RootDataEntity` SHOULD mention a disclosure object."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -282,7 +282,7 @@ def test_5src_disclosure_object_with_no_action_status():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck SHOULD have an action status"],
         expected_triggered_issues=["The `DisclosureCheck` SHOULD have `actionStatus` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -312,7 +312,7 @@ def test_5src_disclosure_object_has_no_end_time_if_ended():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DisclosureCheck"],
+        expected_triggered_requirements=["DisclosureCheck SHOULD have an end time when ended"],
         expected_triggered_issues=[
             (
                 "`DisclosureCheck` SHOULD have the `endTime` property if `actionStatus` "

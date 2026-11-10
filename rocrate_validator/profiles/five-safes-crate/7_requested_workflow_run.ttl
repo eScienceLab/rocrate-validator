@@ -26,7 +26,7 @@
 
 five-safes-crate:RootDataEntityMentionsWorkflowRunAction
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity MUST mention a workflow run" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "" ;
 
@@ -94,7 +94,7 @@ five-safes-crate:WorkflowRunObject
 five-safes-crate:WorkflowRunActionShouldHaveObjectProperty
     a sh:NodeShape ;
     sh:targetClass ro-crate:WorkflowRunAction ;
-    sh:name "WorkflowRunAction" ;
+    sh:name "Workflow run SHOULD have an object" ;
     sh:property [
         sh:path schema:object ;
         sh:minCount 1 ;

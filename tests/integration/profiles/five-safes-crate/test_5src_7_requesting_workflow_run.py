@@ -50,7 +50,7 @@ def test_rocrate_does_not_have_createaction():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["RootDataEntity", "Root data entity MUST mention a workflow run"],
         expected_triggered_issues=[
             "`RootDataEntity` MUST reference at least one `CreateAction`",
             " (corresponding to the workflow run) through `mentions`",
@@ -86,7 +86,7 @@ def test_rootdataentity_does_not_have_mentions_property():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity MUST mention a workflow run"],
         expected_triggered_issues=[
             "`RootDataEntity` MUST reference at least one `CreateAction`",
             " (corresponding to the workflow run) through `mentions`",
@@ -120,7 +120,7 @@ def test_rootdataentity_does_not_mention_create_action():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity MUST mention a workflow run"],
         expected_triggered_issues=[
             "`RootDataEntity` MUST reference at least one `CreateAction`",
             " (corresponding to the workflow run) through `mentions`",
@@ -191,7 +191,7 @@ def test_createaction_does_not_have_object_property():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowRunAction"],
+        expected_triggered_requirements=["Workflow run SHOULD have an object"],
         expected_triggered_issues=[
             "`CreateAction` (corresponding to the workflow run) SHOULD have the property `object` with IRI values."
         ],

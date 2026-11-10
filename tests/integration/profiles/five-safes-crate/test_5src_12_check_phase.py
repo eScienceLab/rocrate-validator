@@ -50,7 +50,7 @@ def test_5src_check_value_not_of_type_assess_action():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue MUST have a name and AssessAction type"],
         expected_triggered_issues=["CheckValue MUST be a `AssessAction`."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -78,7 +78,7 @@ def test_5src_check_value_name_not_a_string():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue MUST have a name and AssessAction type"],
         expected_triggered_issues=[
             "CheckValue MUST have a human readable name string."
         ],
@@ -177,7 +177,7 @@ def test_5src_check_value_has_action_status_with_not_allowed_value():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue MUST have an allowed action status"],
         expected_triggered_issues=[
             "`CheckValue` --> `actionStatus` MUST have one of the allowed values."
         ],
@@ -206,7 +206,7 @@ def test_5src_root_data_entity_does_not_mention_check_value_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity SHOULD mention CheckValue"],
         expected_triggered_issues=[
             "RootDataEntity SHOULD mention a check value object."
         ],
@@ -235,7 +235,7 @@ def test_5src_check_value_object_does_not_point_to_root_data_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue SHOULD reference the root data entity"],
         expected_triggered_issues=[
             "`CheckValue` --> `object` SHOULD point to the root of the RO-Crate"
         ],
@@ -267,7 +267,7 @@ def test_5src_check_value_instrument_does_not_point_to_entity_with_type_defined_
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue SHOULD reference a DefinedTerm instrument"],
         expected_triggered_issues=[
             "`CheckValue` --> `instrument` SHOULD point to an entity typed `DefinedTerm`"
         ],
@@ -295,7 +295,7 @@ def test_5src_check_value_does_not_have_end_time():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue SHOULD have an end time"],
         expected_triggered_issues=["`CheckValue` SHOULD have the `endTime` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -321,7 +321,7 @@ def test_5src_check_value_does_not_have_action_status_property():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue SHOULD have an action status"],
         expected_triggered_issues=["CheckValue SHOULD have actionStatus property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -347,7 +347,7 @@ def test_5src_check_value_does_not_point_to_an_agent():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["CheckValue"],
+        expected_triggered_requirements=["CheckValue SHOULD identify the agent performing the check"],
         expected_triggered_issues=[
             "`CheckValue` --> `agent` SHOULD reference the agent who initiated the check"
         ],

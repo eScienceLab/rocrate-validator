@@ -50,7 +50,7 @@ def test_completed_createaction_does_not_have_result():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["WorkflowRunAction"],
+        expected_triggered_requirements=["Completed workflow run SHOULD have a result"],
         expected_triggered_issues=[
             "The `CreateAction` corresponding to the workflow run,",
             "with CompletedActionStatus, SHOULD have the `result` property.",

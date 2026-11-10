@@ -27,13 +27,13 @@
 
 five-safes-crate:ReferenceToWorkflowCrate
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity MUST reference a workflow crate" ;
     sh:targetClass ro-crate:RootDataEntity ;
 
     # RootDataEntity MUST have an mainEntity property
     sh:property [
         a sh:PropertyShape ;
-        sh:name "mainEntity" ;
+        sh:name "Root mainEntity cardinality and IRI" ;
         sh:path schema:mainEntity ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -45,7 +45,7 @@ five-safes-crate:ReferenceToWorkflowCrate
     # The mainEntity of a RootDataEntity MUST be a Dataset
     sh:property [
         a sh:PropertyShape ;
-        sh:name "mainEntity" ;
+        sh:name "Root mainEntity Dataset type" ;
         sh:path schema:mainEntity ;
         sh:class schema:Dataset ;
         sh:severity sh:Violation ;
@@ -59,7 +59,7 @@ five-safes-crate:mainEntityHasProperConformsTo
     sh:targetObjectsOf schema:mainEntity ;
     sh:property [
         a sh:PropertyShape ;
-        sh:name "conformsTo" ;
+        sh:name "Workflow conformsTo cardinality" ;
         sh:path purl:conformsTo ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -68,7 +68,7 @@ five-safes-crate:mainEntityHasProperConformsTo
     ] ;
     sh:property [
         a sh:PropertyShape ;
-        sh:name "conformsTo" ;
+        sh:name "Workflow conformsTo profile IRI" ;
         sh:path purl:conformsTo ;
         sh:nodeKind sh:IRI ;
         sh:pattern "^https://w3id\\.org/workflowhub/workflow-ro-crate" ;

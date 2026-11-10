@@ -78,7 +78,7 @@ five-safes-crate:SignOffObjectHasActionStatus
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "actionStatus" ;
+        sh:name "SignOff action status" ;
         sh:description "The value of actionStatus MUST be one of the allowed values." ;
         sh:path schema:actionStatus ;
         sh:in (
@@ -248,7 +248,7 @@ five-safes-crate:SignOffPhaseEndTime
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "EndTime" ;
+        sh:name "SignOff end time" ;
         sh:path schema:endTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -284,7 +284,7 @@ five-safes-crate:SignOffPhaseStartTime
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
+        sh:name "SignOff start time" ;
         sh:path schema:startTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
