@@ -46,7 +46,7 @@ def test_5src_root_data_entity_without_source_organization():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity MUST identify its source organization"],
         expected_triggered_issues=["""The Root Data Entity MUST have a `sourceOrganization` property."""],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -79,7 +79,7 @@ def test_5src_root_data_entity_source_organization_not_organization():
         rocrate_path=ValidROC().five_safes_crate_request,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity MUST identify its source organization"],
         expected_triggered_issues=[
             """The `sourceOrganization` property of the RootDataEntity MUST point to a Project entity."""
         ],

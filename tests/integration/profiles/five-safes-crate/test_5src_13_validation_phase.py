@@ -47,7 +47,7 @@ def test_5src_validation_check_not_of_type_assess_action():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["ValidationCheck MUST be a `AssessAction`."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -74,7 +74,7 @@ def test_5src_validation_check_name_not_a_string():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck MUST have a name and AssessAction type"],
         expected_triggered_issues=["ValidationCheck MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -99,7 +99,7 @@ def test_5src_validation_check_has_action_status_with_not_allowed_value():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck MUST have an allowed action status"],
         expected_triggered_issues=[
             (
                 "actionStatus MUST be either PotentialActionStatus, ActiveActionStatus, "
@@ -197,7 +197,7 @@ def test_5src_root_data_entity_does_not_mention_validation_check_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity SHOULD mention ValidationCheck"],
         expected_triggered_issues=["RootDataEntity SHOULD mention a ValidationCheck object."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -224,7 +224,7 @@ def test_5src_validation_check_object_does_not_point_to_root_data_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck SHOULD reference the root data entity"],
         expected_triggered_issues=["`ValidationCheck` --> `object` SHOULD point to the root of the RO-Crate"],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -249,7 +249,7 @@ def test_5src_validation_check_instrument_does_not_point_to_5scrate_0p4():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck SHOULD reference the Five Safes profile as instrument"],
         expected_triggered_issues=[
             "`ValidationCheck` --> `instrument` SHOULD point to an entity with @id https://w3id.org/5s-crate/0.4"
         ],
@@ -276,7 +276,7 @@ def test_5src_Validation_check_does_not_have_action_status_property():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck SHOULD have an action status"],
         expected_triggered_issues=["ValidationCheck SHOULD have actionStatus property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -301,7 +301,7 @@ def test_5src_download_action_does_not_have_end_time():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["ValidationCheck"],
+        expected_triggered_requirements=["ValidationCheck SHOULD have an end time when ended"],
         expected_triggered_issues=[
             (
                 "ValidationCheck SHOULD have the `endTime` property if `actionStatus` "

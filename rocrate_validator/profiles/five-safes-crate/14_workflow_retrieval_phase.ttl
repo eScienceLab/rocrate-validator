@@ -27,13 +27,13 @@
 
 five-safes-crate:DownloadActionObjectMUSTHavesDescriptiveName
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction MUST have a descriptive name" ;
     sh:targetClass schema:DownloadAction ;
     sh:description "" ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "name" ;
+        sh:name "DownloadAction name" ;
         sh:description "DownloadAction MUST have a human readable name string." ;
         sh:path schema:name ;
         sh:minCount 1 ;
@@ -47,7 +47,7 @@ five-safes-crate:DownloadActionObjectMUSTHavesDescriptiveName
 
 five-safes-crate:WorkflowSameAsAndRootDataEntityMainEntityMUSTBeTheSame
     a sh:NodeShape ;
-    sh:name "Downloaded Workflow" ;
+    sh:name "Downloaded workflow sameAs MUST match the root mainEntity" ;
     sh:description "" ;
     sh:severity sh:Violation ;
 
@@ -89,7 +89,7 @@ five-safes-crate:WorkflowSameAsAndRootDataEntityMainEntityMUSTBeTheSame
 
 five-safes-crate:DownloadedWorkflowDistributionAndDownloadActionObjectMUSTBeTheSame
     a sh:NodeShape ;
-    sh:name "Downloaded Workflow" ;
+    sh:name "Downloaded workflow distribution MUST match the download object" ;
     sh:description "" ;
     sh:severity sh:Violation ;
     
@@ -130,7 +130,7 @@ five-safes-crate:DownloadedWorkflowDistributionAndDownloadActionObjectMUSTBeTheS
 
 five-safes-crate:DownloadActionActionStatusMUSTHaveAllowedValues
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction MUST have an allowed action status" ;
     sh:description "" ;
 
     sh:target [
@@ -149,7 +149,7 @@ five-safes-crate:DownloadActionActionStatusMUSTHaveAllowedValues
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "DownloadAction action status" ;
         sh:path schema:actionStatus ;
         sh:in (
             "http://schema.org/PotentialActionStatus"
@@ -166,7 +166,7 @@ five-safes-crate:DownloadActionActionStatusMUSTHaveAllowedValues
 
 five-safes-crate:DownloadActionEntitySHOULDExist
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "DownloadAction SHOULD exist" ;
     sh:description "" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:severity sh:Warning ;
@@ -192,7 +192,7 @@ five-safes-crate:DownloadActionEntitySHOULDExist
 
 five-safes-crate:RootDataEntitySHOULDMentionDownloadActionIfPresent
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity SHOULD mention DownloadAction when present" ;
     sh:description "" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:severity sh:Warning ;
@@ -218,7 +218,7 @@ five-safes-crate:RootDataEntitySHOULDMentionDownloadActionIfPresent
 
 five-safes-crate:DownloadActionShouldHaveEndTimeIfEnded
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction SHOULD have an end time when ended" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -240,7 +240,7 @@ five-safes-crate:DownloadActionShouldHaveEndTimeIfEnded
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "EndTime" ;
+        sh:name "DownloadAction end time" ;
         sh:path schema:endTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -251,13 +251,13 @@ five-safes-crate:DownloadActionShouldHaveEndTimeIfEnded
 
 five-safes-crate:DownloadActionShouldHaveActionStatus
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction SHOULD have an action status" ;
     sh:targetClass schema:DownloadAction ;
     sh:description "" ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "DownloadAction action status" ;
         sh:path schema:actionStatus ;
         sh:minCount 1 ;
         sh:severity sh:Warning ;
@@ -269,7 +269,7 @@ five-safes-crate:DownloadActionShouldHaveActionStatus
 
 five-safes-crate:DownloadedWorkflowSHOULDExistAndBeReferencedByDownloadActionResult
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction result MAY reference an existing workflow entity" ;
     sh:description "Validates that DownloadAction result references an existing entity" ;
     sh:targetClass schema:DownloadAction ;
 
@@ -304,7 +304,7 @@ five-safes-crate:DownloadedWorkflowSHOULDExistAndBeReferencedByDownloadActionRes
 
 five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
     a sh:NodeShape ;
-    sh:name "DownloadAction" ;
+    sh:name "DownloadAction MAY have a start time when begun" ;
     sh:description (
         "`DownloadAction` MAY have the `startTime` property if `actionStatus` "
         "is either ActiveActionStatus, CompletedActionStatus or FailedActionStatus."
@@ -331,7 +331,7 @@ five-safes-crate:DownloadActionMayHaveStartTimeIfBegun
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
+        sh:name "DownloadAction start time" ;
         sh:path schema:startTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;

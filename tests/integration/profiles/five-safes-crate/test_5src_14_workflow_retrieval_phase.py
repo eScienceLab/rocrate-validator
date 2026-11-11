@@ -44,7 +44,7 @@ def test_5src_download_action_does_not_have_name():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction MUST have a descriptive name"],
         expected_triggered_issues=["DownloadAction MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -71,7 +71,7 @@ def test_5src_download_action_name_not_a_string():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction MUST have a descriptive name"],
         expected_triggered_issues=["DownloadAction MUST have a human readable name string."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -167,7 +167,7 @@ def test_5src_downloaded_workflow_same_as_is_not_the_same_as_root_data_entity_ma
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["Downloaded Workflow"],
+        expected_triggered_requirements=["Downloaded workflow sameAs MUST match the root mainEntity"],
         expected_triggered_issues=[
             (
                 "The property `sameAs` of the entity representing the downloaded workflow "
@@ -200,7 +200,7 @@ def test_5src_downloaded_workflow_distribution_is_not_the_same_as_download_actio
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["Downloaded Workflow"],
+        expected_triggered_requirements=["Downloaded workflow distribution MUST match the download object"],
         expected_triggered_issues=[
             ("DownloadedWorkflow --> `distribution` MUST reference the same entity as `DownloadAction` --> `object`.")
         ],
@@ -230,7 +230,7 @@ def test_5src_download_action_has_action_status_with_not_allowed_value():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.REQUIRED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction MUST have an allowed action status"],
         expected_triggered_issues=[
             (
                 "The value of actionStatus MUST be one of the allowed values: "
@@ -263,7 +263,7 @@ def test_5src_download_action_is_not_present():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["DownloadAction SHOULD exist"],
         expected_triggered_issues=["An entity typed DownloadAction SHOULD exist."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -287,7 +287,7 @@ def test_5src_root_data_entity_does_not_mention_download_action_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["RootDataEntity"],
+        expected_triggered_requirements=["Root data entity SHOULD mention DownloadAction when present"],
         expected_triggered_issues=["RootDataEntity SHOULD mention DownloadAction if this exists."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -312,7 +312,7 @@ def test_5src_download_action_does_not_have_end_time():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction SHOULD have an end time when ended"],
         expected_triggered_issues=[
             (
                 "`DownloadAction` SHOULD have the `endTime` property "
@@ -342,7 +342,7 @@ def test_5src_download_action_does_not_have_action_status_property():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.RECOMMENDED,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction SHOULD have an action status"],
         expected_triggered_issues=["`DownloadAction` SHOULD have `actionStatus` property."],
         profile_identifier="five-safes-crate",
         rocrate_entity_mod_sparql=sparql,
@@ -371,7 +371,7 @@ def test_5src_downloaded_workflow_is_not_represented_by_its_own_entity():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.OPTIONAL,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction result MAY reference an existing workflow entity"],
         expected_triggered_issues=[
             (
                 "The entity representing the downloaded workflow is not defined, "
@@ -402,7 +402,7 @@ def test_5src_download_action_does_not_have_start_time():
         rocrate_path=ValidROC().five_safes_crate_result,
         requirement_severity=Severity.OPTIONAL,
         expected_validation_result=False,
-        expected_triggered_requirements=["DownloadAction"],
+        expected_triggered_requirements=["DownloadAction MAY have a start time when begun"],
         expected_triggered_issues=[
             (
                 "`DownloadAction` MAY have the `startTime` property if `actionStatus` "

@@ -27,12 +27,12 @@
 
 five-safes-crate:WorkflowMustHaveDescriptiveName
     a sh:NodeShape ;
-    sh:name "WorkflowExecution" ;
+    sh:name "Workflow execution MUST have a descriptive name" ;
     sh:targetClass ro-crate:WorkflowRunAction ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "name" ;
+        sh:name "Workflow execution name" ;
         sh:minCount 1 ;    
         sh:description "The `CreateAction` corresponding to the workflow run MUST have a name string of at least 10 characters." ;
         sh:path schema:name ;
@@ -45,12 +45,12 @@ five-safes-crate:WorkflowMustHaveDescriptiveName
 
 five-safes-crate:WorkflowMustHaveActionStatusWithAllowedValues
     a sh:NodeShape ;
-    sh:name "WorkflowExecution" ;
+    sh:name "Workflow execution MUST have an allowed action status" ;
     sh:targetClass ro-crate:WorkflowRunAction ;
     sh:property [
         a sh:PropertyShape ;
         sh:minCount 1 ;
-        sh:name "actionStatus" ;
+        sh:name "Workflow execution action status" ;
         sh:description "`CreateAction` MUST have an actionStatus with an allowed value (see https://schema.org/ActionStatusType)." ;
         sh:path schema:actionStatus ;
         sh:in (
@@ -91,7 +91,7 @@ five-safes-crate:WorkflowexecutionObjectHasEndTimeIfEnded
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "EndTime" ;
+        sh:name "Workflow execution end time" ;
         sh:path schema:endTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -132,7 +132,7 @@ five-safes-crate:WorkflowexecutionObjectHasStartTimeIfBegun
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
+        sh:name "Workflow execution start time" ;
         sh:path schema:startTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;

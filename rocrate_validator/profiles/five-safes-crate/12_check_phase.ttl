@@ -27,7 +27,7 @@
 
 five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue MUST have a name and AssessAction type" ;
     sh:description "" ;
 
     sh:target [
@@ -53,7 +53,7 @@ five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
 
     sh:property [
         sh:a sh:PropertyShape ;
-        sh:name "name" ;
+        sh:name "CheckValue name" ;
         sh:description "CheckValue MUST have a human readable name string." ;
         sh:path schema:name ;
         sh:datatype xsd:string ;
@@ -63,7 +63,7 @@ five-safes-crate:CheckValueObjectHasDescriptiveNameAndIsAssessAction
 
 five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue MUST have an allowed action status" ;
     sh:description "" ;
 
     sh:target [
@@ -82,7 +82,7 @@ five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "CheckValue action status" ;
         sh:path schema:actionStatus ;
         sh:in (
             "http://schema.org/PotentialActionStatus"
@@ -99,7 +99,7 @@ five-safes-crate:CheckValueActionStatusMustHaveAllowedValues
 
 five-safes-crate:RootDataEntityShouldMentionCheckValueObject
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity SHOULD mention CheckValue" ;
     sh:targetClass ro-crate:RootDataEntity ;
     sh:description "" ;
     sh:severity sh:Warning ;
@@ -125,7 +125,7 @@ five-safes-crate:RootDataEntityShouldMentionCheckValueObject
 
 five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue SHOULD reference the root data entity" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -141,7 +141,7 @@ five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "object" ;
+        sh:name "CheckValue object" ;
         sh:path schema:object ;
         sh:minCount 1 ;
         sh:class ro-crate:RootDataEntity ;
@@ -152,7 +152,7 @@ five-safes-crate:CheckValueObjectShouldPointToRootDataEntity
 
 five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue SHOULD reference a DefinedTerm instrument" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -168,7 +168,7 @@ five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "instrument" ;
+        sh:name "CheckValue instrument" ;
         sh:path schema:instrument ;
         sh:minCount 1 ;
         sh:class schema:DefinedTerm ;
@@ -179,7 +179,7 @@ five-safes-crate:CheckValueInstrumentShouldPointToEntityTypedDefinedTerm
 
 five-safes-crate:CheckValueAgentShouldIdentifyTheAgentWhoPerformnedTheCheck
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue SHOULD identify the agent performing the check" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -206,7 +206,7 @@ five-safes-crate:CheckValueAgentShouldIdentifyTheAgentWhoPerformnedTheCheck
 
 five-safes-crate:CheckValueShouldHaveEndTime
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue SHOULD have an end time" ;
     sh:description "" ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -227,7 +227,7 @@ five-safes-crate:CheckValueShouldHaveEndTime
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "EndTime" ;
+        sh:name "CheckValue end time" ;
         sh:path schema:endTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
@@ -238,7 +238,7 @@ five-safes-crate:CheckValueShouldHaveEndTime
 
 five-safes-crate:CheckValueShouldHaveActionStatus
     a sh:NodeShape ;
-    sh:name "CheckValue" ;
+    sh:name "CheckValue SHOULD have an action status" ;
     sh:description "" ;
 
     sh:target [
@@ -256,7 +256,7 @@ five-safes-crate:CheckValueShouldHaveActionStatus
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "ActionStatus" ;
+        sh:name "CheckValue action status" ;
         sh:path schema:actionStatus ;
         sh:minCount 1 ;
         sh:severity sh:Warning ;
@@ -290,7 +290,7 @@ five-safes-crate:CheckValueMayHaveStartTime
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "StartTime" ;
+        sh:name "CheckValue start time" ;
         sh:path schema:startTime ;
         sh:minCount 1 ;
         sh:maxCount 1 ;

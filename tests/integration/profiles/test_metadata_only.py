@@ -21,8 +21,8 @@ from pathlib import Path
 import pytest
 
 from rocrate_validator import models
-from rocrate_validator.constants import DEFAULT_PROFILE_IDENTIFIER
 from tests.ro_crates import ValidROC
+from tests.ro_crates_v1_3 import ContextualEntities, RootDataEntity, ValidROCrate13
 from tests.shared import do_entity_test
 
 # set up logging
@@ -50,7 +50,7 @@ def valid_roc_paths():
 
 
 @pytest.mark.parametrize("valid_roc_path", valid_roc_paths())
-def test_valid_ro_crates_from_folder(valid_roc_path):
+def test_valid_ro_crates_from_folder(valid_roc_path, profile_identifier="ro-crate-1.1"):
     """Test all valid RO-Crates."""
     with tempfile.TemporaryDirectory() as tmpdirname:
         temp_path = Path(tmpdirname) / valid_roc_path.name
@@ -64,14 +64,14 @@ def test_valid_ro_crates_from_folder(valid_roc_path):
             [],
             profile_identifier=(
                 # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
-                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else DEFAULT_PROFILE_IDENTIFIER
+                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else profile_identifier
             ),
             metadata_only=True,
         )
 
 
 @pytest.mark.parametrize("valid_roc_path", valid_roc_paths())
-def test_valid_ro_crates_from_metadata_dict(valid_roc_path):
+def test_valid_ro_crates_from_metadata_dict(valid_roc_path, profile_identifier="ro-crate-1.1"):
     """Test all valid RO-Crates using metadata dict."""
     metadata_dict = None
     # Load the metadata dict from the RO-Crate
@@ -88,8 +88,33 @@ def test_valid_ro_crates_from_metadata_dict(valid_roc_path):
             [],
             profile_identifier=(
                 # ro-crate-1.1 can't be used for Five Safes crates as they conform to 1.2
-                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else DEFAULT_PROFILE_IDENTIFIER
+                "five-safes-crate" if "five-safes-crate" in valid_roc_path.name else profile_identifier
             ),
             metadata_dict=metadata_dict,
             metadata_only=True,
         )
+
+
+def valid_roc_13_paths():
+    """Existing RO-Crate 1.3 examples, separate from the original 1.1 fixtures."""
+    valid_roc = ValidROCrate13()
+    contextual_entities = ContextualEntities()
+    return [
+        pytest.param(valid_roc.attached, id="attached"),
+        pytest.param(valid_roc.attached_absolute_root, id="absolute-root"),
+        pytest.param(RootDataEntity().valid_additional_conformsTo_reference, id="profile-reference"),
+        pytest.param(contextual_entities.valid_software_application, id="software-application"),
+        pytest.param(contextual_entities.valid_computer_language, id="computer-language"),
+    ]
+
+
+@pytest.mark.parametrize("valid_roc_path", valid_roc_13_paths())
+def test_valid_ro_crates_1_3_from_folder(valid_roc_path):
+    """Exercise the folder input mode with RO-Crate 1.3 fixtures."""
+    test_valid_ro_crates_from_folder(valid_roc_path, profile_identifier="ro-crate-1.3")
+
+
+@pytest.mark.parametrize("valid_roc_path", valid_roc_13_paths())
+def test_valid_ro_crates_1_3_from_metadata_dict(valid_roc_path):
+    """Exercise the dictionary input mode with RO-Crate 1.3 fixtures."""
+    test_valid_ro_crates_from_metadata_dict(valid_roc_path, profile_identifier="ro-crate-1.3")

@@ -26,12 +26,12 @@
 
 five-safes-crate:RootDataEntityRequiredProperties
     a sh:NodeShape ;
-    sh:name "RootDataEntity" ;
+    sh:name "Root data entity MUST identify its source organization" ;
     sh:targetClass ro-crate:RootDataEntity ;
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "sourceOrganization" ;
+        sh:name "Root source organization presence" ;
         sh:path schema:sourceOrganization;
         sh:minCount 1 ;
         sh:severity sh:Violation ;
@@ -40,7 +40,7 @@ five-safes-crate:RootDataEntityRequiredProperties
 
     sh:property [
         a sh:PropertyShape ;
-        sh:name "sourceOrganization" ;
+        sh:name "Root source organization Project type" ;
         sh:path schema:sourceOrganization ;
         sh:class schema:Project ;
         sh:severity sh:Violation ;
